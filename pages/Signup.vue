@@ -588,9 +588,19 @@ export default {
       console.log(this.formData.sch);
       console.log(this.schoolImages);
     },
-    handleStudentIDUpload(event) {
+ handleStudentIDUpload(event) {
       const input = event.target;
       if (input.files && input.files[0]) {
+        const fileSize = input.files[0].size; // in bytes
+        const maxSize = 1024 * 1024; // 1 MB limit
+
+        if (fileSize > maxSize) {
+          alert('File size exceeds the limit (1 MB). Please choose a smaller file.');
+          // Optionally, you can clear the input field to prevent further submission
+          input.value = '';
+          return;
+        }
+
         const reader = new FileReader();
         reader.onload = (e) => {
           this.signUpData.profile_img = e.target.result;
@@ -691,12 +701,13 @@ export default {
     },
     
     async submitForm() {
-      console.log(this.signUpData);
+      console.log('this.signUpData',this.signUpData);
       const apiBaseUrl = useRuntimeConfig().apiBaseUrl;
       try {
-        const response = await useFetch(`/api/auth/register`, {
+        const response = await useFetch(`http://3.219.43.239/api/register`, {
           method: "post",
           body: this.signUpData,
+         
         });
 
         const data = response.data;

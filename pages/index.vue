@@ -1,8 +1,5 @@
 <template>
-<div>
-  <Login/>
-</div>
-  <!-- <div class="parentContainer">
+  <div class="parentContainer">
     <div class="loginImageCon">
       <div>
         <h2 style="text-align: center; font-size:2.5rem">Connect, Get Hired!</h2>
@@ -14,17 +11,17 @@
       <div class="container">
         <div class="content login-box">
           <h5 style="text-align: center; margin-bottom: 2rem">Ciraq</h5>
-          <form>
+          <form @submit.prevent="loginUser">
             <div class="user-box">
-              <input v-model="loginData.email" type="text" name="" required="" />
+              <input v-model="loginData.username" type="text" name="" required="" />
               <label>Student email</label>
             </div>
             <div class="user-box">
-              <input v-model="loginData.password" type="password" name="" required="" />
+              <input v-model="loginData.p_word" type="password" name="" required="" />
               <label>Password</label>
             </div>
             <div>
-              <div><button @click="loginUser" class="loginBtn">Login</button>
+              <div><button type="submit" class="loginBtn">Login</button>
               </div>
               <div>
                 <a style="font-size: small" href="#"> Forgot Password? </a>
@@ -44,23 +41,18 @@
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 </template>
 
-
-<script setup>
-definePageMeta({ middleware: 'auth' })
-</script>
-
-
 <script>
+
 export default {
   data() {
     return {
       pageToShow: "dashboard",
       loginData:{
-        email:"",
-        password:""
+        username:"pboateng773",
+        p_word:"12345"
       }
     };
   },
@@ -68,19 +60,18 @@ export default {
   async mounted() {},
 
   methods:{
-    async loginUser(event) {
-        event.preventDefault();
+    async loginUser() {
+        console.log(this.loginData)
       try {
         // navigate to dashboard
-        const apiBaseUrl = useRuntimeConfig().apiBaseUrl;
-        const response = await useFetch(`http://3.219.43.239/auth/login`, {
+        const response = await useFetch(`http://3.219.43.239/api/login`, {
+          // credentials:"include",
           method: "post",
           body: this.loginData,
         });
 
         const data = response;
         console.log(response);
-
         if (data) {
           // this.$router.push("/dashboard");
         }

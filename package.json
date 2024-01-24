@@ -14,7 +14,6 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/tailwindcss": "^6.10.1",
     "@pinia/nuxt": "^0.5.1",
-    "@sidebase/nuxt-auth": "^0.6.4",
     "nuxt": "^3.8.2",
     "nuxt-icon": "^0.6.7",
     "vue": "^3.3.12",
@@ -25,8 +24,6 @@
     "boxicons": "^2.1.4",
     "flowbite": "^2.2.1",
     "flowbite-datepicker": "^1.2.6",
-    "next-auth": "4.22.5",
-    "nuxt-server-utils": "^0.0.7",
     "pinia": "^2.1.7"
   }
 }

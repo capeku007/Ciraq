@@ -21,7 +21,7 @@
               <label>Password</label>
             </div>
             <div>
-              <div><button @click="loginUser" class="loginBtn">Login</button>
+              <div><button @click="loginUser()" class="loginBtn">Login</button>
               </div>
               <div>
                 <a style="font-size: small" href="#"> Forgot Password? </a>
@@ -51,8 +51,8 @@ export default {
     return {
       pageToShow: "dashboard",
       loginData:{
-        email:"",
-        password:""
+        email:"pboateng773",
+        password:"12345"
       }
     };
   },
@@ -62,17 +62,16 @@ export default {
   methods:{
     async loginUser(event) {
         event.preventDefault();
+        console.log(this.loginData)
       try {
         // navigate to dashboard
-        const apiBaseUrl = useRuntimeConfig().apiBaseUrl;
-       const response = await useFetch(`/login`, {
+        const response = await useFetch(`http://3.219.43.239/auth/login`, {
           method: "post",
           body: this.loginData,
         });
 
         const data = response;
         console.log(response);
-
         if (data) {
           // this.$router.push("/dashboard");
         }

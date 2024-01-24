@@ -2,28 +2,17 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/tailwindcss',
-    'nuxt-icon',
-    '@formkit/auto-animate',
-    '@sidebase/nuxt-auth',
-    '@pinia/nuxt'
+    "@nuxtjs/tailwindcss",
+    "nuxt-icon",
+    "@formkit/auto-animate",
+    "@pinia/nuxt",
   ],
-  runtimeConfig:{
-    authSecret: process.env.AUTH_SECRET,
-  },
+  // server: {
+  //   proxy: {
+  //     '/api': 'http:localhost:3000',
+  //   },
+  // },
   aliases: {
-    'nuxt': 'logos:nuxt-icon',
-    
+    nuxt: "logos:nuxt-icon",
   },
-  nuxtServerUtils:{
-    appUrl:process.env.DATABASE_URI,
-  },
-  auth: {
-    baseURL: process.env.AUTH_ORIGIN,
-    provider: {
-        type: 'authjs',
-        baseURL: '/api/auth',
-    },
-    
-}
-})
+});
