@@ -13,15 +13,15 @@
           <h5 style="text-align: center; margin-bottom: 2rem">Ciraq</h5>
           <form @submit.prevent="loginUser">
             <div class="user-box">
-              <input v-model="loginData.username" type="text" name="" required="" />
+              <input v-model="uname" type="text" name="" required="" />
               <label>Student email</label>
             </div>
             <div class="user-box">
-              <input v-model="loginData.p_word" type="password" name="" required="" />
+              <input v-model="pword" type="password" name="" required="" />
               <label>Password</label>
             </div>
             <div>
-              <div><button type="submit" class="loginBtn">Login</button>
+              <div><button  class="loginBtn">Login</button>
               </div>
               <div>
                 <a style="font-size: small" href="#"> Forgot Password? </a>
@@ -30,6 +30,12 @@
                 <div style="width: 40%"><hr /></div>
                 <div style="width: 20%"><h6>OR</h6></div>
                 <div style="width: 40%"><hr /></div>
+              </div>
+
+              <div>
+                <img :src="authStore.getUserImage" alt="">
+
+
               </div>
 
               <div style="font-size: small">
@@ -44,45 +50,48 @@
   </div>
 </template>
 
-<script>
 
-export default {
-  data() {
-    return {
-      pageToShow: "dashboard",
-      loginData:{
-        username:"pboateng773",
-        p_word:"12345"
-      }
-    };
-  },
 
-  async mounted() {},
+<script setup>
+import { useAuthStore } from '../stores/authStore'
+import { reactive } from 'vue'
 
-  methods:{
-    async loginUser() {
-        console.log(this.loginData)
-      try {
-        // navigate to dashboard
-        const response = await useFetch(`http://3.219.43.239/api/login`, {
-          // credentials:"include",
-          method: "post",
-          body: this.loginData,
-        });
+// Define loginData using reactive
+definePageMeta({
+  middleware:["already-auth"],
+}) 
 
-        const data = response;
-        console.log(response);
-        if (data) {
-          // this.$router.push("/dashboard");
-        }
-      } catch (error) {
-        console.error('Error during login:', error);
-        this.error = 'Login failed. Please check your credentials.';
-      }
-    },
+const uname=ref("knimo470")
+const pword=ref("12345678@")
+const error =ref(null)
+
+// Access the authStore instance
+const authStore = useAuthStore()
+  // authStore.login({
+  //   username: uname.value,
+  //   p_word:pword.value,
+  // })
+
+// Define loginUser function
+
+
+const loginUser = async () => {
+  try {
+    let loginData ={
+    username: uname.value,
+    p_word:pword.value,
   }
+  authStore.login(loginData)
+  await navigateTo("/dashboard", {replace:true})
+  } catch (err) {
+    this.error=err.message ;
+    alert(this.error)
+  }
+  
+
 };
 </script>
+
 
 <style scoped>
 .parentContainer {

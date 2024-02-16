@@ -7,11 +7,9 @@ export default defineNuxtConfig({
     "@formkit/auto-animate",
     "@pinia/nuxt",
   ],
-  // server: {
-  //   proxy: {
-  //     '/api': 'http:localhost:3000',
-  //   },
-  // },
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
   aliases: {
     nuxt: "logos:nuxt-icon",
   },

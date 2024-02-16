@@ -94,6 +94,39 @@
             </div>
           </div>
           <div class="relative z-0 w-full mb-5 group">
+            <div class="relative">
+              <span
+                class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400"
+              >
+                <Icon
+                  name="ic:round-mail-outline"
+                  class="w-4 h-4 rtl:rotate-[270deg]"
+                ></Icon>
+              </span>
+              <input
+                v-model="signUpData.personal_mail"
+                @input="validateEmail"
+                :class="{ 'invalid-email': !isValidEmail }"
+                type="text"
+                id="floating-mail"
+                class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              />
+
+              <label
+                v-if="isValidEmail"
+                for="floating-mail"
+                class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                >Personal mail</label
+              >
+              <label
+                v-else
+                for="floating-mail"
+                class="absolute text-sm text-red-600 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-red-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                >Personal mail only
+              </label>
+            </div>
+          </div>
+          <div class="relative z-0 w-full mb-5 group">
             <select
               id="underline_select"
               v-model="signUpData.institution"
@@ -215,9 +248,10 @@
             <div class="avatar-edit">
               <input
                 type="file"
+                name="profilepic"
                 id="imageUpload"
                 accept=".png, .jpg, .jpeg"
-                @change="handleImageUpload"
+                @change="handleImageUpload2"
               />
               <label for="imageUpload"
                 ><Icon
@@ -229,7 +263,7 @@
             <div class="avatar-preview">
               <div
                 :style="{
-                  backgroundImage: `url(${signUpData.stdid_img_name})`,
+                  backgroundImage: `url(${stdid_img_name})`,
                 }"
                 id="imagePreview"
               ></div>
@@ -338,7 +372,7 @@
                 <div class="flex flex-col items-center justify-center">
                   <div
                     :style="{
-                      backgroundImage: `url(${signUpData.profile_img})`,
+                      backgroundImage: `url(${profile_img})`,
                     }"
                     class="w-full h-44 bg-cover bg-center mb-2 p-2"
                   ></div>
@@ -349,9 +383,10 @@
                 </div>
                 <input
                   id="studentIDUpload"
+                  name="studentid"
                   type="file"
                   class="hidden"
-                  @change="handleStudentIDUpload"
+                  @change="handleImageUpload1"
                 />
               </label>
             </div>
@@ -445,6 +480,8 @@
 </template>
 
 <script>
+import { useAuthStore } from '../stores/authStore'
+
 export default {
   data() {
     return {
@@ -456,6 +493,8 @@ export default {
         lname: "",
         sch: "Select School",
       },
+      stdid_img_name: null,
+      profile_img: null,
       signUpData: {
         fname: "",
         mname: "",
@@ -487,9 +526,8 @@ export default {
         refs: "",
         gender: "",
         dob: "",
-        stdid_img_name: "",
-        profile_img: "",
       },
+
       confirm_p_word: "",
       isValidEmail: true,
       schoolImages: {
@@ -588,16 +626,19 @@ export default {
       console.log(this.formData.sch);
       console.log(this.schoolImages);
     },
- handleStudentIDUpload(event) {
+
+    handleStudentIDUpload(event) {
       const input = event.target;
       if (input.files && input.files[0]) {
         const fileSize = input.files[0].size; // in bytes
         const maxSize = 1024 * 1024; // 1 MB limit
 
         if (fileSize > maxSize) {
-          alert('File size exceeds the limit (1 MB). Please choose a smaller file.');
+          alert(
+            "File size exceeds the limit (1 MB). Please choose a smaller file."
+          );
           // Optionally, you can clear the input field to prevent further submission
-          input.value = '';
+          input.value = "";
           return;
         }
 
@@ -608,16 +649,30 @@ export default {
         reader.readAsDataURL(input.files[0]);
       }
     },
-    handleImageUpload(event) {
+    handleImageUpload1(event) {
       const input = event.target;
       if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.signUpData.stdid_img_name = e.target.result;
-        };
-        reader.readAsDataURL(input.files[0]);
+        this.stdid_img_name = input.files[0];
+        console.log(this.stdid_img_name);
       }
     },
+    handleImageUpload2(event) {
+      const input = event.target;
+      if (input.files && input.files[0]) {
+        this.profile_img = input.files[0];
+      }
+    },
+    // handleImageUpload(event) {
+    //   const input = event.target;
+    //   if (input.files && input.files[0]) {
+    //     const reader = new FileReader();
+    //     reader.onload = (e) => {
+    //       this.signUpData.stdid_img_name = e.target.result;
+    //     };
+    //     reader.readAsDataURL(input.files[0]);
+    //   }
+    // },
+
     showTab(n) {
       const x = this.$el.getElementsByClassName("step");
       x[n].style.display = "block";
@@ -699,24 +754,46 @@ export default {
         input.classList.remove("invalid");
       }
     },
-    
+
     async submitForm() {
-      console.log('this.signUpData',this.signUpData);
-      const apiBaseUrl = useRuntimeConfig().apiBaseUrl;
-      try {
-        const response = await useFetch(`http://3.219.43.239/api/register`, {
-          method: "post",
-          body: this.signUpData,
-         
-        });
+      const formData = new FormData();
 
-        const data = response.data;
+      // console.log("Student ID Image:", this.stdid_img_name);
+      // console.log("Profile Image:", this.profile_img);
 
-        if (data) {
-          console.log(response);
+      for (const key in this.signUpData) {
+        if (Object.hasOwnProperty.call(this.signUpData, key)) {
+          formData.append(key, this.signUpData[key]);
         }
+      }
+      const studentIdFile = new File([this.stdid_img_name], "studentid.jpg");
+      const profilePicFile = new File([this.profile_img], "profilepic.jpg");
+
+      formData.append("studentid", studentIdFile);
+      formData.append("profilepic", profilePicFile);
+
+      for (const entry of formData.entries()) {
+  const [name, value] = entry;
+  // console.log(`Field Name: ${name}, Field Value: ${value}`);
+}
+
+const authStore = useAuthStore()
+
+      console.log("formData", formData);
+      try {
+        // const response = await useFetch(`http://3.219.43.239/api/register`, {
+        //   method: "post",
+        //   body: formData,
+        // });
+
+        // const data = response.data;
+
+        // if (data) {
+        //   console.log(response);
+        // }
+        authStore.signup(formData)
       } catch (error) {
-        console.log(error);
+        // console.log("signup error", error);
       }
     },
   },
