@@ -1,100 +1,122 @@
 <template>
   <div>
     <div
-      id="modal1"
-      tabindex="-1"
-      aria-hidden="true"
-      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      class="parentCon mx-2"
+      v-if="selectedListing"
+      @touchstart="handleTouchStart"
+      @touchend="handleTouchEnd"
     >
-      <div class="relative w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <!-- Modal header -->
-          <div
-            class="flex items-start justify-between p-2 border-b rounded-t dark:border-gray-600"
-          >
-            <h3
-              class="text-lg ml-1 font-semibold text-gray-900 lg:text-2xl dark:text-white"
-            >
-              Confirm Application
-            </h3>
-            <button
-              id="closeButton"
-              data-modal-hide="modal1"
-              type="button"
-              class="text-gray-400 bg-transparent hover:bg-red-600 hover:text-white rounded-lg text-sm p-1 ml-auto inline-flex items-center"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          <!-- Modal body -->
-          <div class="p-6 space-y-6">
-            <p
-              class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
-            >
-              Do you wish to apply to Task Title at Company Name
-            </p>
-          </div>
-          <!-- Modal footer -->
-          <div
-            class="flex justify-end p-2 space-x-2 border-t border-gray-200 rounded-b"
-          >
-            <button
-              type="button"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
-            >
-              I accept
-            </button>
-            <button
-              type="button"
-              class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-4 py-2 hover:text-gray-900 focus:z-10"
-            >
-              Decline
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="parentCon mx-2" v-if="selectedListing">
       <div class="flex justify-between">
-        <div><p class="h1">Data Entry Lorem ipsum dolor!</p></div>
+        <div>
+          <p class="h1">{{ selectedListing.title }}</p>
+        </div>
         <div>
           <i
+            @click="goBack"
             class="bx bx-chevron-left bg-red-600 p-1 rounded-lg text-white"
           ></i>
+          <button type="button" class="btn" @click="showModal">
+            Open Modal!
+          </button>
+
+          <Modal v-show="isModalVisible" @close="closeModal">
+            <template v-slot:header> This is a new modal header. </template>
+
+            <template v-slot:body>
+              <div class="p-6 space-y-6">
+                <p
+                  class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
+                >
+                  Do you wish to apply to Task Title at Company Name
+                </p>
+              </div>
+            </template>
+
+            <template v-slot:footer> This is a new modal footer. </template>
+          </Modal>
         </div>
+        
       </div>
       <div class="jobTitle">
         <div class="img"></div>
         <div class="textBox">
           <div class="textContent">
-            <p class="h1">Rigelis Inc</p>
+            <p class="h1">{{ selectedListing.company }}</p>
             <!-- <span class="span">12 min ago</span> -->
           </div>
-          <p class="p">1 La Bawaleshi rd.</p>
+          <p class="p">{{ selectedListing.companyLocation }}</p>
+        </div>
+        <div
+          id="modal1"
+          tabindex="-1"
+          aria-hidden="true"
+          class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+        >
+          <div class="relative w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div
+                class="flex items-start justify-between p-2 border-b rounded-t dark:border-gray-600"
+              >
+                <h3
+                  class="text-lg ml-1 font-semibold text-gray-900 lg:text-2xl dark:text-white"
+                >
+                  Confirm Application
+                </h3>
+                <button
+                  id="closeButton"
+                  data-modal-hide="modal1"
+                  type="button"
+                  class="text-gray-400 bg-transparent hover:bg-red-600 hover:text-white rounded-lg text-sm p-1 ml-auto inline-flex items-center"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <div class="p-6 space-y-6">
+                <p
+                  class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
+                >
+                  Do you wish to apply to Task Title at Company Name
+                </p>
+              </div>
+              <!-- Modal footer -->
+              <div
+                class="flex justify-end p-2 space-x-2 border-t border-gray-200 rounded-b"
+              >
+                <button
+                  type="button"
+                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
+                >
+                  I accept
+                </button>
+                <button
+                  type="button"
+                  class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-4 py-2 hover:text-gray-900 focus:z-10"
+                >
+                  Decline
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div>
-          <!-- <button
-            @click="startApplication"
-            class="rounded-lg bg-lime-500 py-1 px-2.5 text-white"
-          >
-            Apply Now
-          </button> --> 
-                   <button
-                   data-modal-toggle="modal1"
-        data-modal-target="modal1"
+          <button
+            id="button"
+            data-modal-toggle="modal1"
+            data-modal-target="modal1"
             class="rounded-lg bg-lime-500 py-1 px-2.5 text-white"
           >
             Apply Now
@@ -131,7 +153,7 @@
               <p class="p">Location</p>
               <!-- <span class="span">12 min ago</span> -->
             </div>
-            <p>Onsite</p>
+            <p>{{ selectedListing.location }}</p>
           </div>
         </div>
         <div class="jobTitle">
@@ -153,9 +175,7 @@
       </div>
       <div>
         <p class="text-sm leading-4">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate
-          nam omnis similique, hic, asperiores ab dolores dolor perspiciatis
-          ratione delectus pariatur molestiae nesciunt
+          {{ selectedListing.jobDescription }}
         </p>
       </div>
     </div>
@@ -176,9 +196,14 @@
 </template>
 
 <script>
+import Modal from "./UI/Modal.vue";
+// import flowbite from 'flowbite/dist/flowbite.js'
 export default {
   props: {
     selectedListing: Object,
+  },
+  components: {
+    Modal,
   },
 
   data() {
@@ -189,15 +214,36 @@ export default {
         { sender: "sender", text: "Another message from the user." },
       ],
       newMessage: "",
+      isModalVisible: false,
     };
   },
   methods: {
-    startApplication() {
-      $("modal1").modal('show')
-    },    
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
     goBack() {
       // Implement your goBack function here
-      this.$emit("loadMessagesMobile");
+      this.$emit("loadJobsMobile");
+    },
+    handleTouchStart(event) {
+      this.touchStartX = event.touches[0].clientX;
+    },
+
+    // Function to handle touch end event
+    handleTouchEnd(event) {
+      const touchEndX = event.changedTouches[0].clientX;
+      const swipeDistance = touchEndX - this.touchStartX;
+
+      // Define a threshold for swipe distance to consider it as a swipe
+      const swipeThreshold = 50;
+
+      if (swipeDistance > swipeThreshold) {
+        // If swipe distance is greater than threshold, call goBack function
+        this.goBack();
+      }
     },
     sendMessage() {
       if (this.newMessage.trim() !== "") {
@@ -222,6 +268,9 @@ export default {
       );
     },
   },
+  mounted() {
+    // this.initModals();
+  },
 };
 </script>
 
@@ -237,12 +286,11 @@ export default {
 
 .jobTitle {
   width: 100%;
-
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: left;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px); */
   transition: 0.5s ease-in-out;
   padding: 0;
 }
@@ -299,7 +347,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: left;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px); */
   transition: 0.5s ease-in-out;
   padding: 0;
 }

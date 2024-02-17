@@ -1,5 +1,6 @@
 <template>
-    <div>                <p>{{getUser}}</p></div>
+    <div>                <p>{{getUser}}</p>
+    <multiple-modals></multiple-modals></div>
 </template>
 
 <script setup>
