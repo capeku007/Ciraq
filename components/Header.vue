@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-white border-gray-200  ">
+  <nav class="top bg-white border-gray-200  ">
     <div
       class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
     >
@@ -52,7 +52,7 @@
                 >
               </div>
               <ul class="py-2" aria-labelledby="user-menu-button">
-                <li>
+                <li >
                   <nuxt-link to="/dashboard"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                     >Dashboard</nuxt-link
@@ -175,5 +175,16 @@ export default {
 <style scoped>
 .custom-card {
   padding: 5px;
+}
+
+.top {
+  position: relative;
+}
+
+.top:after {
+  position: absolute;
+
+  display: block;
+
 }
 </style>

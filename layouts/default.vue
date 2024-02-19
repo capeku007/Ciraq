@@ -1,16 +1,21 @@
 <template>
   <div>
+    <Modals/>
     <div><Header /></div>
     <div><slot /></div>
     <!-- <div><Footer /></div> -->
   </div>
 </template> 
 <script>
+import Modals from "@/components//UI/Modals.vue"
 import "boxicons/css/boxicons.min.css";
 // import Datepicker from 'flowbite-datepicker/Datepicker';
 export default {
   data() {
     return {};
+  },
+  components:{
+Modals,
   },
   head: {
     script: [],
@@ -52,6 +57,8 @@ onMounted(() => {
   initTabs();
   initTooltips();
 });
+
+
 </script>
 
 
