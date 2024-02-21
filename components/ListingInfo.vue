@@ -143,9 +143,13 @@ export default {
         "Comfirm application for " + this.selectedListing.title + " task";
       modalStore.changeDialog(info);
       let func = {};
+      // IF USER SELECTS YES CONTINUE FUNCTION
       func.yesfunc = async function () {
         try {
           console.log("trying to run the function");
+
+          // show response message as toast
+          modalStore.showMessage("test het")
         } catch (error) {
           console.log(error);
         }
