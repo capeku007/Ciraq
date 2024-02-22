@@ -24,6 +24,7 @@
     "boxicons": "^2.1.4",
     "flowbite": "^2.2.1",
     "flowbite-datepicker": "^1.2.6",
-    "pinia": "^2.1.7"
+    "pinia": "^2.1.7",
+    "vue3-toastify": "^0.2.1"
   }
 }

@@ -1,7 +1,7 @@
 // store.js
 import { defineStore } from "pinia";
 import useModal from '../composables/useModal'; // Import the Modal class if not already imported
-
+import { toast } from "vue3-toastify";
 
 export const useModalStore = defineStore("modal", {
   state: () => ({
@@ -42,6 +42,7 @@ export const useModalStore = defineStore("modal", {
         const modalId = 'confirmModal'; // Assuming this is the ID of your modal
         hideModal(modalId);
         console.log("Confirmed");
+        
         await this.yesorNoClickFunc.yesfunc();
       }
     },
@@ -54,19 +55,25 @@ export const useModalStore = defineStore("modal", {
         const modalId = 'confirmModal'; // Assuming this is the ID of your modal
         hideModal(modalId);
         console.log("in cancel no func");
+        toast(this.dialoginfo, { // Call the toast method with the dialog info
+          position: "top-right", // Set the toast position
+          duration: 200, // Set the toast duration
+          type: "error", // Set the toast type
+          responsive: true,
+        });
       }
     },
 
     async showMessage(payload) {
       this.dialoginfo = payload;
       // show toast and hide after 300ms that will be dismissed
-      const { showToast } = useModal(); // Initialize useModal composable
-      const toastId = 'toast'; // Assuming this is the ID of your modal
-      showToast(toastId);
-      console.log(toastId)
+      toast(this.dialoginfo, { // Call the toast method with the dialog info
+        position: "top-right", // Set the toast position
+        duration: 200, // Set the toast duration
+        type: "info", // Set the toast type
+      });
   // Hide the toast after 300ms
-  setTimeout(() => {
-    this.dialoginfo = ''; // Clear the dialog info after hiding the toast
+  setTimeout(() => {// Clear the dialog info after hiding the toast
   }, 300);
       
     },
