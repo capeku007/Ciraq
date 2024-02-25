@@ -1,14 +1,16 @@
 <template>
   <div>
-    <div class="parentCon  mx-2" v-if="selectedPerson">
+    <div class="parent mx-2" v-if="selectedPerson">
       <!-- Chat Header -->
 
       <div
-        class="chatHeader chat-header bg-gray-100 border-b rounded-3xl  p-4 flex items-center justify-between"
+        class="child1 bg-gray-100 border-b rounded-3xl p-4 flex items-center justify-between"
       >
         <div class="flex items-center">
           <!-- Back Button (visible on mobile) -->
-          <button class="block sm:hidden mr-2" @click="goBack"> <i class="bx bx-chevron-left"></i> </button>
+          <button class="block sm:hidden mr-2" @click="goBack">
+            <i class="bx bx-chevron-left"></i>
+          </button>
           <img
             class="rounded-full h-10 w-10 object-cover mr-3"
             :src="selectedPerson.avatar"
@@ -17,12 +19,9 @@
         </div>
       </div>
       <!-- Chat Body -->
-      <div
-        ref="chatBodyRef"
-        class="chatBody chat-body p-4  "
-      >
+      <div ref="chatBodyRef" class="child2 chat-body p-4">
         <!-- Display Messages -->
-        <div>
+        <div class="child1">
           <div
             v-for="(message, index) in selectedPerson.messages"
             :key="index"
@@ -45,8 +44,11 @@
           </div>
         </div>
       </div>
+
       <!-- Chat Input -->
-      <div class="chatInput chat-input rounded-3xl flex items-center justify-between bg-gray-100 p-2">
+      <div
+        class="child3 chat-input rounded-3xl flex items-center justify-between bg-gray-100 p-2"
+      >
         <div class="flex items-center mx-1 w-full">
           <div class="relative w-full">
             <input
@@ -61,7 +63,7 @@
           <button
             type="submit"
             @click="sendMessage"
-            class="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-[#006565] rounded-full border border-[#006565]  hover:bg-[#006565]  focus:ring-4 focus:outline-none focus:ring-[#006565]  "
+            class="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-[#006565] rounded-full border border-[#006565] hover:bg-[#006565] focus:ring-4 focus:outline-none focus:ring-[#006565]"
           >
             <i class="bx bx-send"></i>
           </button>
@@ -132,10 +134,28 @@ export default {
 </script>
 
 <style scoped>
-.chatBody {
-  height: 62vh;
+.parent {
+  display: grid;
+  min-height: 71vh;
+  max-height: 80vh;
+  overflow: hidden;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 8fr 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.child1 {
+  grid-area: 1 / 1 / 2 / 2;
+}
+.child2 {
+  grid-area: 2 / 1 / 3 / 2;
   overflow-y: auto;
 }
+.child3 {
+  grid-area: 3 / 1 / 4 / 2;
+}
+
 .place {
   height: 80vh;
 }

@@ -1,31 +1,57 @@
 
 <template>
-  <div
-    class=" mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl"
-  >
- 
+  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl m-2">
     <div class="h-full md:flex no-wrap md:-mx-1">
       <!--  List (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && showJobList)"
         class="w-full md:w-4/12 md:mx-1"
       >
-      <div class="top">
-              <div style="margin: 0 1rem"><JobSearchBar /></div>
-<div class="flex justify-between my-1 space-x-3 rtl:space-x-reverse">
-        <span
-          class="inline-flex items-center  text-sm px-2.5 py-0.5"
-        >
-          recent postings
-        </span>
+        <div class="top">
+          <!-- search input -->
+          <div class="flex items-center max-w-lg mx-auto">
+            <label for="voice-search" class="sr-only">Search</label>
+            <div class="relative w-full">
+              <div
+                class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+              >
+                <i
+                  class="bx bx-search w-4 h-4 text-gray-500"
+                  aria-hidden="true"
+                ></i>
+              </div>
+              <input
+                type="text"
+                id="voice-search"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Temp tasks, keywords, or company"
+                required
+              />
 
-        <span
-          class="inline-flex items-center text-sm  px-2.5 py-0.5 rounded-full"
-        >
-          230 tasks available
-        </span>
-      </div>
-      </div>
+              <button
+                type="button"
+                class="absolute inset-y-0 end-0 flex items-center pe-2"
+              >
+                <i
+                  class="bx bx-search inline-flex items-center py-2.5 px-3 text-sm font-medium text-white bg-blue-700 rounded-3xl border border-blue-700"
+                  aria-hidden="true"
+                ></i>
+              </button>
+            </div>
+          </div>
+          <!-- search input -->
+          <div class="flex justify-between my-1 space-x-3 rtl:space-x-reverse">
+            <span class="inline-flex items-center text-sm px-2.5 py-0.5">
+              recent postings
+            </span>
+
+            <span
+              class="inline-flex items-center text-sm px-2.5 py-0.5 rounded-full"
+            >
+              230 tasks available
+            </span>
+          </div>
+        </div>
         <ul class="taskList">
           <li v-for="job in listings" :key="job.id" @click="loadListing(job)">
             <div class="card p-4 shadow-md">
@@ -78,15 +104,17 @@
       <!--  Body (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && !showJobList)"
-        class="w-full md:w-8/12 md:mx-1 right"
+        class="w-full md:w-8/12 md:mx-1 "
       >
-        <div class="card2 p-2 shadow-md">
+        <div class="card2 m-2 p-2 shadow-md">
           <ListingInfo
             :selectedListing="selectedListing"
             @loadJobsMobile="loadJobsMobile"
           />
         </div>
       </div>
+
+
     </div>
   </div>
 </template>
@@ -125,7 +153,79 @@ export default {
           companyLogo: "../assets/logo.png",
           jobDescription:
             "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
-        }, 
+        },
+        {
+          id: "gh0000001",
+          title: "Data Entry",
+          pay: "8/hr",
+          workDays: "Weekends",
+          location: "on site",
+          company: "Ciraq Inc.",
+          companyLocation: "Accra",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000002",
+          title: "Customer Support",
+          pay: "10/hr",
+          workDays: "Mon - Fri",
+          location: "on site",
+          company: "MTN GH.",
+          companyLocation: "Koforidua",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000001",
+          title: "Data Entry",
+          pay: "8/hr",
+          workDays: "Weekends",
+          location: "on site",
+          company: "Ciraq Inc.",
+          companyLocation: "Accra",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000002",
+          title: "Customer Support",
+          pay: "10/hr",
+          workDays: "Mon - Fri",
+          location: "on site",
+          company: "MTN GH.",
+          companyLocation: "Koforidua",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000001",
+          title: "Data Entry",
+          pay: "8/hr",
+          workDays: "Weekends",
+          location: "on site",
+          company: "Ciraq Inc.",
+          companyLocation: "Accra",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000002",
+          title: "Customer Support",
+          pay: "10/hr",
+          workDays: "Mon - Fri",
+          location: "on site",
+          company: "MTN GH.",
+          companyLocation: "Koforidua",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
       ],
       selectedListing: null,
       isMobile: false,
@@ -185,25 +285,26 @@ export default {
 
 <style scoped>
 .taskList {
-  height: 80vh;
+  min-height: 71vh;
+  max-height: 71vh;
   overflow-y: auto;
+  padding-bottom: 20vh;
 }
 .card {
   width: 95%;
-  /* max-width: 400px; */
   border-radius: 1rem;
-  border: 1px solid #006565;
+  border: 1px solid #00656570;
   margin: 0.5rem auto;
 }
 .card2 {
-  width: 100%;
-  /* max-width: 70%; */
+  min-width: 96%;
+  max-width: 96%;
   border-radius: 1rem;
-  border: 1px solid #006565;
-  height: 88vh;
+  border: 1px solid #00656570;
+  height: 81vh;
   overflow-y: auto;
+    padding-bottom: 10vh;
 }
-
 
 .card:hover {
   cursor: pointer;
@@ -220,7 +321,6 @@ export default {
   border-radius: 1rem;
   color: #fff;
 }
-
 
 .textBox {
   width: calc(100% - 90px);
@@ -286,16 +386,12 @@ export default {
 
 .top {
   position: relative;
+  padding: 10px;
   /* height: 60px; */
 }
 
 .top:after {
   position: absolute;
   display: block;
-}
-
-.p {
-  font-size: 12px;
-  font-weight: bold;
 }
 </style>

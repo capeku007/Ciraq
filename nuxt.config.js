@@ -14,4 +14,5 @@ export default defineNuxtConfig({
     nuxt: "logos:nuxt-icon",
   },
   plugins: ["~/plugins/vue3-toastify.js"],
+
 });

@@ -4,8 +4,7 @@ import { useMainStore } from "./main";
 export const useAuthStore = defineStore("authStore", {
   state: () => ({
     uName: null,
-    token: null,
-    tokenExpiration: null,
+    token: useCookie("token").value || null,
     user:null
   }),
   getters: {
@@ -17,13 +16,25 @@ export const useAuthStore = defineStore("authStore", {
     }
   },
   actions: {
+    setToken(data) {
+      // Get the cookie object from the useCookie composable
+      const cookie = useCookie('token',{maxAge:60*60*24});
+    
+      // Set the cookie value to data
+      cookie.value = data;
+    
+      // Set the maxAge to a very large value (e.g., 10 years)
+      // cookie.maxAge = 60 * 60 * 24 * 365 * 10; // 10 years in seconds
+    
+      // Get the cookie value and assign it to this.token
+      this.token = cookie.value;
+    },
+
     async login(loginData) {
       const mainStore = useMainStore();
-      console.log("here's your login data", loginData);
-      console.log("here's your url", mainStore.urlbase); // Corrected property name
       
       try {
-        const response = await fetch(mainStore.urlbase + "api/login", { // Corrected property name
+        const response = await fetch(mainStore.urlbase + "api/login", { 
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -32,13 +43,13 @@ export const useAuthStore = defineStore("authStore", {
         });
     
         const responseData = await response.json();
-        console.log("here's the response data", responseData);
+        // console.log("here's the response data", responseData);
 
         if (response.ok) {
 
           this.setToken(responseData.token)
-          document.cookie = `userToken=${responseData.token}; path=/`;
           this.setUser(responseData.userData[0])
+          this.fetchUser( responseData.userData[0])
           this.fetchUserImage(responseData.userData[0])
         } else{
           const error = new Error(responseData.message || "Failed to login.");
@@ -47,29 +58,51 @@ export const useAuthStore = defineStore("authStore", {
       } catch (error) {
         console.error("Failed to login:", error);
         //clear token
-        this.setToken();
-        this.setUser()
-        await this.fetchUserImage()
+        // this.setToken();
+        // this.setUser()
       }
     },
 
-    setToken(data){
-      this.token=data
-      // console.log("here's the token", this.token);
-    },    
+
     setUser(n){
       if(this.token){
         this.user=n
-        console.log("here's the user", this.user);
+        // console.log("here's the user", this.user);
       }
       
     },
+    //fetch User
+    async fetchUser(n) {
+      const mainStore = useMainStore();
+      if (this.token) {
+        console.log("here's your token:", this.token)
+        try {
+          const response = await fetch(mainStore.urlbase + "api/user/" + n.username, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + this.token
+            }
+          });
+    
+          console.log("here is your fetched user", response);
+          if (response.ok) {
+            // Handle successful response
+          } else {
+            // Handle non-ok response
+          }
+        } catch (error) {
+          console.error("unable to load student image:", error);
+        }
+      }
+    },
+    
     //fetch User Image
     async fetchUserImage(n){
       const mainStore = useMainStore();
       if(this.token){
         try {
-          console.log("here's the user profile image name", n.stdid_img_name);
+          // console.log("here's the user profile image name", n.stdid_img_name);
           const responseImg = await mainStore.urlbase + "public/uploads/" + n.stdid_img_name;
           this.userImage =  responseImg
           console.log(this.userImage);
