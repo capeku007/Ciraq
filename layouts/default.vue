@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Modals/>
-    <div class="header"><Header /></div>
+    <div class="header shadow"><Header /></div>
     <div class="main-content"><slot /></div>
     <div class="footer">Footer</div>
   </div>
@@ -23,7 +23,6 @@ body {
 .header {
   flex: 0 0 auto; /* Non-flexible header */
   background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   min-height: 8vh;
   max-height: 8vh;
 }
@@ -57,7 +56,7 @@ background-color: blueviolet;
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(94, 94, 94, 0.178);
-  background: #018989;
+  background: #bfbfbf;
 }
 </style>
 
