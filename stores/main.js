@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useMainStore = defineStore("mainStore", {
   state: () => ({
-    urlbase: "http://api.ciraq.co/",
+    urlbase: "http://ciraq.co/",
     dialoginfo: "",
     yesorNoClickFunc: { yesfunc: undefined, nofunc: undefined },
   }),

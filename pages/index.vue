@@ -49,119 +49,81 @@
     </div>
   </div> -->
 
-  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl m-2">
-    <div class="h-full md:flex no-wrap md:-mx-1">
+  <div class="centerDiv w-[24rem]">
+    <div class="relative flex flex-wrap w-full">
+      <div class="w-full">
+        <div>
+          <div class="flex justify-center items-center text-gray-700">
+            <img class="w-24" src="/assets/logo.png" />
+          </div>
 
-
-      <!--  Body (visible on mobile) -->
-      <div
-  v-if="!isMobile || (isMobile && !showJobList)"
-  class="w-full md:w-8/12 mx-auto flex justify-center items-center "
->
-  <div class="m-auto p-auto text-center">
-    <h2 style="font-size: 2.5rem">
-      Connect, Get Hired!
-    </h2>
-    <img src="../assets/Group 2.png" class="object-cover w-70 mx-auto" />
-  </div>
-</div>
-
-      <!--  List (visible on mobile) -->
-      <div
-        v-if="!isMobile || (isMobile && showJobList)"
-        class="m-auto md:w-4/12 md:mx-1 flex justify-center items-center min-h-[81vh]"
-      >
-        <div class="shadow-md card p-4">
-          <h1
-            class="text-xl md:text-2xl font-bold leading-tight mt-2 text-[#044013]"
-          >
-            Sign in
-          </h1>
-          <p>Stay updated</p>
-
-          <form class="mt-4" action="#" method="POST">
-            <div>
-              <label class="block text-gray-700">Email Address</label>
-              <input
-                type="email"
-                name=""
-                id=""
-                placeholder="Enter Email Address"
-                class="w-full p-2 rounded-2xl bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
-                autofocus
-                autocomplete
-                required
-              />
-            </div>
-
-            <div class="mt-4 relative">
-              <div class="flex justify-between">
-                <p class="block text-gray-700">Password</p>
-                <p class="block text-[#D9C179] hover:text-[#BDA472]">
-                  Forgot Password?
-                </p>
-              </div>
-              <div class="relative">
+          <form class="mt-4">
+            <div class="mx-auto max-w-lg">
+              <div class="py-2">
+                <span class="px-1 text-sm text-gray-600">Username</span>
                 <input
-                  type="password"
-                  name=""
-                  id=""
-                  placeholder="Enter Password"
-                  minlength="6"
-                  class="w-full p-2 rounded-2xl bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none pr-10"
-                  required
+                v-model="uname"
+                  placeholder=""
+                  type="text"
+                    class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
                 />
-                <!-- View Password Icon -->
-                <div
-                  class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
-                >
-                  <svg
-                    class="h-6 w-6 text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+              </div>
+              <div class="py-2">
+                <div class="flex items-center justify-between">
+                  <label for="password" class="px-1 text-sm text-gray-600"
+                    >Password</label
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    ></path>
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 15a5 5 0 0110 0V20a2 2 0 01-2 2H11a2 2 0 01-2-2v-5"
-                    ></path>
-                  </svg>
+                  <div class="text-sm">
+                    <nuxt-link
+                      to="#"
+                      class="cursor-pointer text-sm tracking-tighter text-[#8FBBBB] border-b-2 border-gray-200 hover:border-gray-400"
+                      >Forgot password?</nuxt-link
+                    >
+                  </div>
+                </div>
+                <div class="relative">
+                  <input
+                  v-model="pword"
+                    placeholder=""
+                    :type="showPassword ? 'text' : 'password'"
+                    class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
+                  />
+                  <div
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-lg leading-5"
+                  >
+                    <i
+                      class="bx bx-hide cursor-pointer text-gray-700"
+                      v-if="!showPassword"
+                      @click="togglePasswordVisibility"
+                    ></i>
+
+                    <i
+                      class="bx bx-show cursor-pointer text-gray-700"
+                      v-else
+                      @click="togglePasswordVisibility"
+                    ></i>
+                  </div>
                 </div>
               </div>
+
+              <button
+              @click.prevent="loginUser"
+                class="text-lg font-semibold mt-3 bg-[#044013] w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
+              >
+                Login
+              </button>
             </div>
-
-            <button
-              type="submit"
-              class="w-full block bg-[#BDA472] hover:bg-[#D9C179] text-white font-semibold rounded-2xl px-4 py-3 mt-6"
-            >
-              Log In
-            </button>
           </form>
-
-          <hr class="my-6 border-gray-300 w-full" />
-
-          <p class="mt-2 text-center">
-            Need an account?
-            <a
-              href="#"
-              class="text-[#D9C179] hover:text-[#BDA472] font-semibold"
-              >Create an account</a
-            >
-          </p>
+          
+    <p class="mt-10 text-center text-sm text-gray-400">
+      Not a member?
+      <a href="#" class="font-semibold leading-6 text-[#044013] hover:text-[#044013]">create an account</a>
+    </p>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 
 <script setup>
@@ -171,14 +133,20 @@ import { reactive } from "vue";
 // Define loginData using reactive
 definePageMeta({
   middleware: ["already-auth"],
+  layout: "blank",
 });
 
-const uname = ref("kkinaata425");
-const pword = ref("12345678@");
+const uname = ref("capeku248");
+const pword = ref("Godi$Great");
 const error = ref(null);
 const selectedListing = ref(null);
 const isMobile = ref(false);
 const showJobList = ref(true);
+const showPassword = ref(false);
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value;
+};
 
 const handleResize = () => {
   isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
@@ -219,7 +187,6 @@ const loginUser = async () => {
   }
 };
 </script>
-
 
 <style scoped>
 .card {

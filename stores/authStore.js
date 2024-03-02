@@ -43,7 +43,7 @@ export const useAuthStore = defineStore("authStore", {
         });
     
         const responseData = await response.json();
-        // console.log("here's the response data", responseData);
+        console.log("here's the response data", responseData);
 
         if (response.ok) {
 
@@ -77,17 +77,20 @@ export const useAuthStore = defineStore("authStore", {
       if (this.token) {
         console.log("here's your token:", this.token)
         try {
-          const response = await fetch(mainStore.urlbase + "api/user/" + n.username, {
+          const response = await fetch(mainStore.urlbase + "api/user/" + n.user_id, {
             method: "GET",
             headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + this.token
+              // Authorization: `Bearer ${useCookie("token").value}`,// Format token as a cookie string
+              "Cookie": `token=${this.token}`, // Format token as a cookie string
+              withCredentials: true
             }
+            
           });
     
           console.log("here is your fetched user", response);
           if (response.ok) {
             // Handle successful response
+            console.log("successful fetch", response)
           } else {
             // Handle non-ok response
           }
@@ -115,8 +118,6 @@ export const useAuthStore = defineStore("authStore", {
 
     async signup(formData) {
       const mainStore = useMainStore();
-      console.log("here's your login data", formData);
-      console.log("here's your url", mainStore.urlbase); // Corrected property name
       
       try {
         const response = await fetch(mainStore.urlbase + "api/register", { // Corrected property name
@@ -129,12 +130,14 @@ export const useAuthStore = defineStore("authStore", {
         if (!response.ok) {
           const error = new Error(responseData.message || "Failed to register.");
           throw error;
-        } else{
-          alert("Account registered Please check email to verify :", responseData.message);
+        } else {
+          alert("Account registered. Please check email to verify:", responseData.message);
+          return responseData; // Return the responseData after successful registration
         }
       } catch (error) {
         console.error("Failed to register:", error);
         alert("Failed to register:", error);
+        throw error; // Rethrow the error to handle it elsewhere if needed
       }
     },
 
