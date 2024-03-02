@@ -13,6 +13,10 @@ export default defineNuxtConfig({
   aliases: {
     nuxt: "logos:nuxt-icon",
   },
-  plugins: ["~/plugins/vue3-toastify.js"],
+  plugins: ["~/plugins/vue3-toastify.js",],
+
+  devServer: {
+    port: 1738,
+  },
 
 });

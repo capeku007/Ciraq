@@ -9,9 +9,9 @@ export const useUserStore = defineStore("userAuth", () => {
 
   const setToken = (data) => (token.value = data);
   const setUser = (data) => (token.value = data);
+  const mainStore = useMainStore();
 
   const login = async (loginData) => {
-    const mainStore = useMainStore();
     console.log("here's your login data", loginData);
     console.log("here's your url", mainStore.urlbase);
 
@@ -30,8 +30,9 @@ export const useUserStore = defineStore("userAuth", () => {
 
       if (response.ok) {
         setToken(responseData.token);
-        setUser(responseData.userData[0]);
-        fetchUserImage(responseData.userData[0]);
+        setUser(responseData.userData);
+        await fetchUser(responseData.userData);
+        // fetchUserImage(responseData.userData[0]);
       } else {
         const error = new Error(responseData.message || "Failed to login.");
         throw error;
@@ -76,16 +77,35 @@ export const useUserStore = defineStore("userAuth", () => {
   };
 
   //fetch User
-  const fetchUser = async (n) => {
-    const mainStore = useMainStore();
-    if (token.value) {
-      try {
-        console.log("here's the usertoken", token.value);
-      } catch (error) {
-        console.error("unable to load student image:", error);
+//fetch User
+const fetchUser = async () => {
+  if (token.value) {
+    try {
+      const response = await fetch(mainStore.urlbase + "api/user/" + user.value.username, {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + token.value,
+          "Content-Type": "application/json"
+        }
+      });
+
+      const responseData = await response.json();
+      
+      if (response.ok) {
+        console.log("User details:", responseData);
+        // Assuming responseData is an object containing user details
+        user.value = responseData;
+      } else {
+        const error = new Error(responseData.message || "Failed to fetch user details.");
+        throw error;
       }
+    } catch (error) {
+      console.error("Failed to fetch user details:", error);
+      // Handle error as needed
     }
-  };
+  }
+};
+
 
   //fetch User Image
   const fetchUserImage = async (n) => {

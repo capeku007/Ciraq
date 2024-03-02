@@ -17,16 +17,11 @@ export const useAuthStore = defineStore("authStore", {
   },
   actions: {
     setToken(data) {
-      // Get the cookie object from the useCookie composable
-      const cookie = useCookie('token',{maxAge:60*60*24});
-    
-      // Set the cookie value to data
+      const cookie = useCookie('token', data, {
+        maxAge: 60 * 60 * 24, 
+        sameSite: 'None',
+      });
       cookie.value = data;
-    
-      // Set the maxAge to a very large value (e.g., 10 years)
-      // cookie.maxAge = 60 * 60 * 24 * 365 * 10; // 10 years in seconds
-    
-      // Get the cookie value and assign it to this.token
       this.token = cookie.value;
     },
 
@@ -48,9 +43,9 @@ export const useAuthStore = defineStore("authStore", {
         if (response.ok) {
 
           this.setToken(responseData.token)
-          this.setUser(responseData.userData[0])
-          this.fetchUser( responseData.userData[0])
-          this.fetchUserImage(responseData.userData[0])
+          // this.setUser(responseData.userData[0])
+          this.fetchUser( responseData.userData)
+          // this.fetchUserImage(responseData.userData[0])
         } else{
           const error = new Error(responseData.message || "Failed to login.");
           throw error;
@@ -67,7 +62,6 @@ export const useAuthStore = defineStore("authStore", {
     setUser(n){
       if(this.token){
         this.user=n
-        // console.log("here's the user", this.user);
       }
       
     },
@@ -75,30 +69,30 @@ export const useAuthStore = defineStore("authStore", {
     async fetchUser(n) {
       const mainStore = useMainStore();
       if (this.token) {
-        console.log("here's your token:", this.token)
+        console.log("Here's your token:", this.token);
+    
         try {
-          const response = await fetch(mainStore.urlbase + "api/user/" + n.user_id, {
-            method: "GET",
+          const response = await fetch(mainStore.urlbase + "api/user/" + n.username, {
+            method: "GET", // Adjust the HTTP method as needed (GET, POST, etc.)
             headers: {
-              // Authorization: `Bearer ${useCookie("token").value}`,// Format token as a cookie string
-              "Cookie": `token=${this.token}`, // Format token as a cookie string
-              withCredentials: true
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${this.token}` // Include the access token in the Authorization header
             }
-            
           });
     
-          console.log("here is your fetched user", response);
           if (response.ok) {
             // Handle successful response
-            console.log("successful fetch", response)
+            console.log("Successful fetch", response);
           } else {
             // Handle non-ok response
+            console.error("Error fetching user:", response.status, response.statusText);
           }
         } catch (error) {
-          console.error("unable to load student image:", error);
+          console.error("Unable to load student:", error);
         }
       }
-    },
+    }
+    ,
     
     //fetch User Image
     async fetchUserImage(n){
