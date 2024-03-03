@@ -73,10 +73,10 @@ export const useAuthStore = defineStore("authStore", {
     
         try {
           const response = await fetch(mainStore.urlbase + "api/user/" + n.username, {
-            method: "GET", // Adjust the HTTP method as needed (GET, POST, etc.)
+            method: "GET", 
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${this.token}` // Include the access token in the Authorization header
+              "Authorization": `Bearer ${this.token}` 
             }
           });
     
@@ -91,8 +91,7 @@ export const useAuthStore = defineStore("authStore", {
           console.error("Unable to load student:", error);
         }
       }
-    }
-    ,
+    },
     
     //fetch User Image
     async fetchUserImage(n){

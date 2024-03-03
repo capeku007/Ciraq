@@ -75,7 +75,7 @@
                   >
                   <div class="text-sm">
                     <nuxt-link
-                      to="#"
+                      to="/"
                       class="cursor-pointer text-sm tracking-tighter text-[#8FBBBB] border-b-2 border-gray-200 hover:border-gray-400"
                       >Forgot password?</nuxt-link
                     >
