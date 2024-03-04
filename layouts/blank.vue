@@ -1,5 +1,7 @@
 <template>
+<VitePwaManifest />
     <div>
+      
         <slot/>
     </div>
 </template>

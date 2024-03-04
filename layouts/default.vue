@@ -1,4 +1,5 @@
 <template>
+<VitePwaManifest />
   <div class="container">
     <Modals/>
     <div class="header shadow"><Header /></div>

@@ -76,7 +76,7 @@ export const useAuthStore = defineStore("authStore", {
             method: "GET", 
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${this.token}` 
+              "Authorization": this.token
             }
           });
     
