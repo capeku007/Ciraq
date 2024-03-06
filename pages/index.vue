@@ -1,54 +1,4 @@
 <template>
-  <!-- <div class="parentContainer">
-    <div class="loginImageCon">
-      <div>
-        <h2 style="text-align: center; font-size:2.5rem">Connect, Get Hired!</h2>
-
-        <img class="loginImg" src="../assets/Group 2.png" alt="" />
-      </div>
-    </div>
-    <div class="loginForm">
-      <div class="container">
-        <div class="content login-box">
-          <h5 style="text-align: center; margin-bottom: 2rem">Ciraq</h5>
-          <form @submit.prevent="loginUser">
-            <div class="user-box">
-              <input v-model="uname" type="text" name="" required="" />
-              <label>Student email</label>
-            </div>
-            <div class="user-box">
-              <input v-model="pword" type="password" name="" required="" />
-              <label>Password</label>
-            </div>
-            <div>
-              <div><button  class="loginBtn">Login</button>
-              </div>
-              <div>
-                <a style="font-size: small" href="#"> Forgot Password? </a>
-              </div>
-              <div style="display: flex; align-items: flex-end">
-                <div style="width: 40%"><hr /></div>
-                <div style="width: 20%"><h6>OR</h6></div>
-                <div style="width: 40%"><hr /></div>
-              </div>
-
-              <div>
-                <img :src="authStore.getUserImage" alt="">
-
-
-              </div>
-
-              <div style="font-size: small">
-                Don't have an account?
-                <span> <nuxt-link to="/signup"> Sign up </nuxt-link></span>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
   <div class="centerDiv w-[24rem]">
     <div class="relative flex flex-wrap w-full">
       <div class="w-full">
@@ -62,10 +12,10 @@
               <div class="py-2">
                 <span class="px-1 text-sm text-gray-600">Username</span>
                 <input
-                v-model="uname"
+                  v-model="uname"
                   placeholder=""
                   type="text"
-                    class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
+                  class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
                 />
               </div>
               <div class="py-2">
@@ -83,7 +33,7 @@
                 </div>
                 <div class="relative">
                   <input
-                  v-model="pword"
+                    v-model="pword"
                     placeholder=""
                     :type="showPassword ? 'text' : 'password'"
                     class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
@@ -107,18 +57,22 @@
               </div>
 
               <button
-              @click.prevent="loginUser"
+                @click.prevent="loginUser"
                 class="text-lg font-semibold mt-3 bg-[#044013] w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
               >
                 Login
               </button>
             </div>
           </form>
-          
-    <p class="mt-10 text-center text-sm text-gray-400">
-      Not a member?
-      <a href="#" class="font-semibold leading-6 text-[#044013] hover:text-[#044013]">create an account</a>
-    </p>
+
+          <p class="mt-10 text-center text-sm text-gray-400">
+            Not a member?
+            <nuxt-link
+              to="/signup"
+              class="font-semibold leading-6 text-[#044013] hover:text-[#044013]"
+              >create an account</nuxt-link
+            >
+          </p>
         </div>
       </div>
     </div>
@@ -129,7 +83,12 @@
 <script setup>
 import { useAuthStore } from "../stores/authStore";
 import { reactive } from "vue";
-
+useHead({
+  title: 'Login',
+  meta: [
+    { name: 'description', content: 'Student login' }
+  ],
+})
 // Define loginData using reactive
 definePageMeta({
   middleware: ["already-auth"],
@@ -186,6 +145,7 @@ const loginUser = async () => {
     alert(this.error);
   }
 };
+
 </script>
 
 <style scoped>

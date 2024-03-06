@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("authStore", {
 
           this.setToken(responseData.token)
           // this.setUser(responseData.userData[0])
-          this.fetchUser( responseData.userData)
+          this.fetchUser(responseData.userData)
           // this.fetchUserImage(responseData.userData[0])
         } else{
           const error = new Error(responseData.message || "Failed to login.");
@@ -58,8 +58,8 @@ export const useAuthStore = defineStore("authStore", {
       }
     },
 
-
     setUser(n){
+      console.log("about to set this as user", n)
       if(this.token){
         this.user=n
       }
@@ -72,7 +72,7 @@ export const useAuthStore = defineStore("authStore", {
         console.log("Here's your token:", this.token);
     
         try {
-          const response = await fetch(mainStore.urlbase + "api/user/" + n.username, {
+          const response = await fetch(mainStore.urlbase + "api/user/" + n.user_id, {
             method: "GET", 
             headers: {
               "Content-Type": "application/json",
@@ -81,8 +81,10 @@ export const useAuthStore = defineStore("authStore", {
           });
     
           if (response.ok) {
+            const responseData = await response.json();
             // Handle successful response
-            console.log("Successful fetch", response);
+            console.log("Successful fetch", responseData.data[0]);
+            this.setUser(responseData.data[0])
           } else {
             // Handle non-ok response
             console.error("Error fetching user:", response.status, response.statusText);

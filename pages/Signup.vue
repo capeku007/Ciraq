@@ -1,190 +1,327 @@
-<!-- components/MultiStepForm.vue -->
 <template>
-  <div>
-    <h1
-      class="text-lg font-bold text-gray-700 leading-tight text-center mt-12 mb-5"
+  <!-- <Signup/> -->
+  <div class="py-10 min-h-screen px-2">
+    <div
+      class="max-w-md mx-auto rounded-lg overflow-hidden md:max-w-lg"
     >
-      User Registration
-    </h1>
-    <form
-      id="signUpForm"
-      class="p-12 shadow-md rounded-2xl bg-white mx-auto border-solid border-2 border-gray-100 mb-8"
-      @submit.prevent="submitForm"
-      enctype="multipart/form-data"
-    >
-      <!-- start step indicators -->
-      <div class="form-header flex gap-3 mb-4 text-xs text-center">
-        <span class="stepIndicator flex-1 pb-8 relative">Account Setup</span>
-        <span class="stepIndicator flex-1 pb-8 relative">ID Verification</span>
-        <span class="stepIndicator flex-1 pb-8 relative">Personal Details</span>
-      </div>
-      <!-- end step indicators -->
-      <!-- step one -->
-      <div class="step">
-        <p class="text-md text-gray-700 leading-tight text-center mt-8 mb-5">
-          Create your account
+      <div v-show="currentIndex === 0" class="main block">
+        <p
+          class="flex justify-center items-center h-12 w-full bg-[#d9c179] text-white font-semibold"
+        >
+          Create Profile
+        </p>
+        <p
+          class="flex justify-center items-center text-lg mt-3 text-gray-800 font-medium"
+        >
+          Personal Info
         </p>
 
-        <div class="grid md:grid-cols-2 md:gap-6">
-          <div class="relative z-0 w-full mb-5 group">
+        <div class="flex w-full gap-px">
+          <div class="w-full mt-6 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password"
+            >
+              FIRST NAME
+            </label>
             <input
               v-model="signUpData.fname"
               @input="filterNumbers"
               type="text"
-              id="floating_first_name"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              required
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              placeholder="First name"
             />
-            <label
-              for="floating_first_name"
-              class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-              >First name</label
-            >
           </div>
-          <div class="relative z-0 w-full mb-5 group">
+          <div class="w-full mt-6 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password"
+            >
+              LAST NAME
+            </label>
             <input
               v-model="signUpData.lname"
               @input="filterNumbers"
               type="text"
-              id="floating_last_name"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              required
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              placeholder="Last name"
             />
+          </div>
+        </div>
+
+        <!-- GENDER -->
+        <div class="flex w-full gap-px">
+          <div class="w-full mt-4 px-4 relative">
             <label
-              for="floating_last_name"
-              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >Last name</label
-            >
-          </div>
-        </div>
-
-        <!-- Gender -->
-        <div class="grid md:grid-cols-2 md:gap-6">
-          <div class="relative z-0 w-full mb-5 group">
-            <div class="relative">
-              <span
-                class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400"
-              >
-                <Icon
-                  name="ic:round-mail-outline"
-                  class="w-4 h-4 rtl:rotate-[270deg]"
-                ></Icon>
-              </span>
-              <input
-                v-model="signUpData.std_mail"
-                @input="validateEmail"
-                :class="{ 'invalid-email': !isValidEmail }"
-                type="text"
-                id="floating-mail"
-                class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              />
-
-              <label
-                v-if="isValidEmail"
-                for="floating-mail"
-                class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                >Student mail</label
-              >
-              <label
-                v-else
-                for="floating-mail"
-                class="absolute text-sm text-red-600 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-red-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                >Student mail only
-              </label>
-            </div>
-          </div>
-          <div class="relative z-0 w-full mb-5 group">
-            <div class="relative">
-              <span
-                class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400"
-              >
-                <Icon
-                  name="ic:round-mail-outline"
-                  class="w-4 h-4 rtl:rotate-[270deg]"
-                ></Icon>
-              </span>
-              <input
-                v-model="signUpData.personal_mail"
-                @input="validateEmail"
-                :class="{ 'invalid-email': !isValidEmail }"
-                type="text"
-                id="floating-mail"
-                class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              />
-
-              <label
-                v-if="isValidEmail"
-                for="floating-mail"
-                class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                >Personal mail</label
-              >
-              <label
-                v-else
-                for="floating-mail"
-                class="absolute text-sm text-red-600 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-red-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                >Personal mail only
-              </label>
-            </div>
-          </div>
-          <div class="relative z-0 w-full mb-5 group">
-            <select
-              id="underline_select"
-              v-model="signUpData.institution"
-              @change="updateSchoolImage"
-              class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-            >
-              <option selected>Select School</option>
-              <option value="KNUST">KNUST</option>
-              <option value="UG">UG</option>
-              <option value="UCC">UCC</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Phone -->
-        <div class="grid md:grid-cols-2 md:gap-6">
-          <div class="relative z-0 w-full mb-5 group">
-            <div class="relative">
-              <span
-                class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400"
-              >
-                <Icon
-                  name="ic:outline-local-phone"
-                  class="w-4 h-4 rtl:rotate-[270deg]"
-                ></Icon>
-              </span>
-              <input
-                v-model="signUpData.tel"
-                type="text"
-                id="floating-phone-number"
-                @input="limitInput"
-                maxlength="14"
-                class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              />
-              <label
-                for="floating-phone-number"
-                class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                >Phone number</label
-              >
-            </div>
-          </div>
-          <div class="relative z-0 w-full mb-5 group">
-            <label for="gender" class="sr-only">Gender</label>
-            <select
-              v-model="signUpData.gender"
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               id="gender"
-              class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
             >
-              <option selected>Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
+              GENDER
+            </label>
+            <div class="relative w-full flex justify-between">
+              <label class="w-[45%]">
+                <input
+                  type="radio"
+                  value="Male"
+                  class="peer hidden"
+                  name="framework"
+                  v-model="signUpData.gender"
+                />
+
+                <div
+                  class="hover:bg-gray-50 flex items-center justify-between px-3 py-2.5 border-2 rounded-lg cursor-pointer text-sm border-gray-200 group peer-checked:border-blue-500"
+                >
+                  <p class="font-medium text-gray-700 text-center">Male</p>
+                  <!-- <i class="bx bx-male-sign"></i> -->
+                </div>
+              </label>
+
+              <label class="w-[45%]">
+                <input
+                  type="radio"
+                  value="Female"
+                  class="peer hidden"
+                  name="framework"
+                  v-model="signUpData.gender"
+                />
+                <div
+                  class="hover:bg-gray-50 flex items-center justify-between px-3 py-2.5 border-2 rounded-lg cursor-pointer text-sm border-gray-200 group peer-checked:border-blue-500"
+                >
+                  <h2 class="font-medium text-gray-700 text-center">Female</h2>
+                  <!-- <i class="bx bx-female-sign"></i> -->
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- dDOB -->
+          <div class="w-full mt-4 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              id="dob"
+            >
+              DATE OF BIRTH
+            </label>
+            <input
+              v-model="signUpData.dob"
+              type="date"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              placeholder="Last name"
+            />
           </div>
         </div>
 
-        <!-- Password -->
-        <div class="grid md:grid-cols-2 md:gap-6">
-          <div class="relative z-0 w-full mb-5 group">
+        <!-- SCH -->
+        <div class="flex w-full gap-px">
+          <div class="w-full mt-4 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password"
+            >
+              SELECT SCHOOL
+            </label>
+            <button
+              id="dropdownSearchButton"
+              @click.prevent="toggleDropdown"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            >
+              {{ buttonText }}
+            </button>
+
+            <!-- Dropdown menu -->
+            <div
+              v-show="isDropdownOpen"
+              id="dropdownSearch"
+              class="z-10 bg-white rounded-lg shadow w-60"
+            >
+              <div class="p-3">
+                <label for="input-group-search" class="sr-only">Search</label>
+                <div class="relative">
+                  <div
+                    class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                  >
+                    <i class="text-[18px] bx bx-search text-gray-500"></i>
+                  </div>
+                  <input
+                    v-model="searchQuery"
+                    type="text"
+                    id="input-group-search"
+                    class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Search university"
+                  />
+                </div>
+              </div>
+              <ul
+                class="h-40 px-3 pb-3 overflow-y-auto text-sm text-gray-700"
+                aria-labelledby="dropdownSearchButton"
+              >
+                <li
+                  v-for="university in filteredUniversities"
+                  :key="university.name"
+                >
+                  <div
+                    @click.prevent="selectUniversity(university)"
+                    class="flex items-center px-4 py-2 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                  >
+                    {{ university.abbreviation }}
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- DOB -->
+          <div class="w-full mt-4 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              id="program"
+            >
+              PROGRAMME OF STUDY
+            </label>
+            <input
+              v-model="signUpData.degree_program"
+              type="text"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            />
+          </div>
+        </div>
+
+        <!-- Add other input fields for step 1 -->
+        <div class="mt-6 flex mb-10 justify-center px-4 relative gap-2">
+          <button
+          :disabled="!step1Complete"
+            @click="goToStep(1)"
+            class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+          >
+            Next<i class="fa fa-long-arrow-right absolute top-4 right-8"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Step 2: Contact Details -->
+      <div v-show="currentIndex === 1" class="main block">
+        <p
+          class="flex justify-center items-center h-12 w-full bg-[#d9c179] text-white font-semibold"
+        >
+          Create Profile
+        </p>
+        <p
+          class="flex justify-center items-center text-lg mt-3 text-gray-800 font-medium"
+        >
+          Contact Info
+        </p>
+
+        <div class="flex w-full gap-px">
+          <div class="w-full mt-6 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              for="student-mail"
+              :class="{ 'invalid-email': !isValidEmail }"
+            >
+              STUDENT MAIL
+            </label>
+            <input
+              v-model="signUpData.std_mail"
+              @input="validateEmail"
+              :class="{ 'invalid-email': !isValidEmail }"
+              id="student-mail"
+              type="text"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              :placeholder="studentMailPlaceholder"
+            />
+          </div>
+          <div class="w-full mt-6 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              for="phone"
+            >
+              PHONE NUMBER
+            </label>
+            <input
+              v-model="signUpData.tel"
+              type="text"
+              id="floating-phone-number"
+              @input="limitInput"
+              maxlength="14"
+              placeholder="(051) 232-8383"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            />
+          </div>
+        </div>
+
+        <!-- PROFILE IMG -->
+        <div class="flex w-full gap-px">
+          <div class="w-full mt-4 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              id="gender"
+            >
+              PROFILE PICTURE
+            </label>
+            <label
+              class="flex cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-3 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+              tabindex="0"
+            >
+              <span class="flex items-center space-x-2">
+                <i class="bx bx-id-card"></i>
+                <span class="text-xs font-medium text-gray-600">
+                  <span class="text-blue-600 underline">{{
+                    uploadedFileName || "Upload Profile image"
+                  }}</span>
+                </span>
+              </span>
+              <input
+                type="file"
+                name="profilepic"
+                id="imageUpload"
+                accept=".png, .jpg, .jpeg"
+                @change="handleImageUpload2"
+                class="sr-only"
+              />
+            </label>
+          </div>
+
+          <!-- dDOB -->
+          <div class="w-full mt-4 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              id="dob"
+            >
+              STUDENT ID
+            </label>
+            <label
+              class="flex cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-3 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+              tabindex="0"
+            >
+              <span class="flex items-center space-x-2">
+                <i class="bx bx-id-card"></i>
+                <span class="text-xs font-medium text-gray-600">
+                  <span class="text-blue-600 underline">{{
+                    uploadedFileName1 || "Upload Student ID"
+                  }}</span>
+                </span>
+              </span>
+              <input
+                id="studentIDUpload"
+                name="studentid"
+                type="file"
+                @change="handleImageUpload1"
+                class="sr-only"
+              />
+            </label>
+          </div>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="flex w-full gap-px">
+          <div class="w-full mt-4 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              id="password1"
+            >
+            PASSWORD
+            </label>
             <input
               v-model="signUpData.p_word"
               :class="{
@@ -193,37 +330,31 @@
               }"
               type="password"
               @input="validatePassword"
-              name="floating_password"
-              id="floating_password"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              required
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
             />
-            <label
-              for="floating_password"
-              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >Password</label
-            >
+
             <p v-if="shouldShowErrorMessage" class="text-sm text-red-600">
               Passwords must be 8 characters or more
             </p>
           </div>
-          <div class="relative z-0 w-full mb-5 group">
+
+          <!-- CONFIRM PASSWORD -->
+          <div class="w-full mt-4 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              id="password"
+            >
+              CONFIRM PASSWORD
+            </label>
             <input
               v-model="confirm_p_word"
               type="password"
-              id="floating_repeat_password"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               :class="{
                 'border-red-600 text-red-600':
                   signUpData.p_word !== confirm_p_word && confirm_p_word !== '',
               }"
-              required
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
             />
-            <label
-              for="floating_repeat_password"
-              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >Confirm password</label
-            >
             <p
               v-if="
                 signUpData.p_word !== confirm_p_word && confirm_p_word !== ''
@@ -234,182 +365,47 @@
             </p>
           </div>
         </div>
-
-        <!-- end of step 1 -->
-      </div>
-
-      <!-- step two -->
-      <div class="step">
-        <div class="container">
-          <h1>
-            <small>Profile Image</small>
-          </h1>
-          <div class="avatar-upload">
-            <div class="avatar-edit">
-              <input
-                type="file"
-                name="profilepic"
-                id="imageUpload"
-                accept=".png, .jpg, .jpeg"
-                @change="handleImageUpload2"
-              />
-              <label for="imageUpload"
-                ><Icon
-                  name="ic:outline-edit"
-                  class="w-5 h-5 rtl:rotate-[270deg]"
-                ></Icon>
-              </label>
-            </div>
-            <div class="avatar-preview">
-              <div
-                :style="{
-                  backgroundImage: `url(${stdid_img_name})`,
-                }"
-                id="imagePreview"
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ID and Selfie -->
-        <div><h5 style="text-align: center; margin: 1rem">ID Upload</h5></div>
-        <div class="grid md:grid-cols-2 md:gap-6">
-          <div>
-            <div class="relative z-0 w-full mb-5 group">
-              <div class="relative">
-                <span
-                  class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400"
-                >
-                  <Icon
-                    name="ic:outline-school"
-                    class="w-4 h-4 rtl:rotate-[270deg]"
-                  ></Icon>
-                </span>
-                <input
-                  v-model="signUpData.degree_program"
-                  type="text"
-                  id="floating_study"
-                  class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                />
-                <label
-                  for="floating_study"
-                  class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                  >Program of study</label
-                >
-              </div>
-            </div>
-
-            <div class="relative z-0 w-full mb-5 group">
-              <div class="relative">
-                <span
-                  class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400"
-                >
-                  <Icon
-                    name="ic:outline-local-phone"
-                    class="w-4 h-4 rtl:rotate-[270deg]"
-                  ></Icon>
-                </span>
-                <input
-                  v-model="signUpData.std_id"
-                  type="text"
-                  id="floating_id"
-                  class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                />
-                <label
-                  for="floating_id"
-                  class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                  >ID Number</label
-                >
-              </div>
-            </div>
-
-            <div class="relative z-0 w-full mb-5 group">
-              <div class="relative">
-                <span
-                  class="absolute start-0 bottom-3 text-gray-500 dark:text-gray-400"
-                >
-                  <!-- <Icon
-                    name="ic:outline-local-phone"
-                    class="w-4 h-4 rtl:rotate-[270deg]"
-                  ></Icon> -->
-                </span>
-                <input
-                  v-model="signUpData.availability_start"
-                  type="date"
-                  id="startDate"
-                  class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                />
-                <label
-                  for="startDate"
-                  class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                  >Start Date</label
-                >
-              </div>
-            </div>
-            <div class="relative z-0 w-full mb-5 group">
-              <div class="relative">
-                <input
-                  v-model="signUpData.dob"
-                  type="date"
-                  id="dob"
-                  class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                />
-                <label
-                  for="dob"
-                  class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-                >
-                  Date of birth</label
-                >
-              </div>
-            </div>
-          </div>
-          <div class="relative z-0 w-full mb-5 group">
-            <div class="flex items-center justify-center w-full">
-              <label
-                for="studentIDUpload"
-                class="flex flex-col items-center justify-center w-full h-54 border-2 pt-4 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-              >
-                <div class="flex flex-col items-center justify-center">
-                  <div
-                    :style="{
-                      backgroundImage: `url(${profile_img})`,
-                    }"
-                    class="w-full h-44 bg-cover bg-center mb-2 p-2"
-                  ></div>
-                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span class="font-semibold">Front picture</span> of your
-                    student ID
-                  </p>
-                </div>
-                <input
-                  id="studentIDUpload"
-                  name="studentid"
-                  type="file"
-                  class="hidden"
-                  @change="handleImageUpload1"
-                />
-              </label>
-            </div>
-          </div>
-
-          <!-- Add your second column content here -->
+        <!-- Add other input fields for step 2 -->
+        <div class="mt-6 flex mb-10 justify-center px-4 relative gap-2">
+          <button
+            @click="goToStep(0)"
+            class=" border-2 border-solid border-[#044013] px-3 py-3 text-[#044013] bg-white   rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+          >
+            Previous<i class="fa fa-long-arrow-left absolute top-4 left-8"></i>
+          </button>
+          <button
+          :disabled="shouldShowErrorMessage"
+            @click="goToStep(2)"
+            class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+          >
+            Next<i class="fa fa-long-arrow-right absolute top-4 right-8"></i>
+          </button>
         </div>
       </div>
 
-      <!-- step three -->
-      <div class="step">
-        <!-- ... content for step three ... -->
+      <!-- Step 3: Company Details -->
+      <div v-show="currentIndex === 2" class="main block">
+        <p
+          class="flex justify-center items-center h-12 w-full bg-[#d9c179] text-white font-semibold"
+        >
+          Create Profile
+        </p>
+        <p
+          class="flex justify-center items-center text-lg mt-3 text-gray-800 font-medium"
+        >
+          Confirmation
+        </p>
+                 <!-- ... content for step three ... -->
         <div class="mt-9" style="display: flex; justify-content: center">
-          <img
-            style="margin-right: 20px"
-            :src="signUpData.stdid_img_name"
-            class="user-img2"
-          />
 
           <div>
-            <h6 class="bold">First Name : {{ signUpData.fname }}</h6>
-            <p>Last Name : {{ signUpData.lname }}</p>
+            <h6 class="bold"> Name : {{ signUpData.fname }} {{ signUpData.lname }}</h6>
+            
           </div>
+                      <h5>
+              Date of Birth:
+              <span class="text-emerald-800">{{ signUpData.dob }}</span>
+            </h5>
           <!-- ========= log out ====== -->
         </div>
 
@@ -425,15 +421,9 @@
                 signUpData.degree_program
               }}</span>
             </h5>
-            <h5>
-              ID Number:
-              <span class="text-emerald-800">{{ signUpData.std_id }}</span>
-            </h5>
 
-            <h5>
-              Mail Address:
-              <span class="text-emerald-800">{{ signUpData.std_mail }}</span>
-            </h5>
+
+
           </div>
           <div class="flex-1">
             <h5>
@@ -442,57 +432,89 @@
             <h5>
               Sex: <span class="text-emerald-800">{{ signUpData.gender }}</span>
             </h5>
-            <h5>
-              Date of Birth:
-              <span class="text-emerald-800">{{ signUpData.dob }}</span>
-            </h5>
-            <h5>
-              Start Date:
-              <span class="text-emerald-800">{{
-                signUpData.availability_start
-              }}</span>
-            </h5>
+
+            
           </div>
+        </div>
+        <p class="my-5 text-center text-sm px-4 text-gray-500">
+          By clicking "Next",I agree<br />
+          to Ciraq's <a class="text-blue-800" href="#">Privacy Policy</a>
+        </p>
+        <!-- Add other input fields for step 4 -->
+        <div class="mt-6 flex mb-10 justify-center px-4 relative gap-2">
+          <button
+            @click="goToStep(1)"
+            class=" border-2 border-solid border-[#044013] px-3 py-3 text-[#044013] bg-white   rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+          >
+            Previous<i class="fa fa-long-arrow-left absolute top-4 left-8"></i>
+          </button>
+          <button
+            @click="submitForm"
+            class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+          >
+            Submit Details<i
+              class="fa fa-long-arrow-right absolute top-5 right-8"
+            ></i>
+          </button>
         </div>
       </div>
 
-      <!-- start previous / next buttons -->
-      <div class="form-footer flex gap-3 mt-4">
-        <button
-          ref="prevBtn"
-          @click.prevent="nextPrev(-1)"
-          class="flex-1 focus:outline-none border border-gray-300 py-2 px-5 rounded-lg shadow-sm text-center text-gray-700 bg-white hover:bg-gray-100 text-lg"
-        >
-          Previous
-        </button>
-        <button
-          :disabled="shouldShowErrorMessage"
-          ref="nextBtn"
-          @click.prevent="nextPrev(1)"
-          class="flex-1 border border-transparent focus:outline-none p-3 rounded-md text-center text-white bg-indigo-600 hover:bg-indigo-700 text-lg"
-        >
-          Next
-        </button>
+      <div v-show="currentIndex === 3" class="main block">
+        <div>
+            <h4 class="flex justify-center items-center mt-5 text-lg text-gray-800 font-medium">Congrats . <span > {{signUpData.fname}}</span></h4> <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /> </svg>
+                <p class="mt-5 mb-10 text-sm px-4 text-center text-pink-700 font-semibold	tracking-wide">Thanks for creating a profile with Ciraq,your details have been submitted successfully. Check your student mail to verify your account. </p>
+        </div>
       </div>
-      <!-- end previous / next buttons -->
-    </form>
+
+
+    </div>
   </div>
 </template>
 
-<script>
-import { useAuthStore } from '../stores/authStore'
+<script setup>
+definePageMeta({
+  layout: "blank",
+});
+useHead({
+  title: 'Signup',
+  meta: [
+    { name: 'description', content: 'Student signup' }
+  ],
+})
+</script>
 
+<script>
+import { useAuthStore } from "../stores/authStore";
 export default {
   data() {
     return {
-      // imagePreview: "http://i.pravatar.cc/500?img=7",
-      // studentIDPreview: "",
-      currentTab: 0,
-      formData: {
-        fname: "",
-        lname: "",
-        sch: "Select School",
-      },
+      uploadedFileName: null,
+      uploadedFileName1: null,
+      isDropdownOpen: false,
+      buttonText: "Select School",
+      universities: [
+        {
+          name: "University of Ghana",
+          abbreviation: "UG",
+          mailFormat: "username@ug.edu.gh",
+        },
+        {
+          name: "Kwame Nkrumah University of Science and Technology",
+          abbreviation: "KNUST",
+          mailFormat: "username@st.knust.edu.gh",
+        },
+        {
+          name: "University of Cape Coast",
+          abbreviation: "UCC",
+          mailFormat: "username@ucc.edu.gh",
+        },
+        // Add more universities with their mail formats
+      ],
+      searchQuery: "",
+      selectedUniversity: null,
+
       stdid_img_name: null,
       profile_img: null,
       signUpData: {
@@ -536,10 +558,55 @@ export default {
         UCC: "/assets/ucc.png",
         default: "/assets/knustlogo.png",
       },
-      stepValidationReq: false,
+      currentIndex: 0,
+      formData: {
+        firstName: "",
+        lastName: "",
+        placeOfBirth: "",
+        city: "",
+        companyName: "",
+        jobTitle: "",
+        // Add more fields as necessary
+      },
     };
   },
   computed: {
+step1Complete() {
+      const { fname, lname, gender, dob, institution, degree_program } = this.signUpData;
+
+      // Check if any of the required fields are empty
+      if (!fname || !lname || !gender || !dob || !institution || !degree_program) {
+        return false; // Return false if any field is empty
+      }
+
+      // Return true if all fields are filled
+      return true;
+    },
+    step2Complete() {
+      const { fname, lname, gender, dob, institution, degree_program } = this.signUpData;
+
+      // Check if any of the required fields are empty
+      if (!fname || !lname || !gender || !dob || !institution || !degree_program) {
+        return false; // Return false if any field is empty
+      }
+
+      // Return true if all fields are filled
+      return true;
+    },
+    filteredUniversities() {
+      return this.universities.filter(
+        (university) =>
+          university.name
+            .toLowerCase()
+            .includes(this.searchQuery.toLowerCase()) ||
+          university.abbreviation
+            .toLowerCase()
+            .includes(this.searchQuery.toLowerCase())
+      );
+    },
+    studentMailPlaceholder() {
+      return this.selectedUniversity ? this.selectedUniversity.mailFormat : "";
+    },
     shouldShowErrorMessage() {
       return (
         this.signUpData.p_word.length < 8 ||
@@ -561,6 +628,45 @@ export default {
     },
   },
   methods: {
+    goToStep(stepIndex) {
+      this.currentIndex = stepIndex;
+    },
+
+    toggleDropdown() {
+      this.isDropdownOpen = !this.isDropdownOpen;
+    },
+    selectUniversity(university) {
+      this.selectedUniversity = university;
+      this.buttonText= university.abbreviation;
+      this.signUpData.institution = university.abbreviation;
+      this.isDropdownOpen = false; // Close dropdown after selection
+    },
+
+    handleImageUpload1(event) {
+      const input = event.target;
+      if (input.files && input.files[0]) {
+        this.stdid_img_name = input.files[0];
+        this.uploadedFileName1 = null; // Reset the uploadedFileName
+        this.$nextTick(() => {
+          this.uploadedFileName1 = input.name; // Set the uploadedFileName with the new file name
+        });
+      } else {
+        this.uploadedFileName1 = null;
+      }
+    },
+    handleImageUpload2(event) {
+      const input = event.target;
+      if (input.files && input.files[0]) {
+        this.profile_img = input.files[0];
+        this.uploadedFileName = null; // Reset the uploadedFileName
+        this.$nextTick(() => {
+          this.uploadedFileName = input.name; // Set the uploadedFileName with the new file name
+        });
+      } else {
+        this.uploadedFileName = null;
+      }
+    },
+
     limitInput() {
       // Remove non-digit characters
       this.signUpData.tel = this.signUpData.tel.replace(/\D/g, "");
@@ -619,100 +725,6 @@ export default {
         this.isValidEmail = false;
       }
     },
-
-    updateSchoolImage() {
-      // This method is called when the selected school changes
-      // You can add additional logic here if needed
-      console.log(this.formData.sch);
-      console.log(this.schoolImages);
-    },
-
-    handleStudentIDUpload(event) {
-      const input = event.target;
-      if (input.files && input.files[0]) {
-        const fileSize = input.files[0].size; // in bytes
-        const maxSize = 1024 * 1024; // 1 MB limit
-
-        if (fileSize > maxSize) {
-          alert(
-            "File size exceeds the limit (1 MB). Please choose a smaller file."
-          );
-          // Optionally, you can clear the input field to prevent further submission
-          input.value = "";
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.signUpData.profile_img = e.target.result;
-        };
-        reader.readAsDataURL(input.files[0]);
-      }
-    },
-    handleImageUpload1(event) {
-      const input = event.target;
-      if (input.files && input.files[0]) {
-        this.stdid_img_name = input.files[0];
-        console.log(this.stdid_img_name);
-      }
-    },
-    handleImageUpload2(event) {
-      const input = event.target;
-      if (input.files && input.files[0]) {
-        this.profile_img = input.files[0];
-      }
-    },
-    // handleImageUpload(event) {
-    //   const input = event.target;
-    //   if (input.files && input.files[0]) {
-    //     const reader = new FileReader();
-    //     reader.onload = (e) => {
-    //       this.signUpData.stdid_img_name = e.target.result;
-    //     };
-    //     reader.readAsDataURL(input.files[0]);
-    //   }
-    // },
-
-    showTab(n) {
-      const x = this.$el.getElementsByClassName("step");
-      x[n].style.display = "block";
-
-      //... and fix the Previous/Next buttons:
-      const prevBtn = this.$refs.prevBtn;
-      const nextBtn = this.$refs.nextBtn;
-
-      if (n === 0) {
-        prevBtn.style.display = "none";
-      } else {
-        prevBtn.style.display = "inline";
-      }
-
-      if (n === x.length - 1) {
-        nextBtn.innerHTML = "Submit";
-      } else {
-        nextBtn.innerHTML = "Next";
-      }
-
-      //... and run a function that will display the correct step indicator:
-      this.fixStepIndicator(n);
-    },
-
-    nextPrev(n) {
-      const x = this.$el.getElementsByClassName("step");
-
-      if (n === 1 && !this.validateForm()) return false;
-
-      if (this.currentTab >= x.length - 1) {
-        // If it's the last step, call the submitForm function
-        this.submitForm();
-        return false;
-      }
-
-      x[this.currentTab].style.display = "none";
-      this.currentTab += n;
-      this.showTab(this.currentTab);
-    },
-
     validateForm() {
       // This function deals with validation of the form fields
       const x = this.$el.getElementsByClassName("step");
@@ -738,28 +750,8 @@ export default {
       }
       return valid; // return the valid status
     },
-    fixStepIndicator(n) {
-      // This function removes the "active" class of all steps...
-      const x = this.$el.getElementsByClassName("stepIndicator");
-      for (let i = 0; i < x.length; i++) {
-        x[i].classList.remove("active");
-      }
-      //... and adds the "active" class on the current step:
-      x[n].classList.add("active");
-    },
-    validateInput(event) {
-      // Remove "invalid" class when input is not empty
-      const input = event.target;
-      if (input.value.trim() !== "") {
-        input.classList.remove("invalid");
-      }
-    },
-
     async submitForm() {
       const formData = new FormData();
-
-      // console.log("Student ID Image:", this.stdid_img_name);
-      // console.log("Profile Image:", this.profile_img);
 
       for (const key in this.signUpData) {
         if (Object.hasOwnProperty.call(this.signUpData, key)) {
@@ -773,191 +765,30 @@ export default {
       formData.append("profilepic", profilePicFile);
 
       for (const entry of formData.entries()) {
-  const [name, value] = entry;
-  // console.log(`Field Name: ${name}, Field Value: ${value}`);
-}
-
-const authStore = useAuthStore()
-
-      console.log("formData", formData);
-      try {
-        // const response = await useFetch(`http://3.219.43.239/api/register`, {
-        //   method: "post",
-        //   body: formData,
-        // });
-
-        // const data = response.data;
-
-        // if (data) {
-        //   console.log(response);
-        // }
-        authStore.signup(formData)
-      } catch (error) {
-        // console.log("signup error", error);
+        const [name, value] = entry;
+        // console.log(`Field Name: ${name}, Field Value: ${value}`);
       }
+const authStore = useAuthStore();
+
+  console.log("formData", formData);
+  try {
+    const responseData = await authStore.signup(formData);
+    if (responseData.successful) {
+      this.currentIndex = 3;
+    } else {
+      console.log("failed");
+    }
+  } catch (error) {
+    // Handle errors here if needed
+    console.error("Failed to register:", error);
+  }
     },
-  },
-  mounted() {
-    this.showTab(this.currentTab);
   },
 };
 </script>
+
 <style scoped>
 .invalid-email {
   color: red;
-}
-
-.user-img2 {
-  width: 50px;
-  border-radius: 50%;
-  border: 1px solid #eee;
-}
-.bold {
-  font-weight: 600;
-}
-
-#signUpForm {
-  max-width: 50vw;
-}
-
-#signUpForm .form-header .stepIndicator.active {
-  font-weight: 600;
-}
-
-#signUpForm .form-header .stepIndicator.finish {
-  font-weight: 600;
-  color: #5a67d8;
-}
-
-#signUpForm .form-header .stepIndicator::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  z-index: 9;
-  width: 20px;
-  height: 20px;
-  background-color: #c3dafe;
-  border-radius: 50%;
-  border: 3px solid #ebf4ff;
-}
-
-#signUpForm .form-header .stepIndicator.active::before {
-  background-color: #a3bffa;
-  border: 3px solid #c3dafe;
-}
-
-#signUpForm .form-header .stepIndicator.finish::before {
-  background-color: #5a67d8;
-  border: 3px solid #c3dafe;
-}
-
-#signUpForm .form-header .stepIndicator::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 8px;
-  width: 100%;
-  height: 3px;
-  background-color: #f3f3f3;
-}
-
-#signUpForm .form-header .stepIndicator.active::after {
-  background-color: #a3bffa;
-}
-
-#signUpForm .form-header .stepIndicator.finish::after {
-  background-color: #5a67d8;
-}
-
-#signUpForm .form-header .stepIndicator:last-child:after {
-  display: none;
-}
-
-#signUpForm input.invalid {
-  border: 2px solid #ffaba5;
-}
-
-#signUpForm .step {
-  display: none;
-}
-.container {
-  max-width: 960px;
-  margin: 5px auto;
-  padding: 5px;
-}
-
-h1 {
-  font-size: 20px;
-  text-align: center;
-}
-
-h1 small {
-  display: block;
-  font-size: 15px;
-  padding-top: 8px;
-  color: gray;
-}
-
-.avatar-upload {
-  position: relative;
-  max-width: 205px;
-  margin: 10px auto;
-}
-
-.avatar-upload .avatar-edit {
-  position: absolute;
-  right: 12px;
-  z-index: 1;
-  top: 10px;
-}
-
-.avatar-upload .avatar-edit input {
-  display: none;
-}
-
-.avatar-upload .avatar-edit label {
-  display: flex; /* Add flex display */
-  align-items: center; /* Center vertically */
-  justify-content: center; /* Center horizontally */
-  width: 34px;
-  height: 34px;
-  margin-bottom: 0;
-  border-radius: 100%;
-  background: #ffffff;
-  border: 1px solid transparent;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
-  cursor: pointer;
-  font-weight: normal;
-  transition: all 0.2s ease-in-out;
-}
-
-.avatar-upload .avatar-edit label:hover {
-  background: #f1f1f1;
-  border-color: #d6d6d6;
-}
-
-.avatar-upload .avatar-edit label:after {
-  font-family: "FontAwesome";
-  color: #757575;
-}
-
-.avatar-upload .avatar-preview {
-  width: 192px;
-  height: 192px;
-  position: relative;
-  border-radius: 100%;
-  border: 6px solid #f8f8f8;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-}
-
-.avatar-upload .avatar-preview > div {
-  width: 100%;
-  height: 100%;
-  border-radius: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 </style>

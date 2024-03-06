@@ -2,6 +2,13 @@
 const appName = 'Ciraq'
 const appDescription = "You're in the right place"
 export default defineNuxtConfig({
+  head: {
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' }, // Add this line
+      // Other meta tags if needed
+    ],
+  },
   devtools: { enabled: true },
   modules: [
     "@nuxtjs/tailwindcss",
@@ -83,7 +90,7 @@ export default defineNuxtConfig({
     },
     client: {
       installPrompt: false,
-      periodicSyncForUpdates: 20, //seconds
+      periodicSyncForUpdates: 604800, //seconds
     },
     devOptions: {
       enabled: true,
