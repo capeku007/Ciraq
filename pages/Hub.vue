@@ -1,6 +1,6 @@
 <template>
-    <div>                <h1>HUB</h1>
-    </div>
+    <div>                <p>{{getUser}}</p>
+    <multiple-modals></multiple-modals></div>
 </template>
 
 <script setup>
@@ -9,10 +9,7 @@ import { reactive } from 'vue'
 
 // Define loginData using reactive
 
-definePageMeta({
-  layout: "default",
-  auth:false
-});
+
 const uname=ref("knimo470")
 const pword=ref("12345678@")
 const error =ref(null)

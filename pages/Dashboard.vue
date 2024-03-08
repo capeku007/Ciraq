@@ -118,18 +118,7 @@
     </div>
   </div>
 </template>
-<script setup>
-definePageMeta({
-  layout: "default",
-  auth:false
-});
-useHead({
-  title: 'Dashboard',
-  meta: [
-    { name: "jobs you've applied for", content: 'Student job list' }
-  ],
-})
-</script>
+
 <script>
 import { useAuthStore } from "~/stores/authStore";
 

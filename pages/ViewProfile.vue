@@ -215,18 +215,7 @@
     </div>
   </div>
 </template>
-<script setup>
-definePageMeta({
-  layout: "default",
-  auth:false
-});
-useHead({
-  title: 'Profile',
-  meta: [
-    { name: "manage your account", content: 'Student job list' }
-  ],
-})
-</script>
+
 <style scoped>
 .d{
     color: aliceblue;
