@@ -16,13 +16,7 @@ export default defineNuxtConfig({
     "@formkit/auto-animate",
     "@pinia/nuxt",
     '@vite-pwa/nuxt',
-    '@sidebase/nuxt-auth'
   ],
-  auth: {
-    provider: {
-        type: 'authjs'
-    }
-},
   pinia: {
     storesDirs: ['./stores/**'],
   },
