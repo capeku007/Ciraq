@@ -1,299 +1,310 @@
 <template>
-  <div  style="width: 80%; margin: auto">
-    <h2 style="margin:1rem">My Jobs</h2>
-    <!-- JOBS -->
-    <div class="center-container">
-    <div class="radio">
-      <input
-        type="radio"
-        id="1"
-        value="1"
-        v-model="toggleValue"
-        @change="toggleHandler"
-      />
-      <label for="1" class="radio-label">
-        <!-- <i class="bx bx-mail-send"></i> -->
-        Applied
-      </label>
 
-      <input
-        type="radio"
-        id="2"
-        value="2"
-        v-model="toggleValue"
-        @change="toggleHandler"
-      />
-      <label for="2" class="radio-label">
-        <!-- <i class="bx bx-shield-plus"></i> -->
-        Interview
-      </label>
+  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl m-2">
+    <div class="h-full md:flex no-wrap md:-mx-1">
+      <!--  List (visible on mobile) -->
+      <div
+        v-if="!isMobile || (isMobile && showJobList)"
+        class="w-full md:w-4/12 md:mx-1"
+      >
+        <div class="top">
+          <!-- search input -->
+          <div class="flex items-center max-w-lg mx-auto">
+            <label for="voice-search" class="sr-only">Search</label>
+            <div class="relative w-full">
+              <div
+                class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+              >
+                <i
+                  class="bx bx-search w-4 h-4 text-gray-500"
+                  aria-hidden="true"
+                ></i>
+              </div>
+              <input
+                type="text"
+                id="voice-search"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search applied listings"
+                required
+              />
 
-      <input
-        type="radio"
-        id="3"
-        value="3"
-        v-model="toggleValue"
-        @change="toggleHandler"
-      />
-      <label for="3" class="radio-label">
-        <!-- <i class="bx bx-shield-plus"></i> -->
-        Accepted
-      </label>
-    </div>
-
-    <div class="contentContainer" v-if="toggleValue === '1'">
-      
-      <!-- list of applied jobs -->
-      <div class="flex px-2.5 max-w-6xl mx-auto">
-                  <div style="width: 35%">
-      <ul>
-        <li>
-          <div class="card p-4 shadow-md">
-            <div style="display:flex">
-                <p class="h1">Data Entry Lorem ipsum dolor!</p>
-         
+              <button
+                type="button"
+                class="absolute inset-y-0 end-0 flex items-center pe-2"
+              >
+                <i
+                  class="bx bx-search inline-flex items-center py-2.5 px-3 text-sm font-medium text-white bg-blue-700 rounded-3xl border border-blue-700"
+                  aria-hidden="true"
+                ></i>
+              </button>
             </div>
-            <div class="cardTitle">
-              <div class="img"></div>
-              <div class="textBox">
-                <div class="textContent">
-                  <p class="h1">Rigelis Inc</p>
-                  <!-- <span class="span">12 min ago</span> -->
+          </div>
+
+        </div>
+        <ul class="taskList">
+          <li v-for="job in listings" :key="job.id" @click="loadListing(job)">
+            <div class="card p-4 bg-white">
+              <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                <div class="flex-shrink-0">
+                  <img
+                    class="w-10 h-10 rounded-lg "
+                    src="../assets/knustlogo.png"
+                    alt="company image"
+                  />
                 </div>
-                <p class="p">1 la Bawaleshi Rd</p>
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-normal text-[#F7B900] truncate">
+                    {{ job.company }}
+                  </p>
+                  <p class="text-base font-semibold truncate">
+                    {{ job.title }}
+                  </p>
+                </div>
+                
               </div>
-            </div>
-            <div>
-              <p class="text-sm leading-4">
-                You applied on 1st Jan. 2024
-              </p>
-            </div>
-            <div class="flex justify-between my-2">
-                <button class="appBtn">Applied</button>
-              <span class="payCon">GH₵ 8/hr</span>
-               <button class="viewMoreBtn">View More</button>
-            </div>
-            
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="vl mx-3"></div>
-    <!-- task details -->
-    <div style="width: 64%">
-      <div class="card2 p-4 shadow-md">
-        
-        <p class="h1">Data Entry Lorem ipsum dolo</p>
-        <div class="jobTitle">
-          <div class="img"></div>
+              <div
+                class="flex justify-between mt-4 space-x-3 rtl:space-x-reverse"
+              >
+                <span
+                  class="inline-flex items-center bg-gray-200  text-xs font-normal px-2.5 py-0.5 rounded-lg"
+                >
+                  {{ job.companyLocation }}
+                </span>
 
-          <div class="textBox">
-            <div class="textContent">
-              <p class="h1">Rigelis Inc</p>
-              <!-- <span class="span">12 min ago</span> -->
-            </div>
-            <p class="p">1 La Bawaleshi rd.</p>
-
-            
-          </div>
-          <div class="taskStatusCard p-2 shadow-md"><h3 ><i class="bx bx-mail-send"></i>Task Expired</h3></div>
-        </div>
-        <div class="flex justify-between my-2">
-          <div class="jobTitle">
-            <div>
-              <Icon
-                name="bx:briefcase-alt"
-                class="w-7 h-7 text-gray-500 dark:text-gray-400"
-              ></Icon>
-            </div>
-
-            <div class="textBox">
-              <div class="textContent">
-                <p class="p">Days</p>
-                <!-- <span class="span">12 min ago</span> -->
+                <span
+                  class="inline-flex items-center bg-gray-200  text-xs font-normal px-2 py-1 rounded-lg"
+                >
+                  {{ job.location }}
+                </span>
+                <span
+                  class="inline-flex items-center bg-gray-200 text-xs font-normal px-2.5 py-0.5 rounded-lg"
+                >
+                  GH₵ {{ job.pay }}
+                </span>
               </div>
-              <p>Mondays - Fridays</p>
+              
             </div>
-          </div>
-          <div class="jobTitle">
-            <div>
-              <Icon
-                name="heroicons:building-office-2-solid"
-                class="w-7 h-7 text-gray-500 dark:text-gray-400"
-              ></Icon>
-            </div>
-
-            <div class="textBox">
-              <div class="textContent">
-                <p class="p">Location</p>
-                <!-- <span class="span">12 min ago</span> -->
-              </div>
-              <p>Onsite</p>
-            </div>
-          </div>
-          <div class="jobTitle">
-            <div>
-              <Icon
-                name="ic:baseline-av-timer"
-                class="w-7 h-7 text-gray-500 dark:text-gray-400"
-              ></Icon>
-            </div>
-
-            <div class="textBox">
-              <div class="textContent">
-                <p class="p">Duration</p>
-                <!-- <span class="span">12 min ago</span> -->
-              </div>
-              <p>1 month</p>
-            </div>
-          </div>
-        </div>
-        <div>
-          <p class="text-sm leading-4">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate
-            nam omnis similique, hic, asperiores ab dolores dolor perspiciatis
-            ratione delectus pariatur molestiae nesciunt
-          </p>
-        </div>
-      </div>
-    </div>
+          </li>
+        </ul>
       </div>
 
-    </div>
+      <!--  Body (visible on mobile) -->
+      <div
+        v-if="!isMobile || (isMobile && !showJobList)"
+        class="w-full md:w-8/12 md:mx-1 "
+      >
+        <div class="card2 m-2 p-2 shadow-md">
+          <ListingInfo
+            :selectedListing="selectedListing"
+            @loadJobsMobile="loadJobsMobile"
+          />
+        </div>
+      </div>
 
-    <div class="contentContainer"  v-if="toggleValue === '2'">
-      Interview
-    </div>    </div>
 
-    <div class="contentContainer"  v-if="toggleValue === '3'">
-      Accepted
     </div>
   </div>
 
 
+
 </template>
+<script setup>
+definePageMeta({
+  layout: "default",
+  auth:false
+});
+useHead({
+  title: 'Applications',
+  meta: [
+    { name: "jobs you've applied for", content: 'Student job list' }
+  ],
+})
+</script>
 <script>
+import { useAuthStore } from "~/stores/authStore";
+
 export default {
   data() {
     return {
-      toggleValue: "1",
+      name: "",
+      location: "",
+      searchResults: [],
+      // Dummy data for demonstration purposes
+      listings: [
+        {
+          id: "gh0000001",
+          title: "Data Entry",
+          pay: "8/hr",
+          workDays: "Weekends",
+          location: "on site",
+          company: "Ciraq Inc.",
+          companyLocation: "Accra",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000002",
+          title: "Customer Support",
+          pay: "10/hr",
+          workDays: "Mon - Fri",
+          location: "on site",
+          company: "MTN GH.",
+          companyLocation: "Koforidua",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000001",
+          title: "Data Entry",
+          pay: "8/hr",
+          workDays: "Weekends",
+          location: "on site",
+          company: "Ciraq Inc.",
+          companyLocation: "Accra",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000002",
+          title: "Customer Support",
+          pay: "10/hr",
+          workDays: "Mon - Fri",
+          location: "on site",
+          company: "MTN GH.",
+          companyLocation: "Koforidua",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000001",
+          title: "Data Entry",
+          pay: "8/hr",
+          workDays: "Weekends",
+          location: "on site",
+          company: "Ciraq Inc.",
+          companyLocation: "Accra",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000002",
+          title: "Customer Support",
+          pay: "10/hr",
+          workDays: "Mon - Fri",
+          location: "on site",
+          company: "MTN GH.",
+          companyLocation: "Koforidua",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000001",
+          title: "Data Entry",
+          pay: "8/hr",
+          workDays: "Weekends",
+          location: "on site",
+          company: "Ciraq Inc.",
+          companyLocation: "Accra",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+        {
+          id: "gh0000002",
+          title: "Customer Support",
+          pay: "10/hr",
+          workDays: "Mon - Fri",
+          location: "on site",
+          company: "MTN GH.",
+          companyLocation: "Koforidua",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },
+      ],
+      selectedListing: null,
+      isMobile: false,
+      showJobList: true,
     };
   },
   methods: {
-    toggleHandler() {
-      console.log("Toggle state changed:", this.toggleValue);
+    loadListing(job) {
+      this.selectedListing = job;
+      // Toggle between Message List and Message Body on mobile
+      if (this.isMobile) {
+        this.showJobList = false;
+      }
     },
+    loadJobsMobile() {
+      // Toggle between Message List and Message Body on mobile
+      if (this.isMobile) {
+        this.showJobList = true;
+      }
+    },
+    handleResize() {
+      this.isMobile = window.innerWidth < 768; // Adjust the threshold as needed
+      if (!this.isMobile) {
+        this.showJobList = true; // Reset to show message list on larger screens
+      }
+    },
+    search() {
+      // Perform your search logic here based on the provided criteria
+      // In this example, it filters the data array based on title and location
+      this.searchResults = this.data.filter((item) => {
+        const titleMatch =
+          this.name === "" ||
+          item.title.toLowerCase().includes(this.name.toLowerCase());
+        const locationMatch =
+          this.location === "" ||
+          item.company.toLowerCase().includes(this.location.toLowerCase());
+        return titleMatch && locationMatch;
+      });
+    },
+  },
+  mounted() {
+    this.isMobile = window.innerWidth < 768; // Adjust the threshold as needed
+    window.addEventListener("resize", this.handleResize);
+  },
+
+  computed: {
+    // Access user from Pinia store
+    user() {
+      return useAuthStore().user;
+    },
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.handleResize);
   },
 };
 </script>
 
 <style scoped>
-.contentContainer {
-  border: 3px solid #006565;
-  margin: 0 1rem;
-  padding:  1rem;
-  border-radius: 1rem;
+.taskList {
+  min-height: 71vh;
+  max-height: 71vh;
   overflow-y: auto;
-  height: 80vh;
-}
-
-.radio {
-  display: flex;
-  justify-content: start;
-  padding: 2px;
-  border-radius: 5px;
-  margin-top: 4px;
-  margin-left: 1rem;
-  /* border-bottom: 0.1rem solid #006565; */
-  width: 90%;
-}
-
-.radio input {
-  display: none;
-}
-
-.radio-label {
-  /* width: 43vw; */
-  margin: 0 0.5rem;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  outline: none;
-  cursor: pointer;
-  line-height: 2.75em;
-  border-radius: .5rem .5rem 0rem 0rem;
-  height: 3em;
-  border: 0.125rem solid rgb(180, 179, 181);
-  background: hsl(270, 16%, 93%);
-  color: #006565;
-  padding: 0 1.618em;
-  transition: all 0.25s;
-  text-align: center;
-  position: relative;
-  top: 0.25rem;
-  border-bottom: 0.1rem solid #006565;
-}
-
-.radio-label:before {
-  content: "";
-}
-
-.radio-label i {
-  margin-right: 5px;
-}
-
-.radio input:not(:checked) + .radio-label {
-  top: -0.01;
-  transition: top 0.2s;
-  color: #006565;
-}
-.radio input:checked + .radio-label {
-  color: #fff;
-  background: #006565;
-  border: 0.1rem solid #006565;
-  border-bottom: 0.1rem solid #006565;
-  top: 0.24rem;
-}
-
-.radio input:not(:checked) + .radio-label:hover {
-  top: -0.05rem;
-  transition: top 0.25s;
-  color: #006565;
-  border-bottom: 0.1rem solid #006565;
-}
-
-.taskStatusCard {
-  width: 50%;
-  /* max-width: 400px; */
-  border-radius: 1rem;
-  border: 1px solid red;
-  color: red;
-  text-align: center;
+  padding-bottom: 20vh;
 }
 .card {
-  width: 100%;
-  /* max-width: 400px; */
+  width: 95%;
   border-radius: 1rem;
-  border: 1px solid #006565;
+  border: 1px solid #6c707168;
+  margin: 0.5rem auto;
 }
 .card2 {
-  width: 100%;
-  /* max-width: 70%; */
+  min-width: 96%;
+  max-width: 96%;
   border-radius: 1rem;
-  border: 1px solid #006565;
-  height: 90vh;
-}
-
-.jobTitle {
-  width: 100%;
-
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  backdrop-filter: blur(10px);
-  transition: 0.5s ease-in-out;
-  padding: 0;
+  border: 1px solid #132E35;
+  height: 81vh;
+  overflow-y: auto;
+    padding-bottom: 10vh;
 }
 
 .card:hover {
@@ -301,29 +312,15 @@ export default {
 }
 
 .vl {
-  border-left: 2px solid green;
+  border-left: none;
   height: 500px;
 }
 
 .payCon {
-      border: 2px solid #bda472;
-    color:#bda472;
-  background-color: #fff;
+  background-color: #bda472;
   padding: 0.2rem 1rem;
   border-radius: 1rem;
-}
-
-.img {
-  width: 50px;
-  height: 50px;
-  margin-left: 10px;
-  border-radius: 10px;
-  background: linear-gradient(#d7cfcf, #9198e5);
-}
-
-.card:hover > .img {
-  transition: 0.5s ease-in-out;
-  background: linear-gradient(#9198e5, #712020);
+  color: #fff;
 }
 
 .textBox {
@@ -351,25 +348,19 @@ export default {
   justify-content: left;
   backdrop-filter: blur(10px);
   transition: 0.5s ease-in-out;
-  padding: 0;
+  padding: 0px;
+  margin: 0;
 }
 
 .card:hover {
   cursor: pointer;
 }
 
-.vl {
-  border-left: 2px solid green;
-  height: 500px;
-}
-
-
-.img {
-  width: 50px;
-  height: 50px;
-  margin-left: 10px;
-  border-radius: 10px;
-  background: linear-gradient(#d7cfcf, #9198e5);
+.payCon {
+  background-color: #bda472;
+  padding: 0.2rem 1rem;
+  border-radius: 1rem;
+  color: #fff;
 }
 
 .card:hover > .img {
@@ -393,26 +384,15 @@ export default {
   font-size: 10px;
 }
 
-.h1 {
-  font-size: 18px;
-  font-weight: bold;
+
+.top {
+  position: relative;
+  padding: 10px;
+  /* height: 60px; */
 }
 
-.p {
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.appBtn{
-    background-color: #006565;
-    color:#fff;
-    border-radius: 1rem;
-    padding: .2rem 1rem;
-}
-.viewMoreBtn{
-    border: 2px solid #351F39;
-    color:#351F39;
-    border-radius: 1rem;
-    padding: .2rem 1rem;
+.top:after {
+  position: absolute;
+  display: block;
 }
 </style>

@@ -15,6 +15,7 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/tailwindcss": "^6.10.1",
     "@pinia/nuxt": "^0.5.1",
+    "@sidebase/nuxt-auth": "^0.7.0",
     "@vite-pwa/assets-generator": "^0.2.4",
     "@vite-pwa/nuxt": "^0.5.0",
     "nuxt": "^3.8.2",

@@ -15,8 +15,34 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "@formkit/auto-animate",
     "@pinia/nuxt",
-    '@vite-pwa/nuxt',
+    '@vite-pwa/nuxt','@sidebase/nuxt-auth'
   ],
+  auth: {
+    globalAppMiddleware: true,
+    baseURL: process.env.NUXT_PUBLIC_API_URL,
+    provider: {
+      type: 'local',
+      endpoints: {
+        signIn: { path: '/login', method: 'post' },
+        signOut: { path: '/logout', method: 'get' },
+        signUp: { path: '/register', method: 'post' },
+        getSession: { path: '/user', method: 'get', propertyName:'token'}
+      },
+      pages: {
+        login: '/'
+      },
+      token: {
+        signInResponseTokenPointer: '/token'
+      },
+      sessionDataType: {}
+    },
+    enableSessionRefreshPeriodically: 5000,
+    enableSessionRefreshOnWindowFocus: true,
+    globalMiddlewareOptions: {
+      allow404WithoutAuth: true, // Defines if the 404 page will be accessible while unauthenticated
+      // addDefaultCallbackUrl: '/dashboard' // Where authenticated user will be redirected to by default
+    }
+  },
   pinia: {
     storesDirs: ['./stores/**'],
   },

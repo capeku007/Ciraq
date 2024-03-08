@@ -91,9 +91,14 @@ useHead({
 })
 // Define loginData using reactive
 definePageMeta({
-  middleware: ["already-auth"],
+    auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: '/dashboard'
+  },
   layout: "blank",
 });
+
+
 
 const uname = ref("capeku248");
 const pword = ref("Godi$Great");
@@ -132,19 +137,41 @@ const authStore = useAuthStore();
 
 // Define loginUser function
 
+const loginUserOG = async () => {
+  // try {
+  //   let loginData = {
+  //     username: uname.value,
+  //     p_word: pword.value,
+  //   };
+  //   authStore.login(loginData);
+  // } catch (err) {
+  //   this.error = err.message;
+  //   alert(this.error);
+  // }
+};
+import { useRouter } from 'nuxt/app';
+const router = useRouter();
 const loginUser = async () => {
+  const { signIn } = useAuth();
+
   try {
-    let loginData = {
+    const loginData = {
       username: uname.value,
       p_word: pword.value,
     };
-    authStore.login(loginData);
-    // await navigateTo("/dashboard", {replace:true})
-  } catch (err) {
-    this.error = err.message;
-    alert(this.error);
+
+    const res = await signIn(loginData);
+    console.log("res", res);
+
+    // Redirect to a specific route after successful login
+    // navigateTo('/dashboard', { external: true })
+    await router.push('/dashboard');
+  } catch (error) {
+    console.log("error", error);
   }
 };
+
+
 
 </script>
 
