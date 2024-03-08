@@ -47,7 +47,18 @@
     </div>
   </div>
 </template>
-
+<script setup>
+definePageMeta({
+  layout: "default",
+  auth:false
+});
+useHead({
+  title: 'Chats',
+  meta: [
+    { name: "connect", content: 'Student job list' }
+  ],
+})
+</script>
 <script>
 export default {
   data() {

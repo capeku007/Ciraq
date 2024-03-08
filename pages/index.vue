@@ -91,9 +91,14 @@ useHead({
 })
 // Define loginData using reactive
 definePageMeta({
-  middleware: ["already-auth"],
+    auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: '/dashboard'
+  },
   layout: "blank",
 });
+
+
 
 const uname = ref("capeku248");
 const pword = ref("Godi$Great");
@@ -139,12 +144,14 @@ const loginUser = async () => {
       p_word: pword.value,
     };
     authStore.login(loginData);
-    // await navigateTo("/dashboard", {replace:true})
   } catch (err) {
     this.error = err.message;
     alert(this.error);
   }
 };
+
+
+
 
 </script>
 

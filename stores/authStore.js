@@ -66,13 +66,12 @@ export const useAuthStore = defineStore("authStore", {
       
     },
     //fetch User
-    async fetchUser(n) {
+    async fetchUser() {
       const mainStore = useMainStore();
       if (this.token) {
-        console.log("Here's your token:", this.token);
     
         try {
-          const response = await fetch(mainStore.urlbase + "api/user/" + n.user_id, {
+          const response = await fetch(mainStore.urlbase + "api/user/", {
             method: "GET", 
             headers: {
               "Content-Type": "application/json",
@@ -83,7 +82,7 @@ export const useAuthStore = defineStore("authStore", {
           if (response.ok) {
             const responseData = await response.json();
             // Handle successful response
-            console.log("Successful fetch", responseData.data[0]);
+            console.log("Successful fetch", responseData);
             this.setUser(responseData.data[0])
           } else {
             // Handle non-ok response

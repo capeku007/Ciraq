@@ -4,22 +4,22 @@
     <Modals/>
     <div class="header shadow"><Header /></div>
     <div class="main-content"><slot /></div>
-    <div class="footer">Footer</div>
+    <div class="footer"><Footer/></div>
   </div>
 </template>
 
 <style>
 body {
-  margin: 0;
-  padding: 0;
   overflow: hidden;
+  background-color: #fff;
 }
-/* .container {
+.container {
   display: flex;
   flex-direction: column;
   height: -webkit-fill-available; 
   overflow: hidden; 
-} */
+  min-width: 100%;
+}
 
 .header {
   flex: 0 0 auto; /* Non-flexible header */
@@ -40,7 +40,7 @@ body {
   margin-top: auto; /* Position footer at the bottom */
     min-height: 8vh;
   max-height: 8vh;
-background-color: blueviolet;
+background-color: #132E35;
 }
 
 /* Custom scrollbar styles */
