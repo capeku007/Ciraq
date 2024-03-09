@@ -50,7 +50,7 @@
 <script setup>
 definePageMeta({
   layout: "default",
-  auth:false
+  // auth:false
 });
 useHead({
   title: 'Chats',

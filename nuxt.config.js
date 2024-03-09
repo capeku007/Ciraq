@@ -108,4 +108,20 @@ export default defineNuxtConfig({
       'process.env.DEBUG': false,
     },
   },
+  router: {
+    middleware:["auth"]
+  },
+  //future router when building employer side
+  // router: {
+  //   middleware: ['studentAuth'], // Global middleware for student side
+  //   extendRoutes(routes, resolve) {
+  //     // Extend routes for employer side with specific middleware
+  //     routes.push({
+  //       name: 'employer',
+  //       path: '/employer/:path*',
+  //       component: resolve(__dirname, 'pages/employer/_index.vue'),
+  //       middleware: ['employerAuth']
+  //     })
+  //   }
+  // }
 });

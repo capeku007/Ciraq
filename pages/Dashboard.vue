@@ -121,7 +121,7 @@
 <script setup>
 definePageMeta({
   layout: "default",
-  auth:false
+  middleware:["auth"]
 });
 useHead({
   title: 'Dashboard',

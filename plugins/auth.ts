@@ -4,6 +4,6 @@ export default defineNuxtPlugin(async(nuxtApp)=>{
     const  userStore = useAuthStore();
     if(!userStore.user){
         // console.log("please login")
-        userStore.setUser()
+        await userStore.fetchUser();
     }
 });

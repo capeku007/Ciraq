@@ -91,10 +91,7 @@ useHead({
 })
 // Define loginData using reactive
 definePageMeta({
-    auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: '/dashboard'
-  },
+    middleware:["already-auth"],
   layout: "blank",
 });
 
