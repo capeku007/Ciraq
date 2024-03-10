@@ -1,53 +1,109 @@
 <template>
-  <transition name="modal-fade">
-    <div class="modal-backdrop">
-      <div class="modal"
-        role="dialog"
-        aria-labelledby="modalTitle"
-        aria-describedby="modalDescription"
-      >
-        <header
-          class="modal-header"
-          id="modalTitle"
-        >
-          <slot name="header">
-            This is the default tile!
-          </slot>
-          <button
-            type="button"
-            class="btn-close"
-            @click="close"
-            aria-label="Close modal"
-          >
-            x
-          </button>
-        </header>
+  <div
+    id="jobInfo"
+    tabindex="-1"
+    data-modal-target="jobInfo"
+    aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
+  >
+    <div class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden">
+      <div class="relative bg-white rounded-lg shadow">
+        <div class="p-4 md:p-5">
+          <div class="py-4 sticky top-0 z-10 bg-white rounded-lg">
+            <div class="flex items-center space-x-3">
+              <div class="flex-shrink-0">
+                <img
+                  class="w-10 h-10 rounded-lg sm:w-16 sm:h-16"
+                  src="../assets/knustlogo.png"
+                  alt="company image"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-xs sm:text-base font-normal text-gray-500">
+                  job.company
+                </p>
+                <p class="text-base sm:text-lg font-semibold">job.title</p>
+              </div>
+            </div>
+            <div
+              class="flex justify-between mt-4 space-x-3 rtl:space-x-reverse"
+            >
+              <span
+                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
+              >
+                hybrid
+              </span>
 
-        <section
-          class="modal-body"
-          id="modalDescription"
-        >
-          <slot name="body">
-            This is the default body!
-          </slot>
-        </section>
+              <span
+                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2 py-1 rounded-lg"
+              >
+                intermediate
+              </span>
+              <span
+                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
+              >
+                Part Time
+              </span>
+            </div>
+          </div>
+          <!-- job description -->
+          <div>
+            <div>
+              <p class="text-base sm:text-lg font-semibold">Job Description</p>
+              <p class="text-xs sm:text-base font-normal text-gray-500">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Doloribus distinctio odit, eaque vel fugit excepturi impedit
+                atque facere, quia sint repellendus laudantium deserunt incidunt
+                quod voluptatem, minima facilis? Beatae sunt harum recusandae
+                cum fugit ipsam corrupti quod ipsum modi consequuntur
+                perspiciatis dolorem, nesciunt earum reiciendis repellat
+                deleniti quam, maiores hic! Fugit earum quidem placeat iusto
+                tempora nisi esse, doloribus eveniet itaque aliquid maxime totam
+                veniam dignissimos ut cupiditate voluptates deleniti architecto
+                consectetur alias minima repudiandae! Dolorum vero magnam ea
+                eius.
+              </p>
+            </div>
+            <div class="mt-4">
+              <h2 class="text-sm sm:text-base font-semibold">
+                A Must Have Skill
+              </h2>
+              <ul
+                class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
+              >
+                <li>Javascript</li>
+                <li>Html css</li>
+                <li>Figma</li>
+              </ul>
+            </div>
+            <div class="mt-4">
+              <h2 class="text-sm sm:text-base font-semibold">
+                Candidate Recruitment
+              </h2>
+              <ul
+                class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
+              >
+                <li>Studying computer science or relate subjects</li>
+                <li>1-2 years experience in photoshop</li>
+                <li>Good communication design and creative skills</li>
+                <li>Max Age of 35 years</li>
+              </ul>
+            </div>
+          </div>
 
-        <footer class="modal-footer">
-          <slot name="footer">
-            This is the default footer!
-          </slot>
-          <button
-            type="button"
-            class="btn-green"
-            @click="close"
-            aria-label="Close modal"
-          >
-            Close me!
-          </button>
-        </footer>
+          <!-- apply button -->
+          <div class="mt-4">
+            <!-- <button
+              class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            >
+              Apply Job
+            </button> -->
+          </div>
+        </div>
       </div>
     </div>
-  </transition>
+  </div>
+
   <div class="h-[81vh] m-2 p-2">
     <div class="parent">
       <div class="div1">
@@ -105,12 +161,12 @@
           <!-- Professional summary -->
           <div class="pb-1 mt-1">
             <button
-              class="flex items-center justify-between w-full p-1 mt-2 font-medium  text-gray-500 gap-3"
+              class="flex items-center justify-between w-full p-1 mt-2 font-medium text-gray-500 gap-3"
               :class="{ active: active }"
               @click="toggleAccordion"
             >
-              <span class="block uppercase  sm:pl-4  text-black text-xs font-bold">
-                 Professional Summary</span
+              <span class="uppercase sm:pl-4 text-black text-xs font-bold">
+                Professional Summary</span
               >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -149,25 +205,26 @@
             </div>
           </div>
 
-          <div class="flex justify-center">
+          <!-- <div class="flex justify-center">
             <div class="border-b border-gray-300 w-8/12"></div>
-          </div>
+          </div> -->
 
           <!-- tabs -->
           <div class="flex justify-center items-center">
             <div class="h-[60vh] overflow-y-auto w-full">
               <ul
-                class="flex justify-center items-center my-1 sticky top-0 z-10 bg-white"
+                class="flex justify-center items-center sticky top-0 z-10 bg-white"
               >
                 <li
+                  style="padding: 0.5rem"
                   v-for="(tab, index) in tabs"
                   :key="index"
                   @click="activeTab = index"
                   class="text-xs md:text-sm lg:text-base"
                   :class="
                     activeTab === index
-                      ? 'text-[#132E35] border-b-2 border-[#132E35]'
-                      : 'text-gray-500 border-b-2'
+                      ? 'text-[#132E35] border-b-2 border-[#132E35] pb-4'
+                      : 'text-gray-500 border-b-2 pb-4'
                   "
                 >
                   {{ tab }}
@@ -179,21 +236,21 @@
                   <!-- Work History timeLine -->
                   <div class="sm:w-11/12 sm:pl-40">
                     <ol class="relative border-s border-gray-200">
-                      <li>
-                        <div class="card p-4 mb-5 bg-white">
+                      <li @click="openWorkHistoryInfo">
+                        <div class="p-4 mb-5 bg-white">
                           <span
                             class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
                           >
                             <i class="bx bxs-briefcase"></i>
                           </span>
 
-                                                    <div
+                          <div
                             class="flex justify-between mb-2 space-x-3 rtl:space-x-reverse"
                           >
                             <span
                               class="text-sm font-normal leading-none text-gray-400 px-2.5 py-0.5"
                             >
-                              11/11/2022  - 03/27/2024
+                              11/11/2022 - 03/27/2024
                             </span>
                           </div>
                           <div
@@ -212,93 +269,47 @@
                               >
                                 job.company
                               </p>
-                              <p class="text-base sm:text-lg font-semibold truncate">
+                              <p
+                                class="text-base sm:text-lg font-semibold truncate"
+                              >
                                 job.title
                               </p>
                             </div>
                           </div>
-                         
                         </div>
                       </li>
+                    </ol>
+                  </div>
+                </div>
 
+                <div v-show="activeTab === 1">
+                  <!-- Education timeLine -->
+                  <div class="sm:w-11/12 sm:pl-40">
+                    <ol class="relative border-s border-gray-200">
                       <li class="mb-10 ms-6">
                         <span
                           class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
                         >
                           <i class="bx bxs-briefcase"></i>
                         </span>
-                        <p class="mb-1 text-lg font-semibold text-gray-900">
-                          MTN Ghana Headquarters
+                        <p
+                          class="mb-1 text-base sm:text-lg font-semibold text-gray-900"
+                        >
+                          Kwame Nkrumah University of Science and Technology
+                          KNUST
                         </p>
                         <time
-                          class="block mb-2 text-sm font-normal leading-none text-gray-400"
+                          class="mb-2 text-xs sm:text-sm font-normal leading-none text-gray-400"
                         >
-                          12/22/2021 - 12/11/2024</time
+                          12/22/2020 - 12/11/2024</time
                         >
-                        <p class="text-base font-normal text-gray-500">
-                          All of the pages and components are first designed in
-                          Figma and we keep a parity between the two versions
-                          even as we update the project.
-                        </p>
-                      </li>
-                      <li class="ms-6">
-                        <span
-                          class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
-                        >
-                          <svg
-                            class="w-2.5 h-2.5 text-blue-800"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
-                            />
-                          </svg>
-                        </span>
-                        <h3 class="mb-1 text-lg font-semibold text-gray-900">
-                          Flowbite Library v1.2.2
-                        </h3>
-                        <time
-                          class="block mb-2 text-sm font-normal leading-none text-gray-400"
-                          >Released on December 2nd, 2021</time
-                        >
-                        <p class="text-base font-normal text-gray-500">
-                          Get started with dozens of web components and
-                          interactive elements built on top of Tailwind CSS.
+                        <p class="text-sm font-normal text-gray-500">
+                          Bsc Computer Science
                         </p>
                       </li>
                     </ol>
                   </div>
                 </div>
-                
-                <div v-show="activeTab === 1">                <!-- Education timeLine -->
-                  <div class="sm:w-11/12 sm:pl-40">
-                    <ol class="relative border-s border-gray-200">
-
-
-                      <li class="mb-10 ms-6">
-                        <span
-                          class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
-                        >
-                          <i class="bx bxs-briefcase"></i>
-                        </span>
-                        <p class="mb-1 text-lg font-semibold text-gray-900">
-                          Kwame Nkrumah University of Science and Technology KNUST
-                        </p>
-                        <time
-                          class="block mb-2 text-sm font-normal leading-none text-gray-400"
-                        >
-                          12/22/2020 - 12/11/2024</time
-                        >
-                        <p class="text-base font-normal text-gray-500">
-                          Bsc Computer Science
-                        </p>
-                      </li>
-
-                    </ol>
-                  </div></div>
                 <div v-show="activeTab === 2">
                   <p class="text-center">Coming soon</p>
                 </div>
@@ -318,12 +329,18 @@ import { useAuthStore } from "../stores/authStore";
 const activeTab = ref(0);
 const tabs = ref(["Work History", "Education", "Projects"]);
 const authStore = useAuthStore();
-
+const { showClosableModal } = useModal();
 const userImage = ref(""); // Data property to store user image
 const active = ref(false);
 
 const toggleAccordion = () => {
   active.value = !active.value;
+};
+
+const openWorkHistoryInfo = () => {
+  // Initialize useModal composable
+  const modalId = "jobInfo";
+  showClosableModal(modalId);
 };
 onMounted(() => {
   // Fetch user data and user image when component is mounted
@@ -349,18 +366,36 @@ onMounted(() => {
   background-color: white;
 }
 
-ul {
+/* ul {
   min-width: 100%;
   text-align: center;
 }
 
-li {
+/* li {
   display: inline-block;
   cursor: pointer;
   padding: 0.2rem 1rem;
-}
+} */
 
 svg {
   transition: transform 0.3s ease;
 }
+
+.scrollbar-hidden::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
+
+/* Hide scrollbar for Firefox */
+.scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
 </style>

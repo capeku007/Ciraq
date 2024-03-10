@@ -6,100 +6,119 @@
       @touchstart="handleTouchStart"
       @touchend="handleTouchEnd"
     >
-      <div class="flex justify-between">
-        <div>
-          <h3 class="text-xl font-medium">{{ selectedListing.title }}</h3>
-        </div>
-        <div>
+
+    <!-- NEW UP HERE -->
+    <div class="p-4 md:p-5">
+          <div class="py-4 sticky top-0 z-10 bg-white rounded-lg">
+            <div class="flex items-center space-x-3">
+              <div class="flex-shrink-0">
+                <img
+                  class="w-10 h-10 rounded-lg sm:w-16 sm:h-16"
+                  src="../assets/knustlogo.png"
+                  alt="company image"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-xs sm:text-base font-normal text-gray-500">
+                  {{ selectedListing.company }} 
+                </p>
+                <p class="text-base sm:text-lg font-semibold">{{ selectedListing.title }}</p>
+              </div>
+              <div>
           <i
             @click="goBack"
             class="bx bx-chevron-left bg-red-600 p-1 rounded-lg text-white"
           ></i>
         </div>
-      </div>
-      
-      <!-- job title -->
-      <div class="flex items-center space-x-3 rtl:space-x-reverse my-2 mx-3">
-        <div class="flex-shrink-0">
-          <img
-            class="w-10 h-10 rounded-lg shadow"
-            src="../assets/knustlogo.png"
-            alt="company image"
-          />
-        </div>
-        <div class="flex-1 min-w-0">
-          <p class="text-sm font-semibold text-gray-900 truncate">
-            {{ selectedListing.company }}
-          </p>
-          <p class="text-sm text-gray-500 truncate">
-            {{ selectedListing.company }}
-          </p>
-        </div>
-
-        <button
-          class="inline-flex items-center bg-green-100 text-green-800 text-sm font-medium px-4 py-2 rounded-full"
-           @click="testLog()"
-        >
-          Apply now
-        </button>
-      </div>
-
-      <div class="flex justify-between my-2">
-        <div class="jobTitle">
-          <div>
-            <Icon
-              name="bx:briefcase-alt"
-              class="w-7 h-7 text-gray-500 dark:text-gray-400"
-            ></Icon>
-          </div>
-
-          <div class="textBox">
-            <div class="textContent">
-              <p class="p">Days</p>
             </div>
-            <p>{{ selectedListing.workDays }}</p>
-          </div>
-        </div>
-        <div class="jobTitle">
-          <div>
-            <Icon
-              name="heroicons:building-office-2-solid"
-              class="w-7 h-7 text-gray-500 dark:text-gray-400"
-            ></Icon>
-          </div>
+            <div
+              class="flex justify-between mt-4 space-x-3 rtl:space-x-reverse"
+            >
+              <span
+                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
+              >
+                hybrid
+              </span>
 
-          <div class="textBox">
-            <div class="textContent">
-              <p class="p">Location</p>
-              <!-- <span class="span">12 min ago</span> -->
+              <span
+                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2 py-1 rounded-lg"
+              >
+                intermediate
+              </span>
+              <span
+                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
+              >
+                Part Time
+              </span>
             </div>
-            <p>{{ selectedListing.location }}</p>
           </div>
-        </div>
-        <div class="jobTitle">
+          <!-- job description -->
           <div>
-            <Icon
-              name="ic:baseline-av-timer"
-              class="w-7 h-7 text-gray-500 dark:text-gray-400"
-            ></Icon>
-          </div>
-
-          <div class="textBox">
-            <div class="textContent">
-              <p class="p">Duration</p>
-              <!-- <span class="span">12 min ago</span> -->
+            <div>
+              <p class="text-base sm:text-lg font-semibold">Job Description</p>
+              <p class="text-xs sm:text-base font-normal text-gray-500">
+                {{ selectedListing.jobDescription }}
+              </p>
             </div>
-            <p>1 month</p>
+            <div class="mt-4">
+              <h2 class="text-sm sm:text-base font-semibold">
+                Working Days
+              </h2>
+              <ul
+                class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
+              >
+                <li>{{ selectedListing.workDays }}</li>
+                
+              </ul>
+            </div>               <div class="mt-4">
+              <h2 class="text-sm sm:text-base font-semibold">
+                Location
+              </h2>
+              <ul
+                class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
+              >
+                <li>{{ selectedListing.location }}</li>
+                
+              </ul>
+            </div>            <div class="mt-4">
+              <h2 class="text-sm sm:text-base font-semibold">
+                A Must Have Skill
+              </h2>
+              <ul
+                class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
+              >
+                <li>Javascript</li>
+                <li>Html css</li>
+                <li>Figma</li>
+              </ul>
+            </div>
+            <div class="mt-4">
+              <h2 class="text-sm sm:text-base font-semibold">
+                Candidate Recruitment
+              </h2>
+              <ul
+                class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
+              >
+                <li>Studying computer science or relate subjects</li>
+                <li>1-2 years experience in photoshop</li>
+                <li>Good communication design and creative skills</li>
+                <li>Max Age of 35 years</li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </div>
-      <div>
-        <p class="text-sm leading-4">
-          {{ selectedListing.jobDescription }}
-        </p>
-      </div>
 
-      <div></div>
+          <!-- apply button -->
+          <div class="mt-4">
+            <button
+            @click="testLog()"
+              class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            >
+              Apply
+            </button>
+          </div>
+    <!-- NEW UP HERE -->
+
+    </div>
     </div>
     <div v-else>
       <!-- Display this when selectedPerson is null -->
@@ -157,12 +176,6 @@ export default {
       modalStore.OpenYesOrNOClick(func);
     },
 
-    showModal() {
-      this.isModalVisible = true;
-    },
-    closeModal() {
-      this.isModalVisible = false;
-    },
     goBack() {
       // Implement your goBack function here
       this.$emit("loadJobsMobile");
