@@ -28,7 +28,7 @@ export const useModalStore = defineStore("modal", {
       console.log("Yes or No click opened");
       // $("#yesorno").modal('show')
       const { showModal } = useModal(); // Initialize useModal composable
-      const modalId = 'confirmModal';
+      const modalId = 'confirmJobModal';
       showModal(modalId);
       // {backdrop: 'static', keyboard: false},
       this.yesorNoClickFunc = payload;

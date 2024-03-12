@@ -112,6 +112,14 @@ background-color: blueviolet;
 ::-webkit-scrollbar {
   width: 2.5px;
   height: 2.5px;
+  opacity: 0; /* Initially hide scrollbar */
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Show scrollbar on hover or when active */
+::-webkit-scrollbar:hover,
+::-webkit-scrollbar:active {
+  opacity: 1;
 }
 
 ::-webkit-scrollbar-track {
@@ -124,6 +132,7 @@ background-color: blueviolet;
   -webkit-box-shadow: inset 0 0 6px rgba(94, 94, 94, 0.178);
   background: #bfbfbf;
 }
+
 </style>
 
 

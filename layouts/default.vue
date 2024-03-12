@@ -11,7 +11,7 @@
 <style>
 body {
   overflow: hidden;
-  background-color: #fff;
+  background-color: #F8F9FA;
 }
 .container {
   display: flex;
@@ -59,6 +59,7 @@ background-color: #132E35;
   -webkit-box-shadow: inset 0 0 6px rgba(94, 94, 94, 0.178);
   background: #bfbfbf;
 }
+
 </style>
 
 <script>

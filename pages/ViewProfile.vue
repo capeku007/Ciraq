@@ -1,4 +1,5 @@
 <template>
+<!-- view job modal -->
   <div
     id="jobInfo"
     tabindex="-1"
@@ -112,11 +113,10 @@
           <div class="absolute flex justify-center items-center">
             <div class="w-full h-1/2 flex flex-col justify-center items-center">
               <img
-                class="object-cover h-20 w-20 rounded-full"
-                src="https://images.unsplash.com/photo-1484608856193-968d2be4080e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2134&q=80"
-                alt=""
+                class=" h-20 w-20 rounded-full"
+                src="http://ciraq.co/api/public/uploads/1709342552416profilepic.jpg" alt=""
               />
-              <h1 class="text-gray-700 font-bold">Maria R.</h1>
+              <h1 class="text-gray-700 font-bold">{{user.fname }} {{user.lname}}</h1>
               <!-- <p class="text-gray-500 text-xs">Year 3</p> -->
             </div>
           </div>
@@ -126,7 +126,7 @@
           >
             <div class="w-full h-1/2 flex justify-between items-center px-1">
               <div class="flex flex-col justify-center items-center">
-                <h1 class="text-xs">KNUST</h1>
+                <h1 class="text-xs">{{user.institution}}</h1>
                 <div class="flex items-center">
                   <button
                     class="flex items-center py-1 px-2 rounded-lg text-red-600 hover:bg-red-600 hover:text-white transition-colors duration-300"
@@ -139,7 +139,7 @@
               </div>
 
               <div class="flex flex-col justify-center items-center">
-                <h1 class="text-xs">BA Industrial Art</h1>
+                <h1 class="text-xs">{{user.degree_program}}</h1>
                 <div class="flex items-center">
                   <button
                     class="flex items-center py-1 px-2 rounded-lg text-[#007ABB] hover:bg-[#007ABB] hover:text-white transition-colors duration-300"
@@ -189,25 +189,9 @@
               class="accordion-content px-2 text-xs sm:text-sm mt-0 pt-0"
               v-show="active"
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-              sed posuere erat. Vestibulum tempor lobortis mi, eget luctus arcu
-              tristique id. Ut nec ex sit amet arcu lacinia vestibulum. Sed id
-              arcu urna. Cras nec sapien in elit hendrerit sodales. Sed volutpat
-              leo eu mauris euismod, at tristique velit fermentum. Nullam tempus
-              magna sed ullamcorper luctus. Proin a nulla vel libero fermentum
-              fringilla ut id tortor. Integer accumsan, metus in rhoncus
-              malesuada, est justo lobortis lacus, nec interdum lacus odio sed
-              velit. Quisque hendrerit velit sapien, sed suscipit lorem accumsan
-              vel. Aliquam erat volutpat. Sed laoreet purus et felis elementum,
-              sed sagittis mi tincidunt. Quisque ac dolor in sem malesuada
-              rutrum. Nulla facilisi. Suspendisse fringilla metus sit amet
-              ligula mollis, nec venenatis nulla fermentum. end
+              {{user}}
             </div>
           </div>
-
-          <!-- <div class="flex justify-center">
-            <div class="border-b border-gray-300 w-8/12"></div>
-          </div> -->
 
           <!-- tabs -->
           <div class="flex justify-center items-center">
@@ -330,12 +314,15 @@ const activeTab = ref(0);
 const tabs = ref(["Work History", "Education", "Projects"]);
 const authStore = useAuthStore();
 const { showClosableModal } = useModal();
-const userImage = ref(""); // Data property to store user image
 const active = ref(false);
 
 const toggleAccordion = () => {
   active.value = !active.value;
 };
+
+// user details
+const user = authStore.getUser;
+const userImage = authStore.getUserImage;
 
 const openWorkHistoryInfo = () => {
   // Initialize useModal composable

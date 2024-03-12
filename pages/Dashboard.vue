@@ -23,7 +23,7 @@
               <input
                 type="text"
                 id="voice-search"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Temp tasks, keywords, or company"
                 required
               />
@@ -48,54 +48,53 @@
             <span
               class="inline-flex items-center text-sm px-2.5 py-0.5 rounded-full"
             >
-              230 tasks available
+              {{ listings.length }} available
             </span>
           </div>
         </div>
         <ul class="taskList">
           <li v-for="job in listings" :key="job.id" @click="loadListing(job)">
-            <div class="card p-4 shadow-md">
+            <div class="card p-4 bg-white">
               <div class="flex items-center space-x-3 rtl:space-x-reverse">
                 <div class="flex-shrink-0">
                   <img
-                    class="w-10 h-10 rounded-lg shadow"
+                    class="w-10 h-10 rounded-lg "
                     src="../assets/knustlogo.png"
                     alt="company image"
                   />
                 </div>
                 <div class="flex-1 min-w-0">
-                  <p class="text-sm font-semibold text-gray-900 truncate">
-                    {{ job.title }}
+                   <p class="text-base font-semibold truncate">
+                    {{ job.job_title }}
                   </p>
-                  <p class="text-sm text-gray-500 truncate">
-                    {{ job.company }}
+                  <p class="text-xs font-normal text-[#F7B900] truncate">
+                    {{ job.location }}
                   </p>
+                 
                 </div>
+                
+              </div>
+              <div
+                class="flex justify-between mt-4 space-x-3 rtl:space-x-reverse"
+              >
                 <span
-                  class="inline-flex items-center bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full"
+                  class="inline-flex items-center bg-gray-200  text-xs font-normal px-2.5 py-0.5 rounded-lg"
+                >
+                  {{ job.companyLocation }}
+                </span>
+
+                <span
+                  class="inline-flex items-center bg-gray-200  text-xs font-normal px-2 py-1 rounded-lg"
+                >
+                  {{ job.location }}
+                </span>
+                <span
+                  class="inline-flex items-center bg-gray-200 text-xs font-normal px-2.5 py-0.5 rounded-lg"
                 >
                   GH₵ {{ job.pay }}
                 </span>
               </div>
-              <div
-                class="flex justify-between my-2 space-x-3 rtl:space-x-reverse"
-              >
-                <span
-                  class="inline-flex items-center bg-[#bda472] text-[#3d2f10] text-sm font-medium px-2.5 py-0.5 rounded-full"
-                >
-                  {{ job.companyLocation }}
-                </span>
-                <span
-                  class="inline-flex items-center bg-[#bda472] text-black text-sm font-medium px-2.5 py-0.5 rounded-full"
-                >
-                  {{ job.location }}
-                </span>
-              </div>
-              <div>
-                <p class="text-sm leading-4">
-                  {{ job.jobDescription }}
-                </p>
-              </div>
+              
             </div>
           </li>
         </ul>
@@ -104,7 +103,7 @@
       <!--  Body (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && !showJobList)"
-        class="w-full md:w-8/12 md:mx-1 "
+        class="w-full md:w-8/12 md:mx-1"
       >
         <div class="card2 m-2 p-2 shadow-md">
           <ListingInfo
@@ -113,185 +112,87 @@
           />
         </div>
       </div>
-
-
     </div>
   </div>
 </template>
 <script setup>
+import { useListingStore } from "../stores/listingStore";
+import { useAuthStore } from "../stores/authStore";
+import { useMainStore } from "../stores/main";
+
 definePageMeta({
   layout: "default",
-  middleware:["auth"]
+  middleware: ["auth"],
 });
 useHead({
-  title: 'Dashboard',
-  meta: [
-    { name: "jobs you've applied for", content: 'Student job list' }
-  ],
-})
-</script>
-<script>
-import { useAuthStore } from "~/stores/authStore";
+  title: "Dashboard",
+  meta: [{ name: "jobs you've applied for", content: "Student job list" }],
+});
 
-export default {
-  data() {
-    return {
-      name: "",
-      location: "",
-      searchResults: [],
-      // Dummy data for demonstration purposes
-      listings: [
-        {
-          id: "gh0000001",
-          title: "Data Entry",
-          pay: "8/hr",
-          workDays: "Weekends",
-          location: "on site",
-          company: "Ciraq Inc.",
-          companyLocation: "Accra",
-          companyLogo: "../assets/logo.png",
-          jobDescription:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
-        },
-        {
-          id: "gh0000002",
-          title: "Customer Support",
-          pay: "10/hr",
-          workDays: "Mon - Fri",
-          location: "on site",
-          company: "MTN GH.",
-          companyLocation: "Koforidua",
-          companyLogo: "../assets/logo.png",
-          jobDescription:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
-        },
-        {
-          id: "gh0000001",
-          title: "Data Entry",
-          pay: "8/hr",
-          workDays: "Weekends",
-          location: "on site",
-          company: "Ciraq Inc.",
-          companyLocation: "Accra",
-          companyLogo: "../assets/logo.png",
-          jobDescription:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
-        },
-        {
-          id: "gh0000002",
-          title: "Customer Support",
-          pay: "10/hr",
-          workDays: "Mon - Fri",
-          location: "on site",
-          company: "MTN GH.",
-          companyLocation: "Koforidua",
-          companyLogo: "../assets/logo.png",
-          jobDescription:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
-        },
-        {
-          id: "gh0000001",
-          title: "Data Entry",
-          pay: "8/hr",
-          workDays: "Weekends",
-          location: "on site",
-          company: "Ciraq Inc.",
-          companyLocation: "Accra",
-          companyLogo: "../assets/logo.png",
-          jobDescription:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
-        },
-        {
-          id: "gh0000002",
-          title: "Customer Support",
-          pay: "10/hr",
-          workDays: "Mon - Fri",
-          location: "on site",
-          company: "MTN GH.",
-          companyLocation: "Koforidua",
-          companyLogo: "../assets/logo.png",
-          jobDescription:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
-        },
-        {
-          id: "gh0000001",
-          title: "Data Entry",
-          pay: "8/hr",
-          workDays: "Weekends",
-          location: "on site",
-          company: "Ciraq Inc.",
-          companyLocation: "Accra",
-          companyLogo: "../assets/logo.png",
-          jobDescription:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
-        },
-        {
-          id: "gh0000002",
-          title: "Customer Support",
-          pay: "10/hr",
-          workDays: "Mon - Fri",
-          location: "on site",
-          company: "MTN GH.",
-          companyLocation: "Koforidua",
-          companyLogo: "../assets/logo.png",
-          jobDescription:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
-        },
-      ],
-      selectedListing: null,
-      isMobile: false,
-      showJobList: true,
-    };
-  },
-  methods: {
-    loadListing(job) {
-      this.selectedListing = job;
-      // Toggle between Message List and Message Body on mobile
-      if (this.isMobile) {
-        this.showJobList = false;
-      }
-    },
-    loadJobsMobile() {
-      // Toggle between Message List and Message Body on mobile
-      if (this.isMobile) {
-        this.showJobList = true;
-      }
-    },
-    handleResize() {
-      this.isMobile = window.innerWidth < 768; // Adjust the threshold as needed
-      if (!this.isMobile) {
-        this.showJobList = true; // Reset to show message list on larger screens
-      }
-    },
-    search() {
-      // Perform your search logic here based on the provided criteria
-      // In this example, it filters the data array based on title and location
-      this.searchResults = this.data.filter((item) => {
-        const titleMatch =
-          this.name === "" ||
-          item.title.toLowerCase().includes(this.name.toLowerCase());
-        const locationMatch =
-          this.location === "" ||
-          item.company.toLowerCase().includes(this.location.toLowerCase());
-        return titleMatch && locationMatch;
-      });
-    },
-  },
-  mounted() {
-    this.isMobile = window.innerWidth < 768; // Adjust the threshold as needed
-    window.addEventListener("resize", this.handleResize);
-  },
+const listingStore = useListingStore();
+const authStore = useAuthStore();
+const mainStore = useMainStore();
+const listings = ref([]);
+const selectedListing = ref(null);
+const isMobile = ref(false);
+const showJobList = ref(true);
 
-  computed: {
-    // Access user from Pinia store
-    user() {
-      return useAuthStore().user;
-    },
-  },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.handleResize);
-  },
+const loadListing = (job) => {
+
+  selectedListing.value = job;
+
+  if (isMobile.value) {
+    showJobList.value = false;
+  }
 };
+
+const loadJobsMobile = () => {
+  if (isMobile.value) {
+    showJobList.value = true;
+  }
+};
+
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
+  if (!isMobile.value) {
+    showJobList.value = true; // Reset to show message list on larger screens
+  }
+};
+const loadAllListings = async () => {
+  try {
+    const response = await fetch(mainStore.urlbase + "api/alllistings", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authStore.token, 
+      },
+    });
+    if (response.ok) {
+      const responseData = await response.json();
+      // Update listings state
+      console.log("listings:", responseData.data);
+      listings.value = responseData.data;
+    } else {
+      console.error(
+        "Error fetching listings:",
+        response.status,
+        response.statusText
+      );
+    }
+  } catch (error) {
+    console.error("Unable to load listing:", error);
+  }
+};
+
+onMounted(() => {
+  loadAllListings();
+  isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
+  window.addEventListener("resize", handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+});
 </script>
 
 <style scoped>
@@ -304,17 +205,18 @@ export default {
 .card {
   width: 95%;
   border-radius: 1rem;
-  border: 1px solid #00656570;
+  border: 1px solid #0065651f;
   margin: 0.5rem auto;
 }
 .card2 {
   min-width: 96%;
   max-width: 96%;
   border-radius: 1rem;
-  border: 1px solid #00656570;
+  border: 1px solid #0065651f;
+  background-color: #fff;
   height: 81vh;
   overflow-y: auto;
-    padding-bottom: 10vh;
+  padding-bottom: 10vh;
 }
 
 .card:hover {
@@ -393,7 +295,6 @@ export default {
 .span {
   font-size: 10px;
 }
-
 
 .top {
   position: relative;
