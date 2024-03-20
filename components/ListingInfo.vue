@@ -1,14 +1,14 @@
 <template>
   <div>
     <div
-      class="parentCon m-2"
+      class="m-2"
       v-if="selectedListing"
       @touchstart="handleTouchStart"
       @touchend="handleTouchEnd"
     >
       <!-- NEW UP HERE -->
-      <div class="p-4 md:p-5">
-        <div class="py-4 sticky top-0 z-10 bg-white rounded-lg">
+      <div class="p-2 md:p-5">
+        <div class="py-4 sticky top-0 z-10 bg-white">
           <div class="flex items-center space-x-3">
             <div class="flex-shrink-0">
               <img
@@ -98,6 +98,10 @@
               <li>1-2 years experience in photoshop</li>
               <li>Good communication design and creative skills</li>
               <li>Max Age of 35 years</li>
+              <li>Studying computer science or relate subjects</li>
+              <li>1-2 years experience in photoshop</li>
+              <li>Good communication design and creative skills</li>
+              <li>Max Age of 35 years</li>
             </ul>
           </div>
         </div>
@@ -118,14 +122,14 @@
       <!-- Display this when selectedPerson is null -->
 
       <div
-        class="place text-center mt-4 flex flex-col items-center justify-center animate-zoom"
+        class=" text-center mt-4 flex flex-col items-center justify-center animate-zoom"
       >
         <img
           src="/assets/logo.png"
           class="h-64 animate-zoom"
           alt="Select a person"
         />
-        <p class="mt-4 text-2xl">Open a task for more info.</p>
+        <p class="pt-4 text-2xl">Open a task for more info.</p>
       </div>
     </div>
   </div>
@@ -227,135 +231,11 @@ export default {
 </script>
 
 <style scoped>
-.card2 {
-  width: 100%;
-  /* max-width: 70%; */
-  border-radius: 1rem;
-  border: 1px solid #006565;
-  height: 90vh;
-  overflow-y: auto;
-}
-
-.jobTitle {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  /* backdrop-filter: blur(10px); */
-  transition: 0.5s ease-in-out;
-  padding: 0;
-}
-
 .card:hover {
   cursor: pointer;
 }
 
-.vl {
-  border-left: none;
-  height: 500px;
-}
 
-.payCon {
-  background-color: #bda472;
-  padding: 0.2rem 1rem;
-  border-radius: 1rem;
-  color: #fff;
-}
-
-.img {
-  width: 50px;
-  height: 50px;
-  margin-left: 10px;
-  border-radius: 10px;
-  background: linear-gradient(#d7cfcf, #9198e5);
-}
-
-.card:hover > .img {
-  transition: 0.5s ease-in-out;
-  background: linear-gradient(#9198e5, #712020);
-}
-
-.textBox {
-  width: 100%;
-  margin-left: 10px;
-  font-family: "Poppins" sans-serif;
-}
-
-.textContent {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.span {
-  font-size: 10px;
-}
-
-.cardTitle {
-  width: 100%;
-  height: 70px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  /* backdrop-filter: blur(10px); */
-  transition: 0.5s ease-in-out;
-  padding: 0;
-}
-
-.card:hover {
-  cursor: pointer;
-}
-
-.payCon {
-  background-color: #bda472;
-  padding: 0.2rem 1rem;
-  border-radius: 1rem;
-  color: #fff;
-}
-
-.img {
-  width: 50px;
-  height: 50px;
-  margin-left: 10px;
-  border-radius: 10px;
-  background: linear-gradient(#d7cfcf, #9198e5);
-}
-
-.card:hover > .img {
-  transition: 0.5s ease-in-out;
-  background: linear-gradient(#9198e5, #712020);
-}
-
-.textBox {
-  width: calc(100% - 10px);
-  font-size: 12px;
-  margin-left: 10px;
-  font-family: "Poppins" sans-serif;
-}
-
-.textContent {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.span {
-  font-size: 10px;
-}
-
-.p {
-  font-size: 12px;
-  font-weight: bold;
-}
-.place {
-  height: 80vh;
-}
-
-.maxWidth {
-  max-width: 90%;
-  word-wrap: break-word; /* Ensure long words break to the next line */
-}
 @keyframes zoom {
   0% {
     transform: scale(1);

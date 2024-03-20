@@ -105,7 +105,7 @@
     </div>
   </div>
 
-  <div class="h-[81vh] m-2 p-2">
+  <div class="h-[81svh] m-2 p-2">
     <div class="parent">
       <div class="div1">
         <!-- component -->
@@ -113,7 +113,7 @@
           <div class="absolute flex justify-center items-center">
             <div class="w-full h-1/2 flex flex-col justify-center items-center">
               <img
-                class=" h-20 w-20 rounded-full"
+                class=" h-15 w-15 rounded-full"
                 src="http://ciraq.co/api/public/uploads/1709342552416profilepic.jpg" alt=""
               />
               <h1 class="text-gray-700 font-bold">{{user.fname }} {{user.lname}}</h1>
@@ -122,7 +122,7 @@
           </div>
 
           <div
-            class="bg-white w-full rounded-3xl flex flex-col justify-around items-center"
+            class=" w-full flex flex-col justify-around items-center"
           >
             <div class="w-full h-1/2 flex justify-between items-center px-1">
               <div class="flex flex-col justify-center items-center">
@@ -159,7 +159,7 @@
         <!-- scrollable -->
         <div class="h-[64.8vh]">
           <!-- Professional summary -->
-          <div class="pb-1 mt-1">
+          <div class="pb-1 mt-1 bg-white rounded-lg">
             <button
               class="flex items-center justify-between w-full p-1 mt-2 font-medium text-gray-500 gap-3"
               :class="{ active: active }"
@@ -197,7 +197,7 @@
           <div class="flex justify-center items-center">
             <div class="h-[60vh] overflow-y-auto w-full">
               <ul
-                class="flex justify-center items-center sticky top-0 z-10 bg-white"
+                class="flex justify-center items-center sticky top-0 z-10 bg-white rounded-lg"
               >
                 <li
                   style="padding: 0.5rem"
@@ -215,7 +215,7 @@
                 </li>
               </ul>
 
-              <div class="w-full bg-white p-2 mx-auto">
+              <div class="w-full bg-white mt-2 p-2 mx-auto">
                 <div class="" v-show="activeTab === 0">
                   <!-- Work History timeLine -->
                   <div class="sm:w-11/12 sm:pl-40">
@@ -316,12 +316,22 @@ const authStore = useAuthStore();
 const { showClosableModal } = useModal();
 const active = ref(false);
 
+useHead({
+  title: 'Profile',
+  meta: [
+    { name: "jobs you've applied for", content: 'Student job list' }
+  ],
+})
+
 const toggleAccordion = () => {
   active.value = !active.value;
 };
 
 // user details
-const user = authStore.getUser;
+const user = authStore.getUser || {
+  fname:"John",
+  lname:"saint"
+};
 const userImage = authStore.getUserImage;
 
 const openWorkHistoryInfo = () => {

@@ -121,7 +121,7 @@ import { useAuthStore } from "../stores/authStore";
 import { useMainStore } from "../stores/main";
 
 definePageMeta({
-  layout: "default",
+  layout: "mobile",
   middleware: ["auth"],
 });
 useHead({

@@ -63,7 +63,7 @@ background-color: #132E35;
 </style>
 
 <script>
-import Modals from "@/components//UI/Modals.vue"
+import Modals from "@/components/UI/Modals.vue"
 import "boxicons/css/boxicons.min.css";
 // import Datepicker from 'flowbite-datepicker/Datepicker';
 export default {

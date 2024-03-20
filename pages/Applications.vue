@@ -1,6 +1,6 @@
 <template>
 
-  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl m-2">
+  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl max-h-[85svh] overflow-hidden">
     <div class="h-full md:flex no-wrap md:-mx-1">
       <!--  List (visible on mobile) -->
       <div
@@ -93,7 +93,7 @@
         v-if="!isMobile || (isMobile && !showJobList)"
         class="w-full md:w-8/12 md:mx-1 "
       >
-        <div class="card2 m-2 p-2 shadow-md">
+        <div class="card2 m-2 shadow bg-white">
           <ListingInfo
             :selectedListing="selectedListing"
             @loadJobsMobile="loadJobsMobile"
@@ -110,7 +110,7 @@
 </template>
 <script setup>
 definePageMeta({
-  layout: "default",
+  layout: "mobile",
   auth:false
 });
 useHead({
@@ -286,8 +286,8 @@ export default {
 
 <style scoped>
 .taskList {
-  min-height: 71vh;
-  max-height: 71vh;
+  min-height: 74svh;
+  max-height: 74svh;
   overflow-y: auto;
   padding-bottom: 20vh;
 }
@@ -301,66 +301,18 @@ export default {
   min-width: 96%;
   max-width: 96%;
   border-radius: 1rem;
-  border: 1px solid #132E35;
-  height: 81vh;
+  border: 1px solid #6c707168;
+  min-height: 82svh;
+  max-height: 82svh;
   overflow-y: auto;
-    padding-bottom: 10vh;
 }
 
 .card:hover {
   cursor: pointer;
-}
-
-.vl {
-  border-left: none;
-  height: 500px;
-}
-
-.payCon {
-  background-color: #bda472;
-  padding: 0.2rem 1rem;
-  border-radius: 1rem;
-  color: #fff;
-}
-
-.textBox {
-  width: calc(100% - 90px);
-  margin-left: 10px;
-  font-family: "Poppins" sans-serif;
-}
-
-.textContent {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .span {
   font-size: 10px;
-}
-
-.cardTitle {
-  width: 100%;
-  height: 70px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  backdrop-filter: blur(10px);
-  transition: 0.5s ease-in-out;
-  padding: 0px;
-  margin: 0;
-}
-
-.card:hover {
-  cursor: pointer;
-}
-
-.payCon {
-  background-color: #bda472;
-  padding: 0.2rem 1rem;
-  border-radius: 1rem;
-  color: #fff;
 }
 
 .card:hover > .img {
@@ -368,27 +320,10 @@ export default {
   background: linear-gradient(#9198e5, #712020);
 }
 
-.textBox {
-  width: calc(100% - 90px);
-  margin-left: 10px;
-  font-family: "Poppins" sans-serif;
-}
-
-.textContent {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.span {
-  font-size: 10px;
-}
-
 
 .top {
   position: relative;
   padding: 10px;
-  /* height: 60px; */
 }
 
 .top:after {

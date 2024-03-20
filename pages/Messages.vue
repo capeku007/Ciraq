@@ -49,7 +49,7 @@
 </template>
 <script setup>
 definePageMeta({
-  layout: "default",
+  layout: "mobile",
   // auth:false
 });
 useHead({

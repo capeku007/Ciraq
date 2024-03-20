@@ -136,28 +136,29 @@ export default {
 <style scoped>
 .parent {
   display: grid;
-  min-height: 71vh;
-  max-height: 80vh;
+  min-height: 84vh;
+  min-height: 84svh;
   overflow: hidden;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 8fr 1fr;
+  grid-template-rows: 10% 1fr 7%; 
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
 
 .child1 {
-  grid-area: 1 / 1 / 2 / 2;
+  /* grid-area: 1 / 1 / 2 / 2; */
 }
 .child2 {
-  grid-area: 2 / 1 / 3 / 2;
+  /* grid-area: 2 / 1 / 3 / 2; */
   overflow-y: auto;
 }
 .child3 {
-  grid-area: 3 / 1 / 4 / 2;
+  /* grid-area: 3 / 1 / 4 / 2; */
 }
 
 .place {
-  height: 80vh;
+  max-height: 84vh;
+  max-height: 84svh;
 }
 
 .maxWidth {
