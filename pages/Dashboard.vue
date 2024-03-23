@@ -55,7 +55,7 @@
         <ul class="taskList">
           <li v-for="job in listings" :key="job.id" @click="loadListing(job)">
             <div class="card p-4 bg-white">
-              <div class="flex items-center space-x-3 rtl:space-x-reverse">
+              <div class="flex items-center space-x-3 ">
                 <div class="flex-shrink-0">
                   <img
                     class="w-10 h-10 rounded-lg "

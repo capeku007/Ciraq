@@ -4,12 +4,6 @@
 
     <main>
       <div class="container">
-        <!-- <header>
-          
-        </header>
-        
-      </div>
-      -->
         <header class="header"><Header /></header>
         <main class="body"><slot /></main>
         <footer class="footer"><Footer /></footer>
@@ -19,6 +13,124 @@
 </template>
 <script setup>
 import Modals from "@/components/UI/Modals.vue"
+import "boxicons/css/boxicons.min.css";
+import {
+  initFlowbite,
+  initAccordions,
+  initCarousels,
+  initCollapses,
+  initDials,
+  initDismisses,
+  initDrawers,
+  initDropdowns,
+  initModals,
+  initPopovers,
+  initTabs,
+  initTooltips,
+} from "flowbite";
+
+// initialize components based on data attribute selectors
+onMounted(() => {
+  initFlowbite();
+  initAccordions();
+  initCarousels();
+  initCollapses();
+  initDials();
+  initDismisses();
+  initDrawers();
+  initDropdowns();
+  initModals();
+  initPopovers();
+  initTabs();
+  initTooltips();
+});
+
+const bottomSheet = ref(null);
+const sheetContent = ref(null);
+const dragIcon = ref(null);
+
+let isDragging = false;
+let startY, startHeight;
+
+const showBottomSheet = () => {
+  if (bottomSheet.value) {
+    bottomSheet.value.classList.add('show');
+  }
+};
+
+const updateSheetHeight = (height) => {
+  const maxHeight = 80; // Set maximum height to 80%
+  if (sheetContent.value) {
+    if (height === 100) {
+      height = maxHeight;
+    }
+    sheetContent.value.style.height = `${height}vh`;
+  }
+  if (bottomSheet.value) {
+    bottomSheet.value.classList.toggle('fullscreen', height === 100);
+  }
+};
+
+const resetSheetHeight = () => {
+  if (sheetContent.value) {
+    sheetContent.value.style.height = 'auto'; // Set the height back to auto or your default height
+  }
+};
+
+const hideBottomSheet = () => {
+  const { hideModal } = useModal();
+  const modalId = 'bottomModal';
+  hideModal(modalId);
+  resetSheetHeight(); // Reset sheetContent height when hiding the modal
+};
+
+const dragStart = (e) => {
+  isDragging = true;
+  startY = e.pageY || e.touches?.[0].pageY;
+  startHeight = parseInt(sheetContent.value.style.height);
+  if (bottomSheet.value) {
+    bottomSheet.value.classList.add('dragging');
+  }
+};
+
+const dragging = (e) => {
+  if (!isDragging) return;
+  const delta = startY - (e.pageY || e.touches?.[0].pageY);
+  const newHeight = startHeight + (delta / window.innerHeight) * 100;
+  updateSheetHeight(newHeight);
+};
+
+const dragStop = () => {
+  isDragging = false;
+  if (bottomSheet.value) {
+    bottomSheet.value.classList.remove('dragging');
+  }
+  const sheetHeight = parseInt(sheetContent.value.style.height);
+  if (sheetHeight < 25) hideBottomSheet();
+  else if (sheetHeight > 75) updateSheetHeight(100);
+  else updateSheetHeight(50);
+};
+
+onMounted(() => {
+  bottomSheet.value = document.getElementById('bottomModal');
+  sheetContent.value = bottomSheet.value?.querySelector('.content');
+  dragIcon.value = bottomSheet.value?.querySelector('.dragIcon');
+
+  dragIcon.value?.addEventListener('mousedown', dragStart);
+  document.addEventListener('mousemove', dragging);
+  document.addEventListener('mouseup', dragStop);
+
+  dragIcon.value?.addEventListener('touchstart', dragStart);
+  document.addEventListener('touchmove', dragging);
+  document.addEventListener('touchend', dragStop);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('mousemove', dragging);
+  document.removeEventListener('mouseup', dragStop);
+  document.removeEventListener('touchmove', dragging);
+  document.removeEventListener('touchend', dragStop);
+});
 </script>
 
 
@@ -29,24 +141,28 @@ import Modals from "@/components/UI/Modals.vue"
   min-height: 100svh;
   max-height: 100svh;
 grid-template-rows: 7% 1fr 7%; 
+    height: 100vh; 
+    height: 100svh; 
     min-height: 100vh; 
     max-height: 100vh; 
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  background-color: aquamarine;
+  background-color: #f7f7f7;
 }
 .header {
   /* grid-area: 1 / 1 / 2 / 2; */
   /* background-color: blue; */
+    overflow: hidden;
 }
 .body {
   /* grid-area: 2 / 1 / 3 / 2; */
-  overflow-y: auto;
-  background-color: cyan;
+  height: 85svh;
+  min-height: 85svh;
+  overflow-y: hidden;
+  background-color: #f7f7f7;
+  
 }
 .footer {
-  /* grid-area: 3 / 1 / 4 / 2; */
-  background-color: yellowgreen;
   overflow: hidden;
 }
 
@@ -94,26 +210,38 @@ grid-template-rows: 7% 1fr 7%;
   display: flex;
   justify-content: center;
   margin: 0;
-  background-color: blue;
   min-height: 1vh;
   max-height: 1vh;
 }
 
 .bottom-sheet .modalBody {
-  height: 100%;
-  overflow-y: auto;
-  padding: 15px 0 40px;
+  /* height: 100%;
+  max-height: 100%;
+  overflow-y: hidden;
+  padding: .5rem; */
   scrollbar-width: none;
-  background-color: aqua;
+  /* background-color: aqua; */
+  margin: 1rem;
 }
 .bottom-sheet .modalBody::-webkit-scrollbar {
   width: 0;
 }
-.bottom-sheet .modalBody h2 {
-  font-size: 1.8rem;
+
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 2.5px;
+  height: 2.5px;
 }
-.bottom-sheet .modalBody p {
-  margin-top: 20px;
-  font-size: 1.05rem;
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(80, 80, 80, 0.11);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(94, 94, 94, 0.178);
+  background: #bfbfbf;
 }
 </style>
