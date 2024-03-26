@@ -8,106 +8,7 @@
     aria-hidden="true"
     class="fixed bottom-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
   >
-    <div class="bottom-sheet">
-      <div ref="sheetContent" class="content">
-        <div
-          ref="dragIcon"
-          class="header max-h-5 cursor-grab select-none dragIcon"
-          @mousedown="dragStart"
-          @touchstart="dragStart"
-        >
-          <span class="block h-1 w-10 bg-gray-300 rounded-full"></span>
-        </div>
-        <div class="grid grid-rows-[7.5%_1fr_15%] min-h-full max-h-full">
-          <div class="">
-            <p
-              class="text-gray-900 text-xs font-semibold sm:text-sm text-center"
-            >
-              Comments
-            </p>
-          </div>
-          <!-- comments -->
-          <div class="overflow-y-auto">
-            <div class="w-full">
-              <ul>
-                <li class="mb-4">
-                  <div class="flex items-start gap-2.5">
-                    <img
-                      class="w-8 h-8 rounded-full"
-                      src="/assets/images/profile-img.jpg"
-                      alt="image"
-                    />
-                    <div class="flex flex-col gap-1 w-full">
-                      <div class="flex items-center space-x-2">
-                        <span class="text-sm font-semibold text-gray-900"
-                          >Bonnie Green</span
-                        >
-                        <span class="text-sm font-normal text-gray-500"
-                          >11:46</span
-                        >
-                      </div>
-                      <div class="flex flex-col leading-1.5">
-                        <p
-                          class="text-sm font-normal text-gray-900 dark:text-white"
-                        >
-                          That's awesome. I think our users will really
-                          appreciate the improvements.
-                        </p>
-                      </div>
-                      <span
-                        class="text-sm font-normal text-gray-500 dark:text-gray-400"
-                        >21 likes</span
-                      >
-                    </div>
-                    <button
-                      class="inline-flex self-center items-center p-2 text-sm font-medium text-center text-gray-900 rounded-lg hover:bg-gray-100"
-                      type="button"
-                    >
-                      <i class="bx bx-heart"></i>
-                    </button>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!-- post comment -->
-          <div class="my-auto">
-            <div class="flex">
-              <div class="flex justify-center w-[15%]">
-                <img
-                  class="w-10 h-10 rounded-full"
-                  src="/assets/images/profile-img.jpg"
-                  alt="Rounded avatar"
-                />
-              </div>
-
-              <div class="flex justify-center mx-auto w-[85%]">
-                <label for="voice-search" class="sr-only">Search</label>
-                <div class="relative w-[90%]">
-                  <input
-                    type="text"
-                    id="comment"
-                    class="overflow-y-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl block w-full ps-4 pe-8 p-2.5"
-                    placeholder="Add a comment"
-                    required
-                  />
-
-                  <button
-                    type="button"
-                    class="absolute inset-y-0 end-2 flex items-center pe-2"
-                  >
-                    <i
-                      class="bx bx-message-square-dots w-4 h-4 text-gray-500"
-                      aria-hidden="true"
-                    ></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <Comments/>
   </div>
 
   <!-- tabs -->
@@ -134,45 +35,17 @@
     </div>
 
     <div class="w-full bg-red overflow-hidden p-2 mx-auto">
-      <div class="sm:w-11/12 sm:pl-40" v-show="activeTab === 0">
+      <div class="sm:w-11/12 sm:pl-40 " v-show="activeTab === 0">
         <!-- Education timeLine -->
-        <button @click="showBmodal">show</button>
-        <div
-          ref="bottomSheet"
-          id="bottomModal"
-          tabindex="-1"
-          data-modal-target="bottomModal"
-          data-modal-placement="bottom"
-          aria-hidden="true"
-          class="fixed bottom-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-        >
-          <div class="bottom-sheet">
-            <div ref="sheetContent" class="content">
-              <div
-                ref="dragIcon"
-                class="header max-h-5 bg-red-500 cursor-grab select-none dragIcon"
-                @mousedown="dragStart"
-                @touchstart="dragStart"
-              >
-                <span class="block h-1 w-10 bg-gray-200 rounded-full"></span>
-              </div>
-              <div class="modalBody">
-                <h2>Bottom Sheet Modal</h2>
-                <p>
-                  Create a bottom sheet modal that functions similarly to
-                  Facebook modal using HTML CSS and JavaScript. This modal
-                  allows the user to view its contents, drag it up or down, and
-                  close it. It also works on touch-enabled devices. Lorem Ipsum
-                  is simply dummy text of the printing and typesetting industry.
-                  Lorem Ipsum has been the industry's standard dummy text ever
-                  since the 1500s, when an unknown printer took a galley of type
-                  and scrambled it to make a type specimen book. It has survived
-                  not only five centuries.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+
+<div class="flex max-h-[76svh] h-[76svh] min-h-[86svh] overflow-hidden">
+  <div id="googleMaps" class="max-h-[76svh] h-[76svh] w-full bg-red-500 rounded-2xl">
+    <div class="h-[calc(74svh-1rem)] bg-transparent m-4">Content 2</div>
+  </div>
+</div>
+
+
+        
       </div>
 
       <div class="sm:w-11/12 sm:pl-40" v-show="activeTab === 1">
@@ -415,10 +288,11 @@
     </div>
     <div class=""></div>
   </div>
+  
 </template>
 
 <script setup>
-import BottomSheetModal from "../components/UI/BottomSheetModal.vue";
+import Comments from "@/components/Posts/Comments.vue"
 import { useAuthStore } from "../stores/authStore";
 import { reactive } from "vue";
 
@@ -436,7 +310,7 @@ useHead({
   meta: [{ name: "jobs you've applied for", content: "Student job list" }],
 });
 const tabs = ref(["Roam", "Stories", "Game"]);
-const activeTab = ref(1);
+const activeTab = ref(0);
 const active = ref(false);
 
 const toggleAccordion = () => {
