@@ -133,7 +133,7 @@ const authStore = useAuthStore();
 // })
 
 // Define loginUser function
-
+const router = useRouter();
 const loginUser = async () => {
   try {
     let loginData = {
@@ -141,6 +141,8 @@ const loginUser = async () => {
       p_word: pword.value,
     };
     authStore.login(loginData);
+            router.push('/dashboard');
+
   } catch (err) {
     this.error = err.message;
     alert(this.error);

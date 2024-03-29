@@ -108,9 +108,7 @@ export default defineNuxtConfig({
       'process.env.DEBUG': false,
     },
   },
-  router: {
-    middleware:["auth"]
-  },
+
   //future router when building employer side
   // router: {
   //   middleware: ['studentAuth'], // Global middleware for student side
