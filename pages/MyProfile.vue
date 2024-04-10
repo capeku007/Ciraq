@@ -105,7 +105,7 @@
     </div>
   </div>
 
-  <div class="h-[81svh] m-2 p-2">
+  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] m-2 p-2 h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden">
     <div class="parent">
       <div class="div1">
         <!-- component -->
@@ -315,7 +315,11 @@ const tabs = ref(["Work History", "Education", "Projects"]);
 const authStore = useAuthStore();
 const { showClosableModal } = useModal();
 const active = ref(false);
-
+definePageMeta({
+  layout: "mobile",
+  // middleware: ["auth"],
+  auth:false
+});
 useHead({
   title: 'Profile',
   meta: [

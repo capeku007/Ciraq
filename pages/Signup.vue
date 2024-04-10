@@ -1,20 +1,17 @@
 <template>
   <!-- <Signup/> -->
-  <div class="py-10 min-h-screen px-2">
+  <div
+    class="flex justify-center items-center h-screen mx-auto rounded-lg overflow-hidden"
+  >
     <div
-      class="max-w-md mx-auto rounded-lg overflow-hidden md:max-w-lg"
+      class="flex h-auto justify-center items-center mx-auto rounded-lg sm:w-[100%]"
     >
       <div v-show="currentIndex === 0" class="main block">
-        <p
-          class="flex justify-center items-center h-12 w-full bg-[#d9c179] text-white font-semibold"
-        >
-          Create Profile
-        </p>
-        <p
-          class="flex justify-center items-center text-lg mt-3 text-gray-800 font-medium"
+        <h2
+          class="w-11/12 rounded border-2 flex justify-center items-center h-12 mx-auto border-[#132E35] text-[#132E35] font-semibold"
         >
           Personal Info
-        </p>
+        </h2>
 
         <div class="flex w-full gap-px">
           <div class="w-full mt-6 px-4 relative">
@@ -189,28 +186,22 @@
         <!-- Add other input fields for step 1 -->
         <div class="mt-6 flex mb-10 justify-center px-4 relative gap-2">
           <button
-          :disabled="!step1Complete"
+            :disabled="!step1Complete"
             @click="goToStep(1)"
-            class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            class="border-0 px-3 py-3 text-white bg-[#132E35] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           >
             Next<i class="fa fa-long-arrow-right absolute top-4 right-8"></i>
           </button>
         </div>
-
       </div>
 
       <!-- Step 2: Contact Details -->
       <div v-show="currentIndex === 1" class="main block">
-        <p
-          class="flex justify-center items-center h-12 w-full bg-[#d9c179] text-white font-semibold"
-        >
-          Create Profile
-        </p>
-        <p
-          class="flex justify-center items-center text-lg mt-3 text-gray-800 font-medium"
+        <h2
+          class="w-11/12 rounded border-2 flex justify-center items-center h-12 mx-auto border-[#132E35] text-[#132E35] font-semibold"
         >
           Contact Info
-        </p>
+        </h2>
 
         <div class="flex w-full gap-px">
           <div class="w-full mt-6 px-4 relative">
@@ -308,6 +299,7 @@
                 type="file"
                 @change="handleImageUpload1"
                 class="sr-only"
+                accept=".jpg, .jpeg, .png"
               />
             </label>
           </div>
@@ -320,7 +312,7 @@
               class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               id="password1"
             >
-            PASSWORD
+              PASSWORD
             </label>
             <input
               v-model="signUpData.p_word"
@@ -369,14 +361,14 @@
         <div class="mt-6 flex mb-10 justify-center px-4 relative gap-2">
           <button
             @click="goToStep(0)"
-            class=" border-2 border-solid border-[#044013] px-3 py-3 text-[#044013] bg-white   rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            class="border-2 border-solid border-[#132E35] px-3 py-3 text-[#132E35] bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           >
             Previous<i class="fa fa-long-arrow-left absolute top-4 left-8"></i>
           </button>
           <button
-          :disabled="shouldShowErrorMessage"
+            :disabled="shouldShowErrorMessage"
             @click="goToStep(2)"
-            class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            class="border-0 px-3 py-3 text-white bg-[#132E35] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           >
             Next<i class="fa fa-long-arrow-right absolute top-4 right-8"></i>
           </button>
@@ -385,90 +377,119 @@
 
       <!-- Step 3: Company Details -->
       <div v-show="currentIndex === 2" class="main block">
-        <p
-          class="flex justify-center items-center h-12 w-full bg-[#d9c179] text-white font-semibold"
-        >
-          Create Profile
-        </p>
-        <p
-          class="flex justify-center items-center text-lg mt-3 text-gray-800 font-medium"
+        <h2
+          class="w-11/12 rounded border-2 flex justify-center items-center h-12 mx-auto border-[#132E35] text-[#132E35] font-semibold"
         >
           Confirmation
-        </p>
-                 <!-- ... content for step three ... -->
-        <div class="mt-9" style="display: flex; justify-content: center">
+        </h2>
 
-          <div>
-            <h6 class="bold"> Name : {{ signUpData.fname }} {{ signUpData.lname }}</h6>
-            
-          </div>
-                      <h5>
-              Date of Birth:
-              <span class="text-emerald-800">{{ signUpData.dob }}</span>
-            </h5>
-          <!-- ========= log out ====== -->
+        <!-- ... content for step three ... -->
+
+        <div class="flex justify-center m-2 items-center text-gray-700">
+          <img class="w-32 h-32 rounded-[50%] border-2" :src="previewImage" alt="Uploaded Image" />
         </div>
 
-        <div class="flex my-9">
-          <div class="flex-1">
-            <h5>
-              Institution:
-              <span class="text-emerald-800">{{ signUpData.institution }}</span>
-            </h5>
-            <h5>
-              Program of Study:
-              <span class="text-emerald-800">{{
-                signUpData.degree_program
-              }}</span>
-            </h5>
-
-
-
+        <div class="px-4">
+          <ul class="text-gray-700">
+            <li class="flex border-y py-2">
+              <span class="font-bold w-24">Full name:</span>
+              <span class="text-gray-700">
+                {{ signUpData.fname }} {{ signUpData.lname }}</span
+              >
+            </li>
+            <li class="flex border-b py-2">
+              <span class="font-bold w-24">Birthday:</span>
+              <span class="text-gray-700"
+                ><span class="text-emerald-800">{{
+                  signUpData.dob
+                }}</span></span
+              >
+            </li>
+            <li class="flex border-b py-2">
+              <span class="font-bold w-24">School:</span>
+              <span class="text-gray-700">{{ signUpData.institution }}</span>
+            </li>
+            <li class="flex border-b py-2">
+              <span class="font-bold w-24">Program:</span>
+              <span class="text-gray-700">{{ signUpData.degree_program }}</span>
+            </li>
+            <li class="flex border-b py-2">
+              <span class="font-bold w-24">Mobile:</span>
+              <span class="text-gray-700">{{ signUpData.tel }}</span>
+            </li>
+            <li class="flex border-b py-2">
+              <span class="font-bold w-24">Email:</span>
+              <span class="text-gray-700">{{ signUpData.std_mail }}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="flex w-full gap-px">
+          <div class="w-full px-4 relative">
+            <input disabled class="w-full border-0 p-0 bg-white" />
           </div>
-          <div class="flex-1">
-            <h5>
-              Phone: <span class="text-emerald-800">{{ signUpData.tel }}</span>
-            </h5>
-            <h5>
-              Sex: <span class="text-emerald-800">{{ signUpData.gender }}</span>
-            </h5>
-
-            
+          <div class="w-full px-4 relative">
+            <input disabled class="w-full border-0 p-0 bg-white" />
           </div>
         </div>
-        <p class="my-5 text-center text-sm px-4 text-gray-500">
-          By clicking "Next",I agree<br />
-          to Ciraq's <a class="text-blue-800" href="#">Privacy Policy</a>
-        </p>
+
+        <div class="flex justify-center items-center">
+          <p class="my-2 text-center text-sm px-4 text-gray-500">
+            By clicking "Next",I agree<br />
+            to Ciraq's <a class="text-blue-800" href="#">Privacy Policy</a>
+          </p>
+        </div>
+
         <!-- Add other input fields for step 4 -->
         <div class="mt-6 flex mb-10 justify-center px-4 relative gap-2">
           <button
             @click="goToStep(1)"
-            class=" border-2 border-solid border-[#044013] px-3 py-3 text-[#044013] bg-white   rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            class="border-2 border-solid border-[#132E35] px-3 py-3 text-[#132E35] bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           >
             Previous<i class="fa fa-long-arrow-left absolute top-4 left-8"></i>
           </button>
           <button
             @click="submitForm"
-            class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            class="border-0 px-3 py-3 text-white bg-[#132E35] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           >
-            Submit Details<i
-              class="fa fa-long-arrow-right absolute top-5 right-8"
-            ></i>
+            Submit<i class="fa fa-long-arrow-right absolute top-5 right-8"></i>
           </button>
         </div>
       </div>
 
       <div v-show="currentIndex === 3" class="main block">
         <div>
-            <h4 class="flex justify-center items-center mt-5 text-lg text-gray-800 font-medium">Congrats . <span > {{signUpData.fname}}</span></h4> <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /> </svg>
-                <p class="mt-5 mb-10 text-sm px-4 text-center text-pink-700 font-semibold	tracking-wide">Thanks for creating a profile with Ciraq,your details have been submitted successfully. Check your student mail to verify your account. </p>
+          <h4
+            class="flex justify-center items-center mt-5 text-lg text-gray-800 font-medium"
+          >
+            Congrats . <span> {{ signUpData.fname }}</span>
+          </h4>
+          <svg
+            class="checkmark"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 52 52"
+          >
+            <circle
+              class="checkmark__circle"
+              cx="26"
+              cy="26"
+              r="25"
+              fill="none"
+            />
+            <path
+              class="checkmark__check"
+              fill="none"
+              d="M14.1 27.2l7.1 7.2 16.7-16.8"
+            />
+          </svg>
+          <p
+            class="mt-5 mb-10 text-sm px-4 text-center text-pink-700 font-semibold tracking-wide"
+          >
+            Thanks for creating a profile with Ciraq,your details have been
+            submitted successfully. Check your student mail to verify your
+            account.
+          </p>
         </div>
       </div>
-
-
     </div>
   </div>
 </template>
@@ -478,11 +499,9 @@ definePageMeta({
   layout: "blank",
 });
 useHead({
-  title: 'Signup',
-  meta: [
-    { name: 'description', content: 'Student signup' }
-  ],
-})
+  title: "Signup",
+  meta: [{ name: "description", content: "Student signup" }],
+});
 </script>
 
 <script>
@@ -490,6 +509,7 @@ import { useAuthStore } from "../stores/authStore";
 export default {
   data() {
     return {
+      previewImage: null,
       uploadedFileName: null,
       uploadedFileName1: null,
       isDropdownOpen: false,
@@ -558,7 +578,7 @@ export default {
         UCC: "/assets/ucc.png",
         default: "/assets/knustlogo.png",
       },
-      currentIndex: 0,
+      currentIndex: 2,
       formData: {
         firstName: "",
         lastName: "",
@@ -571,11 +591,19 @@ export default {
     };
   },
   computed: {
-step1Complete() {
-      const { fname, lname, gender, dob, institution, degree_program } = this.signUpData;
+    step1Complete() {
+      const { fname, lname, gender, dob, institution, degree_program } =
+        this.signUpData;
 
       // Check if any of the required fields are empty
-      if (!fname || !lname || !gender || !dob || !institution || !degree_program) {
+      if (
+        !fname ||
+        !lname ||
+        !gender ||
+        !dob ||
+        !institution ||
+        !degree_program
+      ) {
         return false; // Return false if any field is empty
       }
 
@@ -583,10 +611,18 @@ step1Complete() {
       return true;
     },
     step2Complete() {
-      const { fname, lname, gender, dob, institution, degree_program } = this.signUpData;
+      const { fname, lname, gender, dob, institution, degree_program } =
+        this.signUpData;
 
       // Check if any of the required fields are empty
-      if (!fname || !lname || !gender || !dob || !institution || !degree_program) {
+      if (
+        !fname ||
+        !lname ||
+        !gender ||
+        !dob ||
+        !institution ||
+        !degree_program
+      ) {
         return false; // Return false if any field is empty
       }
 
@@ -637,20 +673,39 @@ step1Complete() {
     },
     selectUniversity(university) {
       this.selectedUniversity = university;
-      this.buttonText= university.abbreviation;
+      this.buttonText = university.abbreviation;
       this.signUpData.institution = university.abbreviation;
       this.isDropdownOpen = false; // Close dropdown after selection
     },
 
+    // handleImageUpload1(event) {
+    //   const input = event.target;
+    //   if (input.files && input.files[0]) {
+    //     this.stdid_img_name = input.files[0];
+    //     this.uploadedFileName1 = null; // Reset the uploadedFileName
+    //     this.$nextTick(() => {
+    //       this.uploadedFileName1 = input.name; // Set the uploadedFileName with the new file name
+    //     });
+    //   } else {
+    //     this.uploadedFileName1 = null;
+    //   }
+    // },
     handleImageUpload1(event) {
       const input = event.target;
       if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImage = e.target.result; // Set the previewImage to the loaded image data
+        };
+        reader.readAsDataURL(input.files[0]);
+
         this.stdid_img_name = input.files[0];
         this.uploadedFileName1 = null; // Reset the uploadedFileName
         this.$nextTick(() => {
           this.uploadedFileName1 = input.name; // Set the uploadedFileName with the new file name
         });
       } else {
+        this.previewImage = null;
         this.uploadedFileName1 = null;
       }
     },
@@ -768,20 +823,20 @@ step1Complete() {
         const [name, value] = entry;
         // console.log(`Field Name: ${name}, Field Value: ${value}`);
       }
-const authStore = useAuthStore();
+      const authStore = useAuthStore();
 
-  console.log("formData", formData);
-  try {
-    const responseData = await authStore.signup(formData);
-    if (responseData.successful) {
-      this.currentIndex = 3;
-    } else {
-      console.log("failed");
-    }
-  } catch (error) {
-    // Handle errors here if needed
-    console.error("Failed to register:", error);
-  }
+      console.log("formData", formData);
+      try {
+        const responseData = await authStore.signup(formData);
+        if (responseData.successful) {
+          this.currentIndex = 3;
+        } else {
+          console.log("failed");
+        }
+      } catch (error) {
+        // Handle errors here if needed
+        console.error("Failed to register:", error);
+      }
     },
   },
 };

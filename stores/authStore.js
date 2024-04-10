@@ -44,7 +44,6 @@ export const useAuthStore = defineStore("authStore", {
 
           this.setToken(responseData.token)
           this.fetchUser(responseData.userData)
-          this.$router.push('/dashboard');
         } else{
           const error = new Error(responseData.message || "Failed to login.");
           throw error;

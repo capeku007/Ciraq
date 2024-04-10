@@ -9,7 +9,7 @@
     class="fixed bottom-0 left-0 right-0 z-50 hidden w-full p-2 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
   >
       <div class="w-full">
-        <CreatePost/>
+        <CreatePost @stopCamera="handleStopCamera" />
       </div>
   </div>
 
@@ -34,15 +34,6 @@
     <span class="block text-[10px]">Applied</span>
     <span class="block rounded-full"></span>
   </nuxt-link>
-
-  <!-- <nuxt-link
-    class="inline-flex flex-col items-center text-xs font-medium pt-3 pb-1 px-4 text-gray-400 flex-grow"
-    to="/hub"
-  >
-    <i :class="{'bx bxs-group text-[#132E35]': $route.path === '/hub', 'bx bx-group': $route.path !== '/hub'}" class="text-2xl block"></i>
-    <span class="block text-[10px]">Hub</span>
-    <span class="block rounded-full"></span>
-  </nuxt-link> -->
 
       <button
       v-if="$route.path === '/hub'"
@@ -74,9 +65,9 @@
 
   <nuxt-link
     class="inline-flex flex-col items-center text-xs font-medium pt-3 pb-2 px-4 text-gray-400 flex-grow"
-    to="/viewprofile"
+    to="/myprofile"
   >
-    <i :class="{'bx bxs-user-circle text-[#132E35]': $route.path === '/viewprofile', 'bx bx-user-circle': $route.path !== '/viewprofile'}" class="text-2xl block"></i>
+    <i :class="{'bx bxs-user-circle text-[#132E35]': $route.path === '/myprofile', 'bx bx-user-circle': $route.path !== '/myprofile'}" class="text-2xl block"></i>
     <span class="block text-[10px]">Profile</span>
     <span class="block rounded-full"></span>
   </nuxt-link>

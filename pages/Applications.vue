@@ -1,53 +1,32 @@
 <template>
-
-  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl max-h-[85svh] overflow-hidden">
-    <div class="h-full md:flex no-wrap md:-mx-1">
+  <div
+    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden"
+  >
+    <div class=" md:flex no-wrap md:-mx-1">
       <!--  List (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && showJobList)"
-        class="w-full md:w-4/12 md:mx-1"
+        class="w-full md:w-4/12 md:mx-1 grid grid-rows-[[7svh]_1fr] h-[85svh] max-h-[85svh] min-h-[85svh]"
       >
-        <div class="top">
+        <div class="m-2">
           <!-- search input -->
-          <div class="flex items-center max-w-lg mx-auto">
-            <label for="voice-search" class="sr-only">Search</label>
-            <div class="relative w-full">
-              <div
-                class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
-              >
-                <i
-                  class="bx bx-search w-4 h-4 text-gray-500"
-                  aria-hidden="true"
-                ></i>
-              </div>
-              <input
-                type="text"
-                id="voice-search"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search applied listings"
-                required
-              />
-
-              <button
-                type="button"
-                class="absolute inset-y-0 end-0 flex items-center pe-2"
-              >
-                <i
-                  class="bx bx-search inline-flex items-center py-2.5 px-3 text-sm font-medium text-white bg-blue-700 rounded-3xl border border-blue-700"
-                  aria-hidden="true"
-                ></i>
-              </button>
-            </div>
-          </div>
-
+            <select
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            >
+              <option selected>All applications</option>
+              <option value="accepted">Accepted</option>
+              <option value="rejected">Rejected</option>
+              <option value="offers">Offers</option>
+              <option value="declined">Declined</option>
+            </select>
         </div>
-        <ul class="taskList">
+        <ul class="h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
           <li v-for="job in listings" :key="job.id" @click="loadListing(job)">
             <div class="card p-4 bg-white">
               <div class="flex items-center space-x-3 rtl:space-x-reverse">
                 <div class="flex-shrink-0">
                   <img
-                    class="w-10 h-10 rounded-lg "
+                    class="w-10 h-10 rounded-lg"
                     src="../assets/knustlogo.png"
                     alt="company image"
                   />
@@ -60,19 +39,18 @@
                     {{ job.title }}
                   </p>
                 </div>
-                
               </div>
               <div
                 class="flex justify-between mt-4 space-x-3 rtl:space-x-reverse"
               >
                 <span
-                  class="inline-flex items-center bg-gray-200  text-xs font-normal px-2.5 py-0.5 rounded-lg"
+                  class="inline-flex items-center bg-gray-200 text-xs font-normal px-2.5 py-0.5 rounded-lg"
                 >
                   {{ job.companyLocation }}
                 </span>
 
                 <span
-                  class="inline-flex items-center bg-gray-200  text-xs font-normal px-2 py-1 rounded-lg"
+                  class="inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
                 >
                   {{ job.location }}
                 </span>
@@ -82,43 +60,35 @@
                   GH₵ {{ job.pay }}
                 </span>
               </div>
-              
             </div>
           </li>
         </ul>
       </div>
 
       <!--  Body (visible on mobile) -->
-      <div
-        v-if="!isMobile || (isMobile && !showJobList)"
-        class="w-full md:w-8/12 md:mx-1 "
-      >
-        <div class="card2 m-2 shadow bg-white">
-          <ListingInfo
+
+      <div v-if="!isMobile || (isMobile && !showJobList)" class=" md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden">
+        
+        <div class="m-2 bg-white rounded-xl overflow-hidden">
+          <AppliedListing
             :selectedListing="selectedListing"
             @loadJobsMobile="loadJobsMobile"
           />
         </div>
+        <!-- <div></div> -->
       </div>
-
-
     </div>
   </div>
-
-
-
 </template>
 <script setup>
 definePageMeta({
   layout: "mobile",
-  auth:false
+  auth: false,
 });
 useHead({
-  title: 'Applications',
-  meta: [
-    { name: "jobs you've applied for", content: 'Student job list' }
-  ],
-})
+  title: "Applications",
+  meta: [{ name: "jobs you've applied for", content: "Student job list" }],
+});
 </script>
 <script>
 import { useAuthStore } from "~/stores/authStore";
@@ -236,6 +206,7 @@ export default {
   methods: {
     loadListing(job) {
       this.selectedListing = job;
+      console.log(job)
       // Toggle between Message List and Message Body on mobile
       if (this.isMobile) {
         this.showJobList = false;
@@ -285,49 +256,15 @@ export default {
 </script>
 
 <style scoped>
-.taskList {
-  min-height: 74svh;
-  max-height: 74svh;
-  overflow-y: auto;
-  padding-bottom: 20vh;
-}
+
 .card {
   width: 95%;
   border-radius: 1rem;
-  border: 1px solid #6c707168;
   margin: 0.5rem auto;
 }
-.card2 {
-  min-width: 96%;
-  max-width: 96%;
-  border-radius: 1rem;
-  border: 1px solid #6c707168;
-  min-height: 82svh;
-  max-height: 82svh;
-  overflow-y: auto;
-}
-
 .card:hover {
   cursor: pointer;
 }
 
-.span {
-  font-size: 10px;
-}
 
-.card:hover > .img {
-  transition: 0.5s ease-in-out;
-  background: linear-gradient(#9198e5, #712020);
-}
-
-
-.top {
-  position: relative;
-  padding: 10px;
-}
-
-.top:after {
-  position: absolute;
-  display: block;
-}
 </style>

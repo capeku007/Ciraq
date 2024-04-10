@@ -49,6 +49,15 @@
               Part Time
             </span>
           </div>
+                  <!-- apply button -->
+        <div class="mt-4">
+          <button
+            disabled
+            class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+          >
+            Applied &nbsp; 11/05/2024
+          </button>
+        </div>
         </div>
         <!-- job description -->
         <div>
@@ -107,12 +116,7 @@
 
         <!-- apply button -->
         <div class="mt-4">
-          <button
-            @click="applyJob()"
-            class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-          >
-            Apply
-          </button>
+          
         </div>
         <!-- NEW UP HERE -->
       </div>

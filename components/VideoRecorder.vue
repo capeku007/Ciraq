@@ -22,7 +22,7 @@ export default {
     };
   },
   mounted() {
-    this.setupCamera();
+    // this.setupCamera();
   },
   methods: {
 async setupCamera() {

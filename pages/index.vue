@@ -1,78 +1,115 @@
 <template>
-  <div class="centerDiv w-[24rem]">
-    <div class="relative flex flex-wrap w-full">
+  <div
+    class="flex justify-center items-center h-screen max-w-md mx-auto rounded-lg overflow-hidden md:max-w-lg"
+  >
+    <div class="relative flex flex-wrap w-11/12">
       <div class="w-full">
         <div>
           <div class="flex justify-center items-center text-gray-700">
             <img class="w-24" src="/assets/logo.png" />
           </div>
 
-          <form class="mt-4">
-            <div class="mx-auto max-w-lg">
-              <div class="py-2">
-                <span class="px-1 text-sm text-gray-600">Username</span>
-                <input
-                  v-model="uname"
-                  placeholder=""
-                  type="text"
-                  class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
-                />
+          <div>
+            <form v-if="!forgotPassword" class="mt-4">
+              <div class="mx-auto max-w-lg">
+                <div class="py-2">
+                  <span class="px-1 text-sm text-gray-600">Username</span>
+                  <input
+                    v-model="uname"
+                    placeholder=""
+                    type="text"
+                    class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
+                  />
+                </div>
+                <div class="py-2">
+                  <div class="flex items-center justify-between">
+                    <label for="password" class="px-1 text-sm text-gray-600"
+                      >Password</label
+                    >
+                    <div class="text-sm">
+                      <nuxt-link
+                        to="/"
+                        @click="toggleForgotPassword"
+                        class="cursor-pointer text-sm tracking-tighter text-[#8FBBBB] border-b-2 border-gray-200 hover:border-gray-400"
+                        >Forgot password?</nuxt-link
+                      >
+                    </div>
+                  </div>
+                  <div class="relative">
+                    <input
+                      v-model="pword"
+                      placeholder=""
+                      :type="showPassword ? 'text' : 'password'"
+                      class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
+                    />
+                    <div
+                      class="absolute inset-y-0 right-0 pr-3 flex items-center text-lg leading-5"
+                    >
+                      <i
+                        class="bx bx-hide cursor-pointer text-gray-700"
+                        v-if="!showPassword"
+                        @click="togglePasswordVisibility"
+                      ></i>
+
+                      <i
+                        class="bx bx-show cursor-pointer text-gray-700"
+                        v-else
+                        @click="togglePasswordVisibility"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  @click.prevent="loginUser"
+                  class="text-lg font-semibold mt-3 bg-[#132E35] w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
+                >
+                  Login
+                </button>
               </div>
-              <div class="py-2">
+              <p class="mt-10 text-center text-sm text-gray-400">
+                Not a member?
+                <nuxt-link
+                  to="/signup"
+                  class="font-semibold leading-6 text-[#132E35] hover:text-[#044013]"
+                  >create an account</nuxt-link
+                >
+              </p>
+            </form>
+
+            <form v-if="forgotPassword">
+              <div class="pb-2 pt-8">
                 <div class="flex items-center justify-between">
                   <label for="password" class="px-1 text-sm text-gray-600"
-                    >Password</label
+                    >Student email</label
                   >
                   <div class="text-sm">
                     <nuxt-link
                       to="/"
-                      class="cursor-pointer text-sm tracking-tighter text-[#8FBBBB] border-b-2 border-gray-200 hover:border-gray-400"
-                      >Forgot password?</nuxt-link
+                      @click="toggleForgotPassword"
+                      class="cursor-pointer text-sm tracking-tighter text-[#307283] border-b-2 border-gray-200 hover:border-gray-400"
+                      >Login</nuxt-link
                     >
                   </div>
                 </div>
                 <div class="relative">
                   <input
-                    v-model="pword"
+                    v-model="resetEmail"
                     placeholder=""
-                    :type="showPassword ? 'text' : 'password'"
-                    class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
+                    type="email"
+                    class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#132E35] focus:outline-none"
                   />
-                  <div
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-lg leading-5"
-                  >
-                    <i
-                      class="bx bx-hide cursor-pointer text-gray-700"
-                      v-if="!showPassword"
-                      @click="togglePasswordVisibility"
-                    ></i>
-
-                    <i
-                      class="bx bx-show cursor-pointer text-gray-700"
-                      v-else
-                      @click="togglePasswordVisibility"
-                    ></i>
-                  </div>
                 </div>
               </div>
 
               <button
-                @click.prevent="loginUser"
-                class="text-lg font-semibold mt-3 bg-[#044013] w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
+                @click.prevent="resetPassword"
+                class="text-lg font-semibold mt-3 bg-[#132E35] w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
               >
-                Login
+                Reset Password
               </button>
-            </div>
-          </form>
-
-          <p class="mt-10 text-center text-sm text-gray-400">
-            Not a member?
-            <nuxt-link
-              to="/signup"
-              class="font-semibold leading-6 text-[#044013] hover:text-[#044013]"
-              >create an account</nuxt-link
-            >
-          </p>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -84,18 +121,14 @@
 import { useAuthStore } from "../stores/authStore";
 import { reactive } from "vue";
 useHead({
-  title: 'Login',
-  meta: [
-    { name: 'description', content: 'Student login' }
-  ],
-})
+  title: "Login",
+  meta: [{ name: "description", content: "Student login" }],
+});
 // Define loginData using reactive
 definePageMeta({
-    middleware:["already-auth"],
+  middleware: ["already-auth"],
   layout: "blank",
 });
-
-
 
 const uname = ref("capeku248");
 const pword = ref("Godi$Great");
@@ -105,8 +138,14 @@ const isMobile = ref(false);
 const showJobList = ref(true);
 const showPassword = ref(false);
 
+const forgotPassword = ref(false);
+
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;
+};
+
+const toggleForgotPassword = () => {
+  forgotPassword.value = !forgotPassword.value;
 };
 
 const handleResize = () => {
@@ -141,98 +180,13 @@ const loginUser = async () => {
       p_word: pword.value,
     };
     authStore.login(loginData);
-            router.push('/dashboard');
-
+    router.push("/dashboard");
   } catch (err) {
     this.error = err.message;
     alert(this.error);
   }
 };
-
-
-
-
 </script>
 
 <style scoped>
-.card {
-  border-radius: 1rem;
-  border: 1px solid #00656570;
-}
-.parentContainer {
-  display: flex;
-}
-
-.loginImageCon {
-  width: 60%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.loginForm {
-  width: 40%;
-  padding: 5rem;
-}
-
-.container {
-  border-radius: 1px;
-  padding: 3rem;
-  box-sizing: border-box;
-  font-family: sans-serif;
-  color: #737373;
-  border: 1px solid #006565;
-  text-align: center;
-  background: white;
-  border-radius: 1rem;
-}
-
-.login-box .user-box {
-  position: relative;
-}
-
-.login-box .user-box input {
-  width: 100%;
-  padding: 10px 0;
-  font-size: 16px;
-  /* color: #fff; */
-  margin-bottom: 20px;
-  border: none;
-  border-bottom: 2px solid #737373;
-  outline: none;
-  background: transparent;
-}
-
-.login-box .user-box label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 10px 0;
-  font-size: 16px;
-  /* color: #fff; */
-  pointer-events: none;
-  transition: 0.5s;
-}
-
-.login-box .user-box input:focus ~ label,
-.login-box .user-box input:valid ~ label {
-  top: -20px;
-  left: 0;
-  /* color: #bdb8b8; */
-  font-size: 12px;
-}
-
-.loginBtn {
-  width: 80%;
-  border-radius: 0.5rem;
-  padding: 0.5rem 0;
-  background-color: #006565;
-  border: none;
-  color: #fff;
-}
-
-.loginImg {
-  width: 90%;
-  margin-left: 2rem;
-}
 </style>

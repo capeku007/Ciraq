@@ -48,7 +48,7 @@ onMounted(() => {
 </script>
 
 
-<style >
+<style scoped>
 .container {
   display: grid;
   overflow: hidden;
@@ -61,26 +61,26 @@ grid-template-rows: 7% 1fr 7%;
     max-height: 100vh; 
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+  grid-template-columns: 100%;
   background-color: #f7f7f7;
+    min-width: 100%;
+  max-width:100%;
 }
 .header {
-  /* grid-area: 1 / 1 / 2 / 2; */
-  /* background-color: blue; */
+
     overflow: hidden;
 }
+
 .body {
-  /* grid-area: 2 / 1 / 3 / 2; */
   height: 85svh;
   min-height: 85svh;
   overflow-y: hidden;
   background-color: #f7f7f7;
-  
 }
 .footer {
   overflow: hidden;
 }
 
-/* Custom scrollbar styles */
 ::-webkit-scrollbar {
   width: 2.5px;
   height: 2.5px;

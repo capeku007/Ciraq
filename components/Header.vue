@@ -1,8 +1,8 @@
 <template>
-<div>
-    <nav class="top bg-white border-gray-200  ">
+<div class="bg-white min-w-full">
+    <nav class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl top  ">
     <div
-      class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-3 px-4"
+      class=" flex flex-wrap items-center justify-between mx-auto py-3 px-4"
     >
       <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
         <img
@@ -11,7 +11,7 @@
           alt="Flowbite Logo"
         />
         <span
-          class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+          class="self-center text-2xl font-semibold whitespace-nowrap"
           >Ciraq</span
         >
       </a>
@@ -53,40 +53,14 @@
                 >
               </div>
               <ul class="py-2" aria-labelledby="user-menu-button" >
-                <li >
-                  <nuxt-link to="/dashboard" 
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                    >Dashboard</nuxt-link
-                  >
-                </li>
 
                 <li>
-                  <nuxt-link to="/applications"
+                  <button @click="edituserPassword"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                    >Applications</nuxt-link
+                    >Edit Password</button
                   >
                 </li>
-
-                <li>
-                  <nuxt-link to="/notifications"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                    >Notifications</nuxt-link
-                  >
-                </li>
-
-                <li>
-                  <nuxt-link to="/Messages"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                    >Messages</nuxt-link
-                  >
-                </li>
-
-                <li>
-                  <nuxt-link to="/profileview"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                    >Profile</nuxt-link
-                  >
-                </li>                
+               
                 <li>
                   <nuxt-link
                     to="/"
@@ -109,20 +83,70 @@
 
     </div>
   </nav>
+
+  <!-- edit modal -->
+  <div
+    id="editPassword"
+    tabindex="-1"
+    data-modal-target="editPassword"
+    aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
+  >
+    <div class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden">
+      <div class="relative bg-white rounded-lg shadow">
+        <div class="p-4 md:p-5">
+  <div
+    class="flex justify-center items-center max-w-md mx-auto rounded-lg overflow-hidden md:max-w-lg"
+  >
+    <div class="relative flex flex-wrap w-11/12">
+      <div class="w-full">
+        <div>
+          <div class="flex justify-center items-center text-gray-700">
+            <img class="w-24" src="/assets/logo.png" />
+          </div>
+
+  
+              <div class="pb-2 pt-8">
+                <div class="flex items-center justify-between">
+                  <label for="password" class="px-1 text-sm text-gray-600"
+                    >Student email</label
+                  >
+                </div>
+                <div class="relative">
+                  <input
+                    v-model="resetEmail"
+                    placeholder=""
+                    type="email"
+                    class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#132E35] focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <button
+                @click.prevent="resetPassword"
+                class="text-lg font-semibold mt-3 bg-[#132E35] w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
+              >
+                Reset Password
+              </button>
+       
+        </div>
+      </div>
+    </div>
+  </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
-<script>
-import 'flowbite';
-export default {
-  data() {
-    return {
-      fdate: null,
-      tdate: null,
-      loggedIn: true,
-    };
-  },
-  methods: {},
+<script setup>
+const { showClosableModal } = useModal();
+const loggedIn = ref(true);
+const edituserPassword = () => {
+  // Initialize useModal composable
+  const modalId = "editPassword";
+  showClosableModal(modalId);
 };
 </script>
 

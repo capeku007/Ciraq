@@ -1,13 +1,14 @@
 
 <template>
-  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl m-2">
-    <div class="h-full md:flex no-wrap md:-mx-1">
+  <div     class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden"
+>
+    <div class=" md:flex no-wrap md:-mx-1">
       <!--  List (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && showJobList)"
-        class="w-full md:w-4/12 md:mx-1"
+        class="w-full md:w-4/12 md:mx-1 grid grid-rows-[[7svh]_1fr] h-[85svh] max-h-[85svh] min-h-[85svh]"
       >
-        <div class="top">
+        <div class="m-2">
           <!-- search input -->
           <div class="flex items-center max-w-lg mx-auto">
             <label for="voice-search" class="sr-only">Search</label>
@@ -52,7 +53,7 @@
             </span>
           </div>
         </div>
-        <ul class="taskList">
+        <ul class="h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
           <li v-for="job in listings" :key="job.id" @click="loadListing(job)">
             <div class="card p-4 bg-white">
               <div class="flex items-center space-x-3 ">
@@ -101,16 +102,15 @@
       </div>
 
       <!--  Body (visible on mobile) -->
-      <div
-        v-if="!isMobile || (isMobile && !showJobList)"
-        class="w-full md:w-8/12 md:mx-1"
-      >
-        <div class="card2 m-2 p-2 shadow-md">
+      <div v-if="!isMobile || (isMobile && !showJobList)" class=" md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden">
+        
+        <div class="m-2 bg-white rounded-xl overflow-hidden">
           <ListingInfo
             :selectedListing="selectedListing"
             @loadJobsMobile="loadJobsMobile"
           />
         </div>
+        <!-- <div></div> -->
       </div>
     </div>
   </div>
@@ -122,7 +122,8 @@ import { useMainStore } from "../stores/main";
 
 definePageMeta({
   layout: "mobile",
-  middleware: ["auth"],
+  // middleware: ["auth"],
+  auth:false
 });
 useHead({
   title: "Dashboard",

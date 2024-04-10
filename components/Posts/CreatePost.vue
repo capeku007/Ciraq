@@ -16,7 +16,8 @@
         <span class="block h-1 w-10 bg-gray-300 rounded-full"></span>
       </div>
       <div class="grid grid-rows-[7.5%_1fr_15%] min-h-[99svh] max-h-[99svh]">
-        <div class="">
+        <div class=""         @mousedown="dragStart"
+        @touchstart="dragStart">
           <div class="">
             <ul
               class="flex justify-center items-center rounded-3xl text-center p-1"
