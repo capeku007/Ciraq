@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white shadow rounded-lg text-gray-900 pb-10 relative">
+  <div class="bg-white shadow-xl rounded-lg text-gray-900 pb-10 relative">
     <div class="rounded-t-lg h-32 overflow-hidden">
       <img
         class="object-cover object-top w-full"
@@ -60,28 +60,15 @@
         </div>
       </div>
     </div>
-    <div class="mt-4">
-            <button
-              disabled
-              class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-            >
-              Edit Profile
-            </button>
-          </div>
+    <div class="fixed top-4 right-4 z-10">
+      <button @click="closeModal" class="m-2 bg-gray-200 text-red-400 rounded-full w-8 h-8 flex items-center justify-center ">
+        <i class="bx bx-x text-2xl"></i>
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
-useHead({
-  title: "Company Info",
-  meta: [{ name: "description", content: "Student login" }],
-});
-
-// Define loginData using reactive
-definePageMeta({
-  middleware: ["already-auth"],
-  layout: "company",
-});
 
 const { showClosableModal, hideModal } = useModal();
 

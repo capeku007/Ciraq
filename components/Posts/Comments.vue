@@ -14,7 +14,8 @@
       >
         <span class="block h-1 w-10 bg-gray-300 rounded-full"></span>
       </div>
-      <div class="grid grid-rows-[7.5%_1fr_15%] min-h-full max-h-full">
+      <div         @mousedown="dragStart"
+        @touchstart="dragStart" class="grid grid-rows-[7.5%_1fr_15%] min-h-full max-h-full">
         <div class="">
           <p class="text-gray-900 text-xs font-semibold sm:text-sm text-center">
             Comments

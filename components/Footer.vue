@@ -1,5 +1,5 @@
 <template>
-  <div
+  <!-- <div
     ref="bottomSheet"
     id="bottomModal1"
     tabindex="-1"
@@ -11,7 +11,7 @@
       <div class="w-full">
         <CreatePost @stopCamera="handleStopCamera" />
       </div>
-  </div>
+  </div> -->
 
   <!-- component -->
   <div
@@ -35,7 +35,7 @@
     <span class="block rounded-full"></span>
   </nuxt-link>
 
-      <button
+      <!-- <button
       v-if="$route.path === '/hub'"
       @click="createPost"
       class="inline-flex flex-col items-center text-xs font-medium pt-3 pb-2 px-4 text-[#132E35] flex-grow"
@@ -43,13 +43,12 @@
       <i class="bx bx-image-add text-2xl block"></i>
       <span class="block text-[10px]">New</span>
       <span class="block rounded-full"></span>
-    </button>
+    </button> -->
     <nuxt-link
-      v-else
       class="inline-flex flex-col items-center text-xs font-medium pt-3 pb-2 px-4 text-gray-400 flex-grow"
-      to="/hub"
+      to="/CampusRoam"
     >
-      <i class="bx bx-group text-2xl block"></i>
+      <i :class="{'bx bxs-group text-[#132E35]': $route.path === '/CampusRoam', 'bx bx-group': $route.path !== '/CampusRoam'}" class="text-2xl block"></i>
       <span class="block text-[10px]">Hub</span>
       <span class="block rounded-full"></span>
     </nuxt-link>

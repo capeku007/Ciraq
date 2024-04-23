@@ -31,14 +31,14 @@
           >
             <div v-if="message.sender === 'user'" class="ml-3 maxWidth">
               <div
-                class="text-gray-600 bg-gray-100 border-b border-gray-300 py-2 px-4 rounded-xl whitespace-pre-wrap"
+                class="text-gray-600 bg-gray-100 border-b border-gray-300 py-2 px-4 rounded-xl whitespace-pre-wrap text-xs"
               >
                 {{ message.text }}
               </div>
             </div>
             <div v-else class="ml-auto maxWidth">
               <div
-                class="text-black bg-[#72ead2] border-b border-gray-300 py-2 px-4 rounded-xl whitespace-pre-wrap"
+                class="text-black bg-[#72ead2] border-b border-gray-300 py-2 px-4 rounded-xl whitespace-pre-wrap text-xs"
               >
                 {{ message.text }}
               </div>

@@ -5,7 +5,7 @@
       <!-- Messages List (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && showMessageList)"
-        class="w-full md:w-4/12 md:mx-1 grid grid-rows-[[7svh]_1fr] h-[85svh] max-h-[85svh] min-h-[85svh]"
+        class=" rounded-xl w-full md:w-4/12 md:mx-1 grid grid-rows-[[7svh]_1fr] h-[85svh] max-h-[85svh] min-h-[85svh] bg-white m-2 "
       >
         <div class="m-2">
           <h5 class="text-2xl px-4">Messages</h5>

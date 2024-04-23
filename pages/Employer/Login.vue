@@ -8,14 +8,14 @@
           <div class="flex justify-center items-center text-gray-700">
             <img class="w-24" src="/assets/logo.png" />
           </div>
-
+            <p class="text-center text-lg font-semibold mt-4">Employer Login</p>
           <div>
             <form v-if="!forgotPassword" class="mt-4">
               <div class="mx-auto max-w-lg">
                 <div class="py-2">
-                  <span class="px-1 text-sm text-gray-600">Username</span>
+                  <span class="px-1 text-sm text-gray-600">Email</span>
                   <input
-                    v-model="uname"
+                    v-model="email"
                     placeholder=""
                     type="text"
                     class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
@@ -28,6 +28,7 @@
                     >
                     <div class="text-sm">
                       <p
+                        
                         @click="toggleForgotPassword"
                         class="cursor-pointer text-sm tracking-tighter text-[#8FBBBB] border-b-2 border-gray-200 hover:border-gray-400"
                         >Forgot password?</p
@@ -66,21 +67,14 @@
                   Login
                 </button>
               </div>
-              <p class="mt-10 text-center text-sm text-gray-400">
-                Not a member?
-                <nuxt-link
-                  to="/signup"
-                  class="font-semibold leading-6 text-[#132E35] hover:text-[#044013]"
-                  >create an account</nuxt-link
-                >
-              </p>
+              
             </form>
 
             <form v-if="forgotPassword">
               <div class="pb-2 pt-8">
                 <div class="flex items-center justify-between">
                   <label for="password" class="px-1 text-sm text-gray-600"
-                    >Student email</label
+                    >Email</label
                   >
                   <div class="text-sm">
                     <p

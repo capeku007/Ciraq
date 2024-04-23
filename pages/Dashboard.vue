@@ -122,7 +122,7 @@ import { useMainStore } from "../stores/main";
 
 definePageMeta({
   layout: "mobile",
-  // middleware: ["auth"],
+  middleware: ["auth"],
   auth:false
 });
 useHead({

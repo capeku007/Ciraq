@@ -162,9 +162,10 @@ const applyJob = () => {
   openYesOrNoClick(func);
 };
 
+const emit = defineEmits(['loadJobsMobile']);
 const goBack = () => {
   // Implement your goBack logic here
-  // this.$emit("loadJobsMobile");
+  emit("loadJobsMobile");
 };
 
 const handleTouchStart = (event) => {

@@ -1,5 +1,19 @@
 <template>
+  <div
+    id="viewCompanyInfo"
+    tabindex="-1"
+    data-modal-target="viewCompanyInfo"
+    aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
+  >
+    <div
+      class="relative w-full max-h-full overflow-y-auto bg-white rounded-2xl"
+    >
+      <CompanyInfo />
+    </div>
+  </div>
   <div v-if="selectedListing" class="grid grid-rows-[1fr] max-h-full h-full">
+    <!-- view profile modal -->
     <div
       @touchstart="handleTouchStart"
       @touchend="handleTouchEnd"
@@ -9,7 +23,7 @@
       <div class="md:p-5 px-4">
         <div class="py-4 sticky top-0 z-10 bg-white">
           <div class="flex items-center space-x-3">
-            <div class="flex-shrink-0">
+            <div class="flex-shrink-0" @click="viewCompany()">
               <img
                 class="w-10 h-10 rounded-lg sm:w-16 sm:h-16"
                 src="../assets/knustlogo.png"
@@ -49,15 +63,15 @@
               Part Time
             </span>
           </div>
-                  <!-- apply button -->
-        <div class="mt-4">
-          <button
-            disabled
-            class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-          >
-            Applied &nbsp; 11/05/2024
-          </button>
-        </div>
+          <!-- apply button -->
+          <div class="mt-4">
+            <button
+              disabled
+              class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            >
+              Applied &nbsp; 11/05/2024
+            </button>
+          </div>
         </div>
         <!-- job description -->
         <div>
@@ -113,12 +127,6 @@
             </ul>
           </div>
         </div>
-
-        <!-- apply button -->
-        <div class="mt-4">
-          
-        </div>
-        <!-- NEW UP HERE -->
       </div>
     </div>
   </div>
@@ -146,9 +154,18 @@ const { selectedListing } = defineProps({
     required: true,
   },
 });
+const emit = defineEmits(["loadJobsMobile"]);
+
 const touchStartX = ref(0);
 
-const { dialogInfo, showMessage, openYesOrNoClick } = useModal();
+const { showClosableModal, dialogInfo, showMessage, openYesOrNoClick } =
+  useModal();
+
+const viewCompany = () => {
+  // Initialize useModal composable
+  const modalId = "viewCompanyInfo";
+  showClosableModal(modalId);
+};
 
 const applyJob = () => {
   let info = "Confirm application for " + selectedListing.value.title + " task";
@@ -168,7 +185,7 @@ const applyJob = () => {
 
 const goBack = () => {
   // Implement your goBack logic here
-  // this.$emit("loadJobsMobile");
+  emit("loadJobsMobile");
 };
 
 const handleTouchStart = (event) => {

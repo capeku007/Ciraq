@@ -8,7 +8,7 @@
     aria-hidden="true"
     class="fixed bottom-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
   >
-      <Comments/>
+    <Comments />
   </div>
 
   <!-- tabs -->
@@ -35,17 +35,16 @@
     </div>
 
     <div class="w-full bg-red overflow-hidden p-2 mx-auto">
-      <div class="sm:w-11/12 sm:pl-40 " v-show="activeTab === 0">
+      <div class="sm:w-11/12 sm:pl-40" v-show="activeTab === 0">
         <!-- Education timeLine -->
 
-<div class="flex max-h-[76svh] h-[76svh] min-h-[86svh] overflow-hidden">
-  <div id="googleMaps" class="max-h-[76svh] h-[76svh] w-full bg-red-500 rounded-2xl">
-    <div class="h-[calc(74svh-1rem)] bg-transparent m-4">Content 2</div>
-  </div>
-</div>
-
-
-        
+        <div class="flex max-h-[76svh] h-[76svh] min-h-[86svh] overflow-hidden">
+          <div class="max-h-[76svh] h-[76svh] w-full  rounded-2xl">
+            <div class="h-[calc(74svh-1rem)] bg-transparent m-4 ">
+              <Roam/>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="sm:w-11/12 sm:pl-40" v-show="activeTab === 1">
@@ -238,19 +237,19 @@
                 <div
                   class="grid grid-rows-[1fr] gap-y-4 min-h-[63svh] max-h-[63svh] overflow-hidden"
                 >
-                  <div class="min-h-[63svh] max-h-[63svh] overflow-hidden flex justify-center items-center">
-
-                      <video
-    v-if="imageUrl"
-    src="../assets/video.mp4"
-    class="preview-image w-full md:w-auto"
-    controls
-    autoplay
-    loop
-    muted
-  ></video>
+                  <div
+                    class="min-h-[63svh] max-h-[63svh] overflow-hidden flex justify-center items-center"
+                  >
+                    <video
+                      v-if="imageUrl"
+                      src="../assets/video.mp4"
+                      class="preview-image w-full md:w-auto"
+                      controls
+                      autoplay
+                      loop
+                      muted
+                    ></video>
                   </div>
-                  
                 </div>
               </div>
 
@@ -276,7 +275,6 @@
             </div>
           </li>
 
-
           <div>
             <p class="m-10 text-center">end of the line</p>
           </div>
@@ -288,11 +286,10 @@
     </div>
     <div class=""></div>
   </div>
-  
 </template>
 
 <script setup>
-import Comments from "@/components/Posts/Comments.vue"
+import Comments from "@/components/Posts/Comments.vue";
 import { useAuthStore } from "../stores/authStore";
 import { reactive } from "vue";
 
@@ -331,6 +328,7 @@ const openComments = () => {
 </script>
 
 <style scoped>
+
 .scrollContainer {
   overflow-y: scroll;
   scroll-snap-type: y mandatory;

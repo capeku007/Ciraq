@@ -1,5 +1,5 @@
 <template>
-<!-- view job modal -->
+
   <div
     id="jobInfo"
     tabindex="-1"
@@ -7,7 +7,8 @@
     aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
   >
-    <div class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden">
+    <div class="relative w-full  max-h-full overflow-y-auto scrollbar-hidden">
+      
       <div class="relative bg-white rounded-lg shadow">
         <div class="p-4 md:p-5">
           <div class="py-4 sticky top-0 z-10 bg-white rounded-lg">
@@ -21,7 +22,7 @@
               </div>
               <div class="flex-1 min-w-0">
                 <p class="text-xs sm:text-base font-normal text-gray-500">
-                  job.company
+                  job.companys
                 </p>
                 <p class="text-base sm:text-lg font-semibold">job.title</p>
               </div>
@@ -105,44 +106,50 @@
     </div>
   </div>
 
-    <!-- edit modal -->
-  <div
-    id="editProfile"
-    tabindex="-1"
-    data-modal-target="editProfile"
-    aria-hidden="true"
-    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
-  >
-    <div class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden">
-      <div class="relative bg-white rounded-lg shadow">
-        <div class="p-4 md:p-5">
-  <div
-    class="flex justify-center items-center max-w-md mx-auto rounded-lg overflow-hidden md:max-w-lg"
-  >
-    <div class="relative flex flex-wrap w-11/12">
-      <div class="w-full">
-        <EditProfile/>
-      </div>
-    </div>
-  </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr]  p-2 h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden">
-    <div class="parent bg-white">
+  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] m-2 p-2 h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden">
+    <div class="parent">
+
       <div class="div1">
+        
+         <div class="flex min-w-full">
+          <div class=" w-[20%] mx-auto flex justify-center items-center">
+            <img
+                class=" h-auto max-w-xs object-cover rounded-full"
+                src="/assets/images/profile-img.jpg" alt=""
+              />
+          </div>
+
+          <div class=" w-[80%] mx-auto">
+            <div><p class="text-lg text-gray-800 font-bold leading-none">Christian Apeku</p></div>
+            <div><span class="mr-3 ">Bsc Industrial Art</span><span class="mr-3 border-r border-gray-200  max-h-0"></span><span>KNUST</span></div>
+            <div><p>Year 4</p></div>
+            <div class="flex pt-2  text-sm text-gray-500">
+								<div class="flex-1 inline-flex items-center">
+                  <i class="bx bxs-briefcase-alt mr-2 text-sm pt-1"></i>
+									<p class="">4 </p>
+								</div>
+								<div class="flex-1 inline-flex items-center">
+									<i class="bx bxs-briefcase-alt mr-2 text-sm pt-1"></i>
+									<p class="">14 Components</p>
+								</div>
+								<button  class="flex-no-shrink bg-green-400 hover:bg-green-500 px-5 ml-4 py-2 text-xs shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-green-300 hover:border-green-500 text-white rounded-full transition ease-in duration-300">FOLLOW</button>
+							</div>
+          </div>
+        </div>
+
+                      
         <!-- component -->
-        <div class="min-h-[17svh] max-h-[17svh] w-full flex justify-center items-center px-2 pt-2 sm:pt-4">
+
+        <div class="h-[16.2vh] w-full flex justify-center items-center">
           <div class="absolute flex justify-center items-center">
             <div class="w-full h-1/2 flex flex-col justify-center items-center">
               <img
-                class=" w-[4rem] sm:w-[5rem] rounded-full"
-                src="https://vojislavd.com/ta-template-demo/assets/img/profile.jpg" alt=""
+                class=" h-15 w-15 rounded-full"
+                src="http://ciraq.co/api/public/uploads/1709342552416profilepic.jpg" alt=""
               />
-              <p class="text-gray-700 font-bold">{{user.fname }} {{user.lname}}</p>
-              <p class="text-gray-500 text-xs">Bsc Computer Science | Year 3</p>
+              <h1 class="text-gray-700 font-bold">{{user.fname }} {{user.lname}}</h1>
+              <!-- <p class="text-gray-500 text-xs">Year 3</p> -->
             </div>
           </div>
 
@@ -179,11 +186,11 @@
             </div>
           </div>
         </div>
-        <!-- <div class="flex justify-center">
+        <div class="flex justify-center">
           <div class="border-b border-gray-300 w-8/12"></div>
-        </div> -->
+        </div>
         <!-- scrollable -->
-        <div class="h-[63vh] px-2">
+        <div class="h-[64.8vh]">
           <!-- Professional summary -->
           <div class="pb-1 mt-1 bg-white rounded-lg">
             <button
@@ -220,8 +227,8 @@
           </div>
 
           <!-- tabs -->
-          <div class="flex justify-center items-center px-2">
-            <div class="h-[58vh] overflow-y-auto w-full">
+          <div class="flex justify-center items-center">
+            <div class="h-[60vh] overflow-y-auto w-full">
               <ul
                 class="flex justify-center items-center sticky top-0 z-10 bg-white rounded-lg"
               >
