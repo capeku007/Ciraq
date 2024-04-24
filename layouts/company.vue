@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Modals />
     <div :class="['sidebar', { open: isOpen }]">
       <div class="logo-details">
         <img src="../assets/logo.png" class="icon w-10 h-10 rounded-full mr-4 " alt="ciraq logo">
@@ -22,8 +23,16 @@
           </nuxt-link>
           <span class="tooltip">New Listing</span>
         </li>
+        
         <li>
-          <nuxt-link to="/employer/about" exact>
+          <nuxt-link to="/employer/new" exact>
+            <i class="bx bx-conversation"></i>
+            <span class="links_name">Chats</span>
+          </nuxt-link>
+          <span class="tooltip">Chats</span>
+        </li>
+        <li>
+          <nuxt-link to="/employer/CompanyProfile" exact>
             <i class="bx bx-detail"></i>
             <span class="links_name">Company Profile</span>
           </nuxt-link>
@@ -49,24 +58,18 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import "boxicons/css/boxicons.min.css";
-export default {
-  data() {
-    return {
-      isOpen: false,
-    };
-  },
-  methods: {
-    toggleSidebar() {
-      this.isOpen = !this.isOpen;
-    },
-  },
-    
+import Modals from "@/components/UI/Modals.vue";
+
+const isOpen = ref(false);
+
+const toggleSidebar = () => {
+  isOpen.value = !isOpen.value;
 };
 </script>
 
-<style>
+<style scoped>
 
 .sidebar {
   position: fixed;
@@ -297,5 +300,38 @@ export default {
 
 .nav-list .active {
   background-color: #fff;
+}
+
+/* Custom scrollbar styles */
+/* For WebKit-based browsers (Chrome, Safari, Opera) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* For Mozilla Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #f7f7f7 #f1f1f1;
+}
+
+/* For Internet Explorer and Edge */
+body {
+  scrollbar-face-color: #ebebeb;
+  scrollbar-track-color: #f1f1f1;
 }
 </style>

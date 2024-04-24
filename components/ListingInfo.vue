@@ -18,7 +18,7 @@
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-base sm:text-lg font-semibold">
-                {{ selectedListing.job_title }}
+                {{ selectedListing.title }}
               </p>
               <p class="text-xs sm:text-base font-normal text-gray-500">
                 {{ selectedListing.contact_information }}
@@ -135,31 +135,36 @@
 <script setup>
 import { ref } from "vue";
 import useModal from "../composables/useModal";
+import { useModalStore } from "../stores/modalStore.js";
 
 const { selectedListing } = defineProps({
   selectedListing: {
     type: Object,
-    required: true,
   },
 });
+
 const touchStartX = ref(0);
 
-const { dialogInfo, showMessage, openYesOrNoClick } = useModal();
+ const modalStore = useModalStore();
 
 const applyJob = () => {
-  let info = "Confirm application for " + selectedListing.value.title + " task";
-  showMessage(info);
+  console.log(selectedListing)
+      let info =
+        "Comfirm application for " + selectedListing.title + " task";
+      modalStore.changeDialog(info);
+      let func = {};
+      // IF USER SELECTS YES CONTINUE FUNCTION
+      func.yesfunc = async function () {
+        try {
+          console.log("trying to run the function");
 
-  let func = {};
-  func.yesfunc = async () => {
-    try {
-      console.log("trying to run the function");
-      showMessage("");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  openYesOrNoClick(func);
+          // show response message as toast
+          modalStore.showMessage("test het")
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      modalStore.OpenYesOrNOClick(func);
 };
 
 const emit = defineEmits(['loadJobsMobile']);

@@ -128,13 +128,7 @@
               <div class="flex flex-col justify-center items-center">
                 <h1 class="text-xs">{{user.institution}}</h1>
                 <div class="flex items-center">
-                  <button
-                    class="flex items-center py-1 px-2 rounded-lg text-red-600 hover:bg-red-600 hover:text-white transition-colors duration-300"
-                  >
-                    <i class="bx bx-edit"></i>
-                    <!-- Assuming this is your icon -->
-                    <span class="hidden sm:inline ml-1">Edit Account</span>
-                  </button>
+
                 </div>
               </div>
 
@@ -194,7 +188,7 @@
           </div>
 
           <!-- tabs -->
-          <div class="flex justify-center items-center">
+          <div class="">
             <div class="h-[60vh] overflow-y-auto w-full">
               <ul
                 class="flex justify-center items-center sticky top-0 z-10 bg-white rounded-lg"
@@ -223,7 +217,7 @@
                       <li @click="openWorkHistoryInfo">
                         <div class="p-4 mb-5 bg-white">
                           <span
-                            class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
+                            class="absolute flex  w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
                           >
                             <i class="bx bxs-briefcase"></i>
                           </span>

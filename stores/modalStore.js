@@ -39,7 +39,7 @@ export const useModalStore = defineStore("modal", {
       if (this.yesorNoClickFunc.yesfunc) {
         // $("#yesorno").modal('hide')
         const { hideModal } = useModal(); // Initialize useModal composable
-        const modalId = 'confirmModal'; // Assuming this is the ID of your modal
+        const modalId = 'confirmJobModal'; // Assuming this is the ID of your modal
         hideModal(modalId);
         console.log("Confirmed");
         
@@ -52,10 +52,10 @@ export const useModalStore = defineStore("modal", {
         await this.yesorNoClickFunc.nofunc();
       } else {
         const { hideModal } = useModal(); // Initialize useModal composable
-        const modalId = 'confirmModal'; // Assuming this is the ID of your modal
+        const modalId = 'confirmJobModal'; // Assuming this is the ID of your modal
         hideModal(modalId);
         console.log("in cancel no func");
-        toast(this.dialoginfo, { // Call the toast method with the dialog info
+        toast("Cancelled", { // Call the toast method with the dialog info
           position: "top-right", // Set the toast position
           duration: 200, // Set the toast duration
           type: "error", // Set the toast type

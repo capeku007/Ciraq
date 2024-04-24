@@ -54,7 +54,7 @@
           </div>
         </div>
         <ul class="h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
-          <li v-for="job in listings" :key="job.id" @click="loadListing(job)">
+          <li v-for="job in listings" :key="job.id" @click="selectListing(job)">
             <div class="card p-4 bg-white">
               <div class="flex items-center space-x-3 ">
                 <div class="flex-shrink-0">
@@ -122,7 +122,7 @@ import { useMainStore } from "../stores/main";
 
 definePageMeta({
   layout: "mobile",
-  middleware: ["auth"],
+  // middleware: ["auth"],
   auth:false
 });
 useHead({
@@ -133,12 +133,23 @@ useHead({
 const listingStore = useListingStore();
 const authStore = useAuthStore();
 const mainStore = useMainStore();
-const listings = ref([]);
+const listings = ref([ {
+          id: "gh0000001",
+          title: "Data Entry",
+          pay: "8/hr",
+          workDays: "Weekends",
+          location: "on site",
+          company: "Ciraq Inc.",
+          companyLocation: "Accra",
+          companyLogo: "../assets/logo.png",
+          jobDescription:
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
+        },]);
 const selectedListing = ref(null);
 const isMobile = ref(false);
 const showJobList = ref(true);
 
-const loadListing = (job) => {
+const selectListing = (job) => {
 
   selectedListing.value = job;
 
