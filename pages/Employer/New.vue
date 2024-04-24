@@ -327,6 +327,8 @@ useHead({
   meta: [{ name: "description", content: "Create new listing" }],
 });
 
+const apiBaseUrl =ref("https://ciraq.co/api/");
+
 // Define loginData using reactive
 definePageMeta({
   // middleware: ["already-auth"],
@@ -346,15 +348,34 @@ console.log("formData", formData.value);
   let info = "Confirm new listing?";
   modalStore.changeDialog(info);
   let func = {};
-
   // IF USER SELECTS YES CONTINUE FUNCTION
   func.yesfunc = async function () {
-    try {
-      console.log("uploaded");
-      modalStore.showMessage("Listing online")
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   console.log("uploaded");
+    //   modalStore.showMessage("Listing online")
+    // } catch (error) {
+    //   console.log(error);
+    // }
+     try {
+        const response = await fetch(apiBaseUrl + "listing/create", { 
+          method: "POST",
+          body: formData
+        });
+    
+        const responseData = await response.json();
+        console.log(responseData);
+        if (!response.ok) {
+          const error = new Error(responseData.message || "Failed to register.");
+          throw error;
+        } else {
+          alert("Account registered. Please check email to verify:", responseData.message);
+          return responseData; // Return the responseData after successful registration
+        }
+      } catch (error) {
+        console.error("Failed to register:", error);
+        alert("Failed to register:", error);
+        throw error; // Rethrow the error to handle it elsewhere if needed
+      }
   };
 
   modalStore.OpenYesOrNOClick(func);

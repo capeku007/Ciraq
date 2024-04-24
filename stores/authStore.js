@@ -2,11 +2,17 @@ import { defineStore } from "pinia";
 import { useMainStore } from "./main";
 
 export const useAuthStore = defineStore("authStore", {
-  state: () => ({
-    uName: null,
-    token: useCookie("token").value || null,
-    user:null
-  }),
+  state: () => {
+    // Attempt to fetch user details from localStorage
+    const userDetails = localStorage.getItem('userDetails');
+    const user = userDetails ? JSON.parse(userDetails) : null;
+
+    return {
+      uName: null,
+      token: useCookie("token").value || null,
+      user,
+    }
+  },
   getters: {
     getUser() {
       return this.user;
@@ -41,7 +47,6 @@ export const useAuthStore = defineStore("authStore", {
         console.log("here's the response data", responseData);
 
         if (response.ok) {
-
           this.setToken(responseData.token)
           this.fetchUser(responseData.userData)
         } else{
@@ -53,13 +58,15 @@ export const useAuthStore = defineStore("authStore", {
       }
     },
 
-    setUser(n){
-      console.log("about to set this as user", n)
+    setUser(data){
+      console.log("about to set this as user", data)
       if(this.token){
-        this.user=n
+        // Store user details in localStorage
+        localStorage.setItem('userDetails', JSON.stringify(data));
+        this.user = data;
       }
-      
     },
+
     //fetch User
     async fetchUser() {
       const mainStore = useMainStore();
@@ -103,7 +110,6 @@ export const useAuthStore = defineStore("authStore", {
         }
       }
     },
-    
 
     async signup(formData) {
       const mainStore = useMainStore();
@@ -133,6 +139,8 @@ export const useAuthStore = defineStore("authStore", {
     logout(){
       this.setToken(null)
       this.setUser(null)
+      // Remove user details from localStorage
+      localStorage.removeItem('userDetails');
     }
   },
-});
+});  
