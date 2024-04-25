@@ -345,8 +345,7 @@ const { showClosableModal } = useModal();
 const active = ref(false);
 definePageMeta({
   layout: "mobile",
-  // middleware: ["auth"],
-  auth:false
+  middleware: ["unauthstd"],
 });
 useHead({
   title: 'Profile',

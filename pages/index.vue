@@ -124,7 +124,7 @@ useHead({
 });
 // Define loginData using reactive
 definePageMeta({
-  middleware: ["already-auth"],
+  middleware: ["authstd"],
   layout: "blank",
 });
 

@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useMainStore } from "./main";
+import { useEmployerAuth } from '~/stores/employerAuth';
 
 export const useAuthStore = defineStore("authStore", {
   state: () => {
@@ -33,7 +34,12 @@ export const useAuthStore = defineStore("authStore", {
 
     async login(loginData) {
       const mainStore = useMainStore();
-      
+
+      const authStore = useEmployerAuth();
+      const userDetails = localStorage.getItem('companyDetails');
+      if (userDetails) {
+        authStore.logout();
+      }
       try {
         const response = await fetch(mainStore.urlbase + "api/login", { 
           method: "POST",
@@ -48,7 +54,7 @@ export const useAuthStore = defineStore("authStore", {
 
         if (response.ok) {
           this.setToken(responseData.token)
-          this.fetchUser(responseData.userData)
+          this.fetchUser()
         } else{
           const error = new Error(responseData.message || "Failed to login.");
           throw error;

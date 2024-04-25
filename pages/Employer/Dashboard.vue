@@ -173,7 +173,7 @@ useHead({
 });
 
 definePageMeta({
-  // middleware: ["already-auth"],
+  middleware: ["unauthemp"],
   layout: "company",
 });
 

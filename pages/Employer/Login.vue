@@ -15,7 +15,7 @@
                 <div class="py-2">
                   <span class="px-1 text-sm text-gray-600">Email</span>
                   <input
-                    v-model="email"
+                    v-model="uname"
                     placeholder=""
                     type="text"
                     class="text-md block px-3 py-2 mt-1 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow focus:placeholder-gray-500 focus:bg-white focus:border-[#044013] focus:outline-none"
@@ -110,7 +110,7 @@
 
 
 <script setup>
-import { useAuthStore } from "../stores/authStore";
+import { useEmployerAuth } from "../stores/employerAuth";
 import { reactive } from "vue";
 useHead({
   title: "Login",
@@ -118,12 +118,12 @@ useHead({
 });
 // Define loginData using reactive
 definePageMeta({
-  middleware: ["already-auth"],
+  middleware: ["authemp"],
   layout: "blank",
 });
 
-const uname = ref("capeku248");
-const pword = ref("Godi$Great");
+const uname = ref("prince0420182558d@ktu.edu.gh");
+const pword = ref("12345678@");
 const error = ref(null);
 const selectedListing = ref(null);
 const isMobile = ref(false);
@@ -157,22 +157,16 @@ onBeforeUnmount(() => {
 });
 
 // Access the authStore instance
-const authStore = useAuthStore();
-// authStore.login({
-//   username: uname.value,
-//   p_word:pword.value,
-// })
-
-// Define loginUser function
+const authStore = useEmployerAuth();
 const router = useRouter();
 const loginUser = async () => {
   try {
     let loginData = {
-      username: uname.value,
+      company_email: uname.value,
       p_word: pword.value,
     };
     authStore.login(loginData);
-    router.push("/dashboard");
+    // router.push("/dashboard");
   } catch (err) {
     this.error = err.message;
     alert(this.error);

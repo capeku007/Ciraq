@@ -497,6 +497,7 @@
 <script setup>
 definePageMeta({
   layout: "blank",
+  middleware: ["unauthstd"],
 });
 useHead({
   title: "Signup",

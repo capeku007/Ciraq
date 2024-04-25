@@ -297,7 +297,7 @@ import { reactive } from "vue";
 const { showClosableModal } = useModal();
 definePageMeta({
   layout: "mobile",
-  auth: false,
+  middleware: ["unauthstd"],
 });
 
 const imageUrl = ref("../assets/lonimg.jpeg");

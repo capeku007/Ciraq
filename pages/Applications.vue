@@ -83,7 +83,7 @@
 <script setup>
 definePageMeta({
   layout: "mobile",
-  auth: false,
+  middleware: ["unauthstd"],
 });
 useHead({
   title: "Applications",

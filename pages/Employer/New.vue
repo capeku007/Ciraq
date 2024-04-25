@@ -331,7 +331,7 @@ const apiBaseUrl =ref("https://ciraq.co/api/");
 
 // Define loginData using reactive
 definePageMeta({
-  // middleware: ["already-auth"],
+  middleware: ["unauthemp"],
   layout: "company",
 });
 
