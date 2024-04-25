@@ -230,7 +230,7 @@
                 {{ formData.job_title }}
               </p>
               <p class="text-xs sm:text-base font-normal text-gray-500">
-                {{  }}
+                {{ company.company_name }}
               </p>
             </div>
             
@@ -335,6 +335,12 @@ definePageMeta({
   layout: "company",
 });
 
+// company details
+import { useEmployerAuth } from "@/stores/employerAuth";
+
+const employerAuth = useEmployerAuth();
+const company = employerAuth.company;
+
 const modalStore = useModalStore();
 const { showClosableModal, hideModal } = useModal();
 const closeModal = () => {
@@ -350,12 +356,7 @@ console.log("formData", formData.value);
   let func = {};
   // IF USER SELECTS YES CONTINUE FUNCTION
   func.yesfunc = async function () {
-    // try {
-    //   console.log("uploaded");
-    //   modalStore.showMessage("Listing online")
-    // } catch (error) {
-    //   console.log(error);
-    // }
+
      try {
         const response = await fetch(apiBaseUrl + "listing/create", { 
           method: "POST",

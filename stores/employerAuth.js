@@ -15,7 +15,7 @@ export const useEmployerAuth = defineStore("employerAuth", {
     }
   },
   getters: {
-    getUser() {
+    getcompany() {
       return this.company;
     },
     getUserImage() {
