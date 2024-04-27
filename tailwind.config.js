@@ -8,7 +8,14 @@ module.exports = {
     "./node_modules/flowbite/**/*.{js,ts}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'cblue': '#1da1f2',
+        'darknavy': '#132E35',
+        'darkgreen': '#044013',
+        'ciraqbackground': '#f7f7f7',
+      },
+    },
   },
   plugins: [
     require('flowbite/plugin'),

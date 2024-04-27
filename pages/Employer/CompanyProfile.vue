@@ -270,10 +270,12 @@ definePageMeta({
   layout: "company",
 });
 
+// company import
 import { useEmployerAuth } from "@/stores/employerAuth";
-
 const employerAuth = useEmployerAuth();
 const company = employerAuth.company;
+
+
 const profile_img = ref(null);
 const { showClosableModal, hideModal } = useModal();
 

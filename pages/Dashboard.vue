@@ -132,18 +132,7 @@ useHead({
 const listingStore = useListingStore();
 const authStore = useAuthStore();
 const mainStore = useMainStore();
-const listings = ref([ {
-          id: "gh0000001",
-          title: "Data Entry",
-          pay: "8/hr",
-          workDays: "Weekends",
-          location: "on site",
-          company: "Ciraq Inc.",
-          companyLocation: "Accra",
-          companyLogo: "../assets/logo.png",
-          jobDescription:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cupiditate nam omnis similique,...",
-        },]);
+const listings = ref([]);
 const selectedListing = ref(null);
 const isMobile = ref(false);
 const showJobList = ref(true);

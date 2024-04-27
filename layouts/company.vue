@@ -17,7 +17,7 @@
 
         </li>
         <li>
-          <nuxt-link to="/employer/new" exact>
+          <nuxt-link to="/employer/new" >
             <i class="bx bx-message-square-add"></i>
             <span class="links_name">New Listing</span>
           </nuxt-link>
@@ -25,14 +25,14 @@
         </li>
         
         <li>
-          <nuxt-link to="/employer/new" exact>
+          <nuxt-link to="/employer/new" >
             <i class="bx bx-conversation"></i>
             <span class="links_name">Chats</span>
           </nuxt-link>
           <span class="tooltip">Chats</span>
         </li>
         <li>
-          <nuxt-link to="/employer/CompanyProfile" exact>
+          <nuxt-link to="/employer/CompanyProfile" >
             <i class="bx bx-detail"></i>
             <span class="links_name">Company Profile</span>
           </nuxt-link>
@@ -43,11 +43,11 @@
           <div class="profile-details">
             <img src="../assets/images/profile-img.jpg" alt="profileImg" />
             <div class="name_job">
-              <div class="name">Prem Shahi</div>
-              <div class="job">Web designer</div>
+              <div class="name">{{company.company_name}}</div>
+              <div class="job">company.headquarters</div>
             </div>
           </div>
-          <i class="bx bx-log-out" id="log_out"></i>
+          <i @click="signOut" class="bx bx-log-out" id="log_out"></i>
         </li>
       </ul>
     </div>
@@ -61,15 +61,41 @@
 <script setup>
 import "boxicons/css/boxicons.min.css";
 import Modals from "@/components/UI/Modals.vue";
-
+import { useModalStore } from "@/stores/modalStore.js";
+const modalStore = useModalStore();
 const isOpen = ref(false);
 
 const toggleSidebar = () => {
   isOpen.value = !isOpen.value;
 };
+
+const signOut = () => {
+  
+
+  
+  let info = "Confirm signout?";
+    modalStore.changeDialog(info);
+  let func = {};
+  // IF USER SELECTS YES CONTINUE FUNCTION
+  func.yesfunc = async function () {
+     try {
+        employerAuth.logout()
+      } catch (error) {
+        throw error; // Rethrow the error to handle it elsewhere if needed
+      }
+  };
+
+  modalStore.OpenYesOrNOClick(func);
+};
+
+// company import
+import { useEmployerAuth } from "@/stores/employerAuth";
+const employerAuth = useEmployerAuth();
+const company = employerAuth.company;
+
 </script>
 
-<style scoped>
+<style >
 
 .sidebar {
   position: fixed;
@@ -257,19 +283,25 @@ const toggleSidebar = () => {
 }
 .sidebar .profile #log_out {
   position: absolute;
-  top: 50%;
+  display: none;
   right: 0;
   transform: translateY(-50%);
-  background: #132E35;
+  top: 50%;
+  color: red;
   width: 100%;
   height: 60px;
   line-height: 60px;
-  border-radius: 0px;
   transition: all 0.5s ease;
 }
 .sidebar.open .profile #log_out {
+  display: flex;
   width: 50px;
   background: none;
+  color:red;
+  font: 800;
+  padding-left: 1rem;
+  font-size: 24px;
+  cursor: pointer;
 }
 .home-section {
   position: relative;
@@ -305,17 +337,17 @@ const toggleSidebar = () => {
 /* Custom scrollbar styles */
 /* For WebKit-based browsers (Chrome, Safari, Opera) */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+  background-color: red;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #888;
+  background-color: yellow;
   border-radius: 10px;
 }
 

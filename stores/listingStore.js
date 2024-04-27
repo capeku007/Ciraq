@@ -12,7 +12,7 @@ export const useListingStore = defineStore("listingStore", {
     },
   },
   actions: {
-    async loadListings() {
+    async loadAllListings() {
       const mainStore = useMainStore();
       const authStore = useAuthStore();
       if (authStore.token) {

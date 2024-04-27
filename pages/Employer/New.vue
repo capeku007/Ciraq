@@ -337,7 +337,6 @@ definePageMeta({
 
 // company details
 import { useEmployerAuth } from "@/stores/employerAuth";
-
 const employerAuth = useEmployerAuth();
 const company = employerAuth.company;
 
@@ -436,36 +435,8 @@ const removeBenefit = (index) => {
 </script>
 
 
-<style scoped>
+<style >
 /* Custom scrollbar styles */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
 
-::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
-  border-radius: 10px;
-}
 
-::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
-/* For Mozilla Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #f7f7f7 #f1f1f1;
-}
-
-/* For Internet Explorer and Edge */
-body {
-  scrollbar-face-color: #ebebeb;
-  scrollbar-track-color: #f1f1f1;
-}
 </style>
