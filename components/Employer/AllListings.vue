@@ -18,11 +18,16 @@
     <!-- MODALS END HERE -->
 
     <div>
-      <div class="relative overflow-x-auto shadow-md srounded-lg p-2">
+      <div class="relative overflow-x-auto shadow-md rounded-lg p-2">
         <div
           class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 bg-white"
         >
-          <div class="text-base font-semibold ml-4">Listings</div>
+          <div class="flex items-center text-base font-semibold ml-4">
+            <p>Listings</p>
+            <button @click="refreshlisting" class="flex items-baseline">
+              <i class="ml-4 text-lg bx bx-revision"></i>
+            </button>
+          </div>
           <div class="w-4/12 p-2">
             <button
               id="AllfilterTrig"
@@ -92,7 +97,7 @@
           </div>
         </div>
         <div class="overflow-y-auto h-[73svh]">
-          <div v-if="isLoading">
+          <div v-if="getIsLoading">
             <LoadScreen />
           </div>
           <div v-else>
@@ -109,31 +114,29 @@
               <tbody>
                 <tr
                   class="bg-white border-b hover:bg-gray-50"
-                  v-for="listing in listings"
+                  v-for="listing in getListings"
                   :key="listing.id"
                 >
                   <th
                     scope="row"
                     class="flex items-center px-6 py-3 text-gray-900 whitespace-nowrap"
-                    
                   >
                     <div class="text-base font-semibold">
                       {{ listing.job_title }}
                     </div>
                   </th>
-                  <td class="px-6 py-1">{{listing.num_applicants}}</td>
+                  <td class="px-6 py-1">{{ listing.num_applicants }}</td>
                   <td class="px-6 py-1">{{ listing.listing_status }}</td>
                   <td class="px-6 py-1">
                     {{ formatDate(listing.application_deadline) }}
                   </td>
                   <td>
-
                     <button
-                    @click="openListing(listing.job_id)"
+                      @click="openListing(listing.job_id)"
                       type="button"
                       class="text-center inline-flex items-center px-3 py-2 text-blue-500 hover:text-white border border-blue-500 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm"
                     >
-                    <i class="bx bx-briefcase pr-2"></i>
+                      <i class="bx bx-briefcase pr-2"></i>
                       View Listing
                     </button>
                   </td>
@@ -146,25 +149,26 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import useModal from "@/composables/useModal";
 import { useAuthStore } from "@/stores/authStore";
 import { useModalStore } from "@/stores/modalStore.js";
 import { useMainStore } from "~/stores/main";
 import { useEmployerAuth } from "~/stores/employerAuth";
+import { useFormatDate } from "@/composables/useFormatDate";
+import { useEmployerListStore } from "@/stores/employerListStore";
+import { storeToRefs } from "pinia";
+
 const mainStore = useMainStore();
 const employerAuth = useEmployerAuth();
 
-import { useFormatDate } from "@/composables/useFormatDate";
 const { formatDate } = useFormatDate();
-
 const { hideModal, showClosableModal } = useModal();
-const isLoading = ref(true);
 const selectedJob = ref({});
+const isLoading =ref(false)
 
 const openListing = async (listingId) => {
-  try {
+try {
     // Reset selectedJob before fetching new data
     isLoading.value = true;
     selectedJob.value = {};
@@ -195,7 +199,7 @@ const openListing = async (listingId) => {
       );
     }
   } catch (error) {
-    console.error("Unable to load listing:", error);
+  console.error("Unable to load listing:", error);
   }
   isLoading.value = false;
 };
@@ -225,41 +229,8 @@ const updateApplicant = (n) => {
   modalStore.OpenYesOrNOClick(func);
 };
 
-const listings = ref([]);
-
-const loadAllListings = async () => {
-  try {
-    isLoading.value = true;
-    const response = await fetch(
-      mainStore.urlbase + "api/listing/all-active-company-listing",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: employerAuth.ctoken,
-        },
-      }
-    );
-
-    if (response.ok) {
-      const responseData = await response.json();
-      listings.value = responseData.data;
-      isLoading.value = false;
-      console.log("Successful listing fetch", responseData);
-      console.log(" listing fetched", listings.value);
-    } else {
-      console.error(
-        "Error fetching listing:",
-        response.status,
-        response.statusText
-      );
-      isLoading.value = false;
-    }
-  } catch (error) {
-    console.error("Unable to load listing:", error);
-    isLoading.value = false;
-  }
-};
+const employerListStore = useEmployerListStore();
+const { getListings, getListingsLength, getIsLoading } = storeToRefs(employerListStore);
 
 // drop down filter
 const { showDropDown, hideDropDown } = useDropDown();
@@ -272,17 +243,21 @@ const showDrop = (n, a) => {
 const searchQuery = ref("");
 const buttonText = ref("All Listings");
 const filteredListings = computed(() =>
-  listings.value.filter((item) =>
+  getListings.value.filter((item) =>
     (item.job_title?.toLowerCase() || "").includes(
       searchQuery.value.toLowerCase()
     )
   )
 );
 
-onMounted(() => {
-  loadAllListings();
+const refreshlisting=()=>{
+  employerListStore.loadAllListings();
+}
 
-    watchEffect(() => {
+onMounted(() => {
+  employerListStore.loadAllListings();
+
+  watchEffect(() => {
     filteredListings.value;
   });
 });

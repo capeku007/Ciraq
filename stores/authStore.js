@@ -121,7 +121,7 @@ export const useAuthStore = defineStore("authStore", {
       const mainStore = useMainStore();
       
       try {
-        const response = await fetch(mainStore.urlbase + "api/register", { // Corrected property name
+        const response = await fetch(mainStore.urlbase + "api/register", { 
           method: "POST",
           body: formData
         });
@@ -133,12 +133,12 @@ export const useAuthStore = defineStore("authStore", {
           throw error;
         } else {
           alert("Account registered. Please check email to verify:", responseData.message);
-          return responseData; // Return the responseData after successful registration
+          return responseData; 
         }
       } catch (error) {
         console.error("Failed to register:", error);
         alert("Failed to register:", error);
-        throw error; // Rethrow the error to handle it elsewhere if needed
+        throw error; 
       }
     },
 

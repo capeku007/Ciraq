@@ -15,14 +15,78 @@
       <div class="div1">
         <!-- component -->
         <div class="h-[16.2vh] w-full flex justify-center items-center">
-          <div class="absolute flex justify-center items-center">
+                            <div class="flex w-full items-center mb-4">
+                    <div class="mr-4">
+                      <div
+                        v-if="selectedUser.profile_img"
+                        :style="{
+                          backgroundImage: `url(${selectedUser.profile_img})`,
+                        }"
+                        class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+                      ></div>
+                      <div
+                        v-else
+                        class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
+                      >
+                        {{
+                          initialsFromName(
+                            selectedUser.fname,
+                            selectedUser.lname
+                          )
+                        }}
+                      </div>
+                    </div>
+                    <div>
+                      <p class="text-lg font-bold">
+                        {{ selectedUser.fname }}
+                        {{ selectedUser.lname }}
+                      </p>
+                      <p class="text-sm text-gray-600">
+                        <span class="mr-3">{{
+                          selectedUser.program_offered
+                        }}</span>
+                        <span
+                          class="mr-3 border-r border-gray-200 max-h-0"
+                        ></span>
+                        <span>{{ selectedUser.institution_name }}</span>
+                      </p>
+                      <p class="text-sm text-gray-600">
+                        {{ formatDate(selectedUser.dob) }} | {{selectedUser.gender}} |
+                        {{ currentYear(selectedUser.start_date) }}
+                      </p>
+                      <p class="text-sm text-gray-600"></p>
+                    </div>
+                     <div class="ml-auto">
+                                        <button
+                    class="flex items-center py-1 px-2 rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300"
+                  >
+                    <i class="bx bx-chat"></i>
+                    <!-- Assuming this is your icon -->
+                    <span class="hidden sm:inline ml-1">Message</span>
+                  </button>
+                    </div>
+                  </div>
+          <!-- <div class="absolute flex justify-center items-center">
             <div class="w-full h-1/2 flex flex-col justify-center items-center">
-              <img
-                class=" h-15 w-15 rounded-full"
-                src="http://ciraq.co/api/public/uploads/1709342552416profilepic.jpg" alt=""
-              />
-              <h1 class="text-gray-700 font-bold">{{user.fname }} {{user.lname}}</h1>
-              <!-- <p class="text-gray-500 text-xs">Year 3</p> -->
+                                    <div
+                        v-if="selectedUser.profile_img"
+                        :style="{
+                          backgroundImage: `url(${selectedUser.profile_img})`,
+                        }"
+                        class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+                      ></div>
+                      <div
+                        v-else
+                        class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
+                      >
+                        {{
+                          initialsFromName(
+                            selectedUser.fname,
+                            selectedUser.lname
+                          )
+                        }}
+                      </div>
+              <h1 class="text-gray-700 font-bold">{{selectedUser.fname }} {{selectedUser.lname}}</h1>
             </div>
           </div>
 
@@ -31,26 +95,25 @@
           >
             <div class="w-full h-1/2 flex justify-between items-center px-1">
               <div class="flex flex-col justify-center items-center">
-                <h1 class="text-xs">{{user.institution}}</h1>
+                <h1 class="text-xs">{{selectedUser.institution}}</h1>
                 <div class="flex items-center">
 
                 </div>
               </div>
 
               <div class="flex flex-col justify-center items-center">
-                <h1 class="text-xs">{{user.degree_program}}</h1>
+                <h1 class="text-xs">{{selectedUser.degree_program}}</h1>
                 <div class="flex items-center">
                   <button
                     class="flex items-center py-1 px-2 rounded-lg text-[#007ABB] hover:bg-[#007ABB] hover:text-white transition-colors duration-300"
                   >
                     <i class="bx bx-chat"></i>
-                    <!-- Assuming this is your icon -->
                     <span class="hidden sm:inline ml-1">Message</span>
                   </button>
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="flex justify-center">
           <div class="border-b border-gray-300 w-8/12"></div>
@@ -88,7 +151,7 @@
               class="accordion-content px-2 text-xs sm:text-sm mt-0 pt-0"
               v-show="active"
             >
-              {{user}}
+              {{selectedUser.bio}}
             </div>
           </div>
 
@@ -103,7 +166,7 @@
                   v-for="(tab, index) in tabs"
                   :key="index"
                   @click="activeTab = index"
-                  class="text-xs md:text-sm lg:text-base"
+                  class="uppercase sm:pl-4 text-black font-bold text-xs "
                   :class="
                     activeTab === index
                       ? 'text-[#132E35] border-b-2 border-[#132E35] pb-4'
@@ -119,7 +182,8 @@
                   <!-- Work History timeLine -->
                   <div class="sm:w-11/12 sm:pl-40">
                     <ol class="relative border-s border-gray-200">
-                      <li @click="openWorkHistoryInfo">
+                      <li @click="openWorkHistoryInfo"  v-for="(work, index) in selectedUser.work_history"
+                  :key="index">
                         <div class="p-4 mb-5 bg-white">
                           <span
                             class="absolute flex  w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
@@ -133,7 +197,7 @@
                             <span
                               class="text-sm font-normal leading-none text-gray-400 px-2.5 py-0.5"
                             >
-                              11/11/2022 - 03/27/2024
+                              {{formatDate(work.start_date)}}- {{formatDate(work.start_date)}}
                             </span>
                           </div>
                           <div
@@ -150,12 +214,12 @@
                               <p
                                 class="text-xs sm:text-base font-normal text-gray-500 truncate"
                               >
-                                job.company
+                                {{work.company_name}}
                               </p>
                               <p
                                 class="text-base sm:text-lg font-semibold truncate"
                               >
-                                job.title
+                                {{work.position}}
                               </p>
                             </div>
                           </div>
@@ -178,24 +242,23 @@
                         <p
                           class="mb-1 text-base sm:text-lg font-semibold text-gray-900"
                         >
-                          Kwame Nkrumah University of Science and Technology
-                          KNUST
+                          {{selectedUser.institution_name}}
                         </p>
                         <time
                           class="mb-2 text-xs sm:text-sm font-normal leading-none text-gray-400"
                         >
-                          12/22/2020 - 12/11/2024</time
+                          {{formatDate(selectedUser.start_date)}} - {{formatDate(selectedUser.end_date)}}</time
                         >
                         <p class="text-sm font-normal text-gray-500">
-                          Bsc Computer Science
+                         {{selectedUser.program_offered}}
                         </p>
                       </li>
                     </ol>
                   </div>
                 </div>
-                <div v-show="activeTab === 2">
+                <!-- <div v-show="activeTab === 2">
                   <p class="text-center">Coming soon</p>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -209,40 +272,35 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "../stores/authStore";
+
+import { useFormatDate } from "@/composables/useFormatDate";
+const { formatDate, currentYear, initialsFromName } = useFormatDate();
+
 const activeTab = ref(0);
-const tabs = ref(["Work History", "Education", "Projects"]);
+const tabs = ref(["Work History", "Education"]);
 const authStore = useAuthStore();
 const { showClosableModal } = useModal();
 const active = ref(false);
 
-useHead({
-  title: 'Profile',
-  meta: [
-    { name: "jobs you've applied for", content: 'Student job list' }
-  ],
-})
+
+const { selectedUser } = defineProps({
+  selectedUser: {
+    type: Object,
+  },
+});
 
 const toggleAccordion = () => {
   active.value = !active.value;
 };
 
 // user details
-const user = authStore.getUser || {
-  fname:"John",
-  lname:"saint"
-};
-const userImage = authStore.getUserImage;
-
 const openWorkHistoryInfo = () => {
   // Initialize useModal composable
   const modalId = "jobInfo";
   showClosableModal(modalId);
 };
 onMounted(() => {
-  // Fetch user data and user image when component is mounted
-  authStore.fetchUser().then(() => {
-    authStore.fetchUserImage(authStore.getUser); // Call fetchUserImage with the user data
-  });
+
 });
 </script>
 

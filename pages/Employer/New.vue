@@ -10,7 +10,7 @@
       </p>
 
       <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
-        <div class="col-span-full">
+        <div class="col-span-4">
           <label
             for="taskTitle"
             class="block text-sm font-medium leading-6 text-gray-900"
@@ -18,7 +18,7 @@
           >
           <div class="mt-1">
             <input
-            v-model="formData.job_title"
+            v-model="listData.job_title"
               type="text"
               name="taskTitle"
               id="taskTitle"
@@ -26,6 +26,23 @@
             />
           </div>
         </div>
+                <div class="col-span-2">
+          <label
+            for="taskTitle"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Deadline</label
+          >
+          <div class="mt-1">
+            <input
+            v-model="listData.application_deadline"
+              type="date"
+              name="date"
+              id="date"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
+
 
         <div class="sm:col-span-2 sm:col-start-1">
           <label
@@ -35,7 +52,7 @@
           >
           <div class="mt-1">
             <input
-            v-model="formData.location_name"
+            v-model="listData.location_name"
               type="text"
               name="location"
               id="location"
@@ -52,8 +69,8 @@
           >
           <div class="mt-1">
             <input
-            v-model="formData.salary_compensation"
-              type="text"
+            v-model="listData.salary_compensation"
+              type="number"
               name="region"
               id="region"
               autocomplete="address-level1"
@@ -70,7 +87,7 @@
           >
           <div class="mt-1">
             <input
-            v-model="formData.employment_type"
+            v-model="listData.employment_type"
             required
               type="text"
               name="jobType"
@@ -90,7 +107,7 @@
         >
         <div class="mt-1">
           <textarea
-            v-model="formData.job_description"
+            v-model="listData.job_description"
             id="aboutJob"
             name="aboutJob"
             rows="3"
@@ -125,7 +142,7 @@
           class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
         >
           <li
-            v-for="(skill, index) in formData.required_qualifications"
+            v-for="(skill, index) in required_qualifications"
             :key="index"
             class="flex justify-between items-center border m-2 px-4 rounded-lg"
           >
@@ -163,7 +180,7 @@
           class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
         >
           <li
-            v-for="(candidate, index) in formData.desired_qualifications"
+            v-for="(candidate, index) in desired_qualifications"
             :key="index"
             class="flex justify-between items-center border m-2 px-4 rounded-lg"
           >
@@ -200,7 +217,7 @@
           class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
         >
           <li
-            v-for="(benefit, index) in formData.benefits"
+            v-for="(benefit, index) in benefits"
             :key="index"
             class="flex justify-between items-center border m-2 px-4 rounded-lg"
           >
@@ -227,7 +244,7 @@
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-base sm:text-lg font-semibold">
-                {{ formData.job_title }}
+                {{ listData.job_title }}
               </p>
               <p class="text-xs sm:text-base font-normal text-gray-500">
                 {{ company.company_name }}
@@ -239,18 +256,18 @@
             <span
               class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
             >
-              {{formData.location_name}}
+              {{listData.location_name}}
             </span>
 
             <span
               class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2 py-1 rounded-lg"
             >
-              {{formData.salary_compensation}}
+              {{listData.salary_compensation}}
             </span>
             <span
               class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
             >
-              {{formData.employment_type}}
+              {{listData.employment_type}}
             </span>
           </div>
         </div>
@@ -259,7 +276,7 @@
           <div>
             <p class="text-base sm:text-lg font-semibold">Job Description</p>
             <p class="text-xs sm:text-base font-normal text-gray-500">
-              {{ formData.job_description }}
+              {{ listData.job_description }}
             </p>
           </div>
           
@@ -268,7 +285,7 @@
             <ul
               class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
             >
-              <li>{{ formData.location_name }}</li>
+              <li>{{ listData.location_name }}</li>
             </ul>
           </div>
           <div class="mt-4">
@@ -278,9 +295,9 @@
             <ul
               class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
             >
-              <li>Javascript</li>
-              <li>Html css</li>
-              <li>Figma</li>
+               <li v-for="(candidate, index) in required_qualifications"
+            :key="index">{{candidate}}</li>
+            
             </ul>
           </div>
           <div class="mt-4">
@@ -290,7 +307,7 @@
             <ul
               class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
             >
-              <li v-for="(candidate, index) in formData.desired_qualifications"
+              <li v-for="(candidate, index) in desired_qualifications"
             :key="index">{{candidate}}</li>
             </ul>
           </div>
@@ -299,7 +316,7 @@
             <ul
               class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
             >
-                            <li v-for="(benefit, index) in formData.benefits"
+                            <li v-for="(benefit, index) in benefits"
             :key="index">{{benefit}}</li>
             </ul>
           </div>
@@ -308,7 +325,7 @@
         <!-- apply button -->
         <div class="mt-4">
           <button
-            @click="createListing()"
+            @click="submitForm()"
             class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           >
             Create Listing
@@ -327,7 +344,6 @@ useHead({
   meta: [{ name: "description", content: "Create new listing" }],
 });
 
-const apiBaseUrl =ref("https://ciraq.co/api/");
 
 // Define loginData using reactive
 definePageMeta({
@@ -337,8 +353,13 @@ definePageMeta({
 
 // company details
 import { useEmployerAuth } from "@/stores/employerAuth";
+import { useCreateStore } from "@/stores/createListing";
 const employerAuth = useEmployerAuth();
+const createStore = useCreateStore();
 const company = employerAuth.company;
+
+import { useMainStore } from "~/stores/main";
+const mainStore = useMainStore();
 
 const modalStore = useModalStore();
 const { showClosableModal, hideModal } = useModal();
@@ -347,90 +368,144 @@ const closeModal = () => {
   const modalId = "viewCompanyInfo";
   hideModal(modalId);
 };
+const listData = ref({
+  job_title: "",
+  location_name: "",
+  application_deadline: "",
+  date_posted: "",
+  employment_type: "",
+  salary_compensation: 0,
+  job_description: "",
+  listing_status: "Pending",
+});
 
-const createListing = () =>{
-console.log("formData", formData.value);
+const benefits =ref([])
+const desired_qualifications =ref([])
+const required_qualifications =ref([])
+
+
+const createListing = () => {
   let info = "Confirm new listing?";
   modalStore.changeDialog(info);
   let func = {};
-  // IF USER SELECTS YES CONTINUE FUNCTION
-  func.yesfunc = async function () {
-
-     try {
-        const response = await fetch(apiBaseUrl + "listing/create", { 
-          method: "POST",
-          body: formData
-        });
-    
-        const responseData = await response.json();
-        console.log(responseData);
-        if (!response.ok) {
-          const error = new Error(responseData.message || "Failed to register.");
-          throw error;
-        } else {
-          alert("Account registered. Please check email to verify:", responseData.message);
-          return responseData; // Return the responseData after successful registration
-        }
-      } catch (error) {
-        console.error("Failed to register:", error);
-        alert("Failed to register:", error);
-        throw error; // Rethrow the error to handle it elsewhere if needed
-      }
+  const reqObj = {
+    job_title: listData.value.job_title,
+    job_description: listData.value.job_description,
+    required_qualifications: JSON.stringify(listData.value.required_qualifications),
+    desired_qualifications: JSON.stringify(listData.value.desired_qualifications),
+    application_deadline: listData.value.application_deadline,
+    salary_compensation: listData.value.salary_compensation,
+    employment_type: listData.value.employment_type,
+    listing_status: "Pending",
+    benefits: JSON.stringify(listData.value.benefits),
+    location_name: listData.value.location_name,
   };
 
+  // IF USER SELECTS YES CONTINUE FUNCTION
+  func.yesfunc = async function () {
+    try {
+      console.log('about to send this', reqObj);
+      const response = await fetch(mainStore.urlbase + "api/listing/create", {
+        headers: {
+          Authorization: employerAuth.ctoken,
+        },
+        method: "POST",
+        body: reqObj,
+        
+      });
+      const responseData = await response.json();
+      console.log(responseData);
+      if (!response.ok) {
+        const error = new Error(responseData.message || "Failed to create.");
+        throw error;
+      } else {
+        // alert("Account registered. Please check email to verify:", responseData.message);
+        return responseData; // Return the responseData after successful registration
+      }
+    } catch (error) {
+      console.error("Failed to register:", error);
+      // alert("Failed to register:", error);
+      throw error; // Rethrow the error to handle it elsewhere if needed
+    }
+  };
   modalStore.OpenYesOrNOClick(func);
-}
+};
+
+const submitForm = async () => {
+  console.log(listData.value)
+  // listData.value.benefits = benefits.value;
+  // listData.value.required_qualifications = required_qualifications.value;
+  // listData.value.desired_qualifications = desired_qualifications.value;
+
+        try {
+        const responseData = await createStore.createListing(listData.value);
+        if (responseData.successful) {
+          
+        } else {
+          console.log("failed");
+        }
+      } catch (error) {
+        // Handle errors here if needed
+        console.error("Failed to register:", error);
+      }
+};
 
 const candidateName = ref("");
 const skillName = ref("");
 const benefitName = ref("");
 
-const formData = ref({
-  job_title: "",
-  location_name: "",
-  application_deadline: "",
-  employment_type: "",
-  salary_compensation: "",
-  job_description: "",
-  required_qualifications: [],
-  desired_qualifications: [],
-  benefits: [],
-  listing_status: {},
-});
+
 
 const addCandidate = () => {
   if (candidateName.value.trim() !== "") {
-    formData.value.desired_qualifications.push(candidateName.value.trim());
+    desired_qualifications.value.push(candidateName.value.trim());
     candidateName.value = "";
   }
 };
 
 const addSkill = () => {
   if (skillName.value.trim() !== "") {
-    formData.value.required_qualifications.push(skillName.value.trim());
+    required_qualifications.value.push(skillName.value.trim());
     skillName.value = "";
   }
 };
 
 const addBenefit = () => {
   if (benefitName.value.trim() !== "") {
-    formData.value.benefits.push(benefitName.value.trim());
+    benefits.value.push(benefitName.value.trim());
     benefitName.value = "";
   }
 };
 
 const removeCandidate = (index) => {
-  formData.value.desired_qualifications.splice(index, 1);
+  desired_qualifications.value.splice(index, 1);
 };
 
 const removeSkill = (index) => {
-  formData.value.required_qualifications.value.splice(index, 1);
+  required_qualifications.value.splice(index, 1);
 };
 
 const removeBenefit = (index) => {
-  formData.value.benefits.splice(index, 1);
+  benefits.value.splice(index, 1);
 };
+const formDataKey = 'listData'; // Key to store formData in the cache
 
+watch(
+  () => listData.value, // Watch for changes in the formData object
+  (newValue) => {
+    // Save the current formData to the cache
+    localStorage.setItem(formDataKey, JSON.stringify(newValue)); // Use localStorage or sessionStorage
+  },
+  { deep: true } // Watch for deep changes in the formData object
+);
+
+// Retrieve formData from cache on component creation
+onMounted(() => {
+  const cachedFormData = localStorage.getItem(formDataKey);
+  if (cachedFormData) {
+    listData.value = JSON.parse(cachedFormData);
+  }
+});
 
 </script>
 

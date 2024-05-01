@@ -6,6 +6,7 @@ export default function useModal() {
   const showModal = (modalId) => {
     const defaultOptions = {
       backdrop: "static",
+      backdropClasses: "bg-gray-900/50 fixed inset-0 z-40",
       closable: true,
     };
     const $modalElement = document.querySelector(`#${modalId}`);

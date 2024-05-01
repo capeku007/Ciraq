@@ -2,11 +2,15 @@
   <div class="min-h-[87svh] max-h-[87svh] grid grid-rows-[12svh_1fr]">
 <div class="flex bg-white flex-wrap rounded-lg">
   <div class="w-3/12 p-2">
-    <label class="hover:text-white hover:bg-blue-500 flex border-2 rounded-lg py-2 px-4 w-full">
-      <input type="radio" name="item" value="1" class="hidden" @change="selectItem(1)">
+    <label :class="[
+          'flex border-2 rounded-lg py-2 px-4 w-full',
+          showPage === '1' ? 'bg-blue-500 text-white' : 'hover:bg-blue-500 hover:text-white',
+        ]"
+         class="flex border-2 rounded-lg py-2 px-4 w-full">
+      <input type="radio" name="item" value="1" class="hidden" v-model="showPage" >
       <div class="flex-1 min-w-0">
         <p class="text-sm font-normal truncate">Listings</p>
-        <p class="text-2xl font-semibold truncate">19</p>
+        <p class="text-2xl font-semibold truncate">{{getListingsLength}}</p>
       </div>
       <div class="flex-shrink-0">
         <i class="bg-white text-blue-500 border-blue-500 border-2 p-2 rounded-full bx bx-briefcase-alt text-2xl block"></i>
@@ -15,11 +19,15 @@
   </div>
 
   <div class="w-3/12 p-2">
-    <label class="hover:text-white hover:bg-purple-500 flex border-2 rounded-lg py-2 px-4 w-full">
-      <input type="radio" name="item" value="2" class="hidden" @change="selectItem(2)">
+    <label
+    :class="[
+          'flex border-2 rounded-lg py-2 px-4 w-full',
+          showPage === '2' ? 'bg-purple-500 text-white' : 'hover:bg-purple-500 hover:text-white',
+        ]" class="flex border-2 rounded-lg py-2 px-4 w-full">
+      <input type="radio" name="item" value="2" class="hidden" v-model="showPage"  >
       <div class="flex-1 min-w-0">
         <p class="text-sm font-normal truncate">Applicants</p>
-        <p class="text-2xl font-semibold truncate">19</p>
+        <p class="text-2xl font-semibold truncate">{{getApplicantsLength}}</p>
       </div>
       <div class="flex-shrink-0">
         <i class="bg-white text-purple-500 border-purple-500 border-2 p-2 rounded-full bx bx-group text-2xl block"></i>
@@ -28,8 +36,11 @@
   </div>
 
   <div class="w-3/12 p-2">
-    <label class="hover:text-white hover:bg-yellow-300 flex border-2 rounded-lg py-2 px-4 w-full">
-      <input type="radio" name="item" value="3" class="hidden" @change="selectItem(3)">
+    <label :class="[
+          'flex border-2 rounded-lg py-2 px-4 w-full',
+          showPage === '3' ? 'bg-yellow-300  text-white' : 'hover:bg-yellow-300  hover:text-white',
+        ]" class="flex border-2 rounded-lg py-2 px-4 w-full">
+      <input type="radio" name="item" value="3" class="hidden" v-model="showPage"  >
       <div class="flex-1 min-w-0">
         <p class="text-sm font-normal truncate">Shortlisted</p>
         <p class="text-2xl font-semibold truncate">19</p>
@@ -41,8 +52,11 @@
   </div>
 
   <div class="w-3/12 p-2">
-    <label class="hover:text-white hover:bg-green-600 flex border-2 rounded-lg py-2 px-4 w-full">
-      <input type="radio" name="item" value="4" class="hidden" @change="selectItem(4)">
+    <label :class="[
+          'flex border-2 rounded-lg py-2 px-4 w-full',
+          showPage === '4' ? 'bg-green-600  text-white' : 'hover:bg-green-600  hover:text-white',
+        ]" class="flex border-2 rounded-lg py-2 px-4 w-full">
+      <input type="radio" name="item" value="4" class="hidden" v-model="showPage">
       <div class="flex-1 min-w-0">
         <p class="text-sm font-normal truncate">Hired</p>
         <p class="text-2xl font-semibold truncate">19</p>
@@ -54,16 +68,16 @@
   </div>
 </div>
 
-    <div class="bg-white mt-4 rounded-lg" v-if="showDiv === 1">
+    <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '1'">
       <div>
         <AllListings />
       </div>
     </div>
-    <div class="bg-white mt-4 rounded-lg" v-if="showDiv === 2">
+    <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '2'">
       <AllApplicants />
     </div>
-    <div v-if="showDiv === 3"><ShortListApplicants /></div>
-    <div v-if="showDiv === 4">4</div>
+    <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '3'"><ShortListApplicants /></div>
+    <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '4'">4</div>
   </div>
 </template>
 <script setup>
@@ -80,6 +94,15 @@ import ShortListApplicants from "@/components/Employer/ShortListApplicants.vue";
 const modalStore = useModalStore();
 const employerAuth = useEmployerAuth();
 
+import { useEmployerListStore } from "@/stores/employerListStore";
+import { storeToRefs } from "pinia";
+const employerListStore = useEmployerListStore();
+const { getListingsLength } = storeToRefs(employerListStore);
+
+import { useApplicantStore } from "@/stores/newApplicants";
+const newApplicantStore = useApplicantStore();
+const { getApplicantsLength } = storeToRefs(newApplicantStore);
+
 useHead({
   title: "Dashboard",
   meta: [{ name: "description", content: "Employer hub" }],
@@ -90,18 +113,11 @@ definePageMeta({
   layout: "company",
 });
 
-const showDiv = ref(1);
+const showPage = ref("1");
 const activeItem = ref(null);
 
 
-const selectItem = (index) => {
-  showDiv.value = index;
-  activeItem .value = index;
-};
 
-const isActive = (index) => {
- return activeItem .value = index;
-};
 
 // filter listing
 const { showDropDown, hideDropDown } = useDropDown();
@@ -152,7 +168,9 @@ const fetchData = async () => {
   }
 };
 
-onMounted(() => {});
+onMounted(() => {
+  employerListStore.loadAllListings();
+});
 
 onBeforeUnmount(() => {});
 </script>
