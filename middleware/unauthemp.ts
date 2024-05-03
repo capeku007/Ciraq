@@ -3,7 +3,7 @@ import { useEmployerAuth } from '~/stores/employerAuth';
 
 export default defineNuxtRouteMiddleware(async (to) => {
   const employerAuth = useEmployerAuth();
-  if(!employerAuth.company){
+  if(!employerAuth.ctoken){
     return await navigateTo("/employer/login")
   }
 });

@@ -44,7 +44,7 @@
             <img src="../assets/images/profile-img.jpg" alt="profileImg" />
             <div class="name_job">
               <div class="name">{{company.company_name}}</div>
-              <div class="job">company.headquarters</div>
+              <div class="job">{{company.headquarters}}</div>
             </div>
           </div>
           <i @click="signOut" class="bx bx-log-out" id="log_out"></i>

@@ -96,7 +96,7 @@
             </div>
           </div>
         </div>
-        <div class="overflow-y-auto h-[73svh]">
+        <div class="overflow-y-auto h-[68svh]">
           <div v-if="getIsLoading">
             <LoadScreen />
           </div>
@@ -145,6 +145,70 @@
             </table>
           </div>
         </div>
+                  <nav
+            class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
+            aria-label="Table navigation"
+          >
+            <span
+              class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto"
+              >Showing
+              <span class="font-semibold text-gray-900">1-10</span>
+              of
+              <span class="font-semibold text-gray-900">1000</span></span
+            >
+            <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
+                  >Previous</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                  >1</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                  >2</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  aria-current="page"
+                  class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
+                  >3</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                  >4</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                  >5</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+                  >Next</a
+                >
+              </li>
+            </ul>
+          </nav>
       </div>
     </div>
   </div>
@@ -165,10 +229,10 @@ const employerAuth = useEmployerAuth();
 const { formatDate } = useFormatDate();
 const { hideModal, showClosableModal } = useModal();
 const selectedJob = ref({});
-const isLoading =ref(false)
+const isLoading = ref(false);
 
 const openListing = async (listingId) => {
-try {
+  try {
     // Reset selectedJob before fetching new data
     isLoading.value = true;
     selectedJob.value = {};
@@ -199,7 +263,7 @@ try {
       );
     }
   } catch (error) {
-  console.error("Unable to load listing:", error);
+    console.error("Unable to load listing:", error);
   }
   isLoading.value = false;
 };
@@ -230,7 +294,8 @@ const updateApplicant = (n) => {
 };
 
 const employerListStore = useEmployerListStore();
-const { getListings, getListingsLength, getIsLoading } = storeToRefs(employerListStore);
+const { getListings, getListingsLength, getIsLoading } =
+  storeToRefs(employerListStore);
 
 // drop down filter
 const { showDropDown, hideDropDown } = useDropDown();
@@ -250,9 +315,9 @@ const filteredListings = computed(() =>
   )
 );
 
-const refreshlisting=()=>{
+const refreshlisting = () => {
   employerListStore.loadAllListings();
-}
+};
 
 onMounted(() => {
   employerListStore.loadAllListings();

@@ -433,10 +433,11 @@ const createListing = () => {
 
 const submitForm = async () => {
   console.log(listData.value)
-  // listData.value.benefits = benefits.value;
-  // listData.value.required_qualifications = required_qualifications.value;
-  // listData.value.desired_qualifications = desired_qualifications.value;
+  listData.value.benefits = benefits.value;
+  listData.value.required_qualifications = required_qualifications.value;
+  listData.value.desired_qualifications = desired_qualifications.value;
 
+console.log("new data", listData.value)
         try {
         const responseData = await createStore.createListing(listData.value);
         if (responseData.successful) {
