@@ -361,8 +361,8 @@ const applicantDetails = ref({});
 
 const openApplication = (n) => {
   // Initialize useModal composable
-  isLoading.value = true;
-  applicantDetails.value = n;
+  // isLoading.value = true;
+  // applicantDetails.value = n;
   const modalId = "updateApplicantStatusModal";
   showModal(modalId);
   isLoading.value = false;
@@ -374,13 +374,13 @@ const closeModal = (n) => {
   hideModal(modalId);
 };
 
-const updateApplicant = (n) => {
+const updateApplicant = (newStatus) => {
   // close modal
   const modalId = "updateApplicantStatusModal";
   hideModal(modalId);
 
-  console.log(n);
-  let info = n + " username's application?";
+  console.log(newStatus);
+  let info = newStatus + " username's application?";
   modalStore.changeDialog(info);
   let func = {};
 
@@ -390,7 +390,7 @@ const updateApplicant = (n) => {
       isLoading.value = true;
       let updateData = {
         application_id: applicantDetails.value.application_id,
-        appl_status: n,
+        appl_status: newStatus,
       };
       console.log("url", mainStore.urlbase + "api/listing/update-app-status");
       const response = await fetch(

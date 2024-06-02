@@ -8,7 +8,7 @@
         <button class="bx bx-menu mr-2" id="btn" @click="toggleSidebar"></button>
       </div>
       <ul class="nav-list">
-        <li >
+        <li  :class="{'active': $route.path === '/employer/dashboard'}">
           <nuxt-link to="/employer/dashboard" >
             <i class="bx bx-home"></i>
             <span class="links_name">Dashboard</span>
@@ -70,8 +70,6 @@ const toggleSidebar = () => {
 };
 
 const signOut = () => {
-  
-
   
   let info = "Confirm signout?";
     modalStore.changeDialog(info);
@@ -219,6 +217,11 @@ const company = employerAuth.company;
   background: #11101d;
 }
 .sidebar li a:hover {
+  background: #fff;
+  border:1px solid #132E35;
+}
+
+.active{
   background: #fff;
   border:1px solid #132E35;
 }

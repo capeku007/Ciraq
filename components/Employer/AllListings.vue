@@ -1,18 +1,120 @@
 <template>
   <div>
     <!-- MODALS HERE -->
-
+  <!-- View listing -->
     <div
       id="viewListing"
       data-modal-target="viewListing"
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
     >
+                    
       <div
         class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
-      >
+      >  <i
+            @click="closeModal('viewListing')"
+            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
+          ></i>
+
         <!-- TODO: UPDATE TO  -->
         <JobDetails :selectedJob="selectedJob" />
+      </div>
+    </div>  
+    
+    <!-- Update listing status -->
+    <div
+      id="updateListingStatus"
+      data-modal-target="updateListingStatus"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
+    >
+                    
+      <div
+        class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+      >  <i
+            @click="closeModal('updateListingStatus')"
+            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
+          ></i>
+
+        <!-- TODO: UPDATE TO  -->
+                  <div class="" v-if="applicantDetails">
+            <div class="mx-auto rounded-lg overflow-hidden">
+              <div class="bg-white rounded-2xl p-4 shadow-md mb-12">
+                <div class="content">
+                  <div class="flex items-center mb-4">
+                    <div class="mr-4">
+                      <div
+                        v-if="applicantDetails.profile_img"
+                        :style="{
+                          backgroundImage: `url(${applicantDetails.profile_img})`,
+                        }"
+                        class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+                      ></div>
+                      <div
+                        v-else
+                        class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
+                      >
+                        {{
+                          initialsFromName(
+                            applicantDetails.fname,
+                            applicantDetails.lname
+                          )
+                        }}
+                      </div>
+                    </div>
+                    <div>
+                      <p class="text-lg font-bold">
+                        {{ applicantDetails.fname }}
+                        {{ applicantDetails.lname }}
+                      </p>
+                      <p class="text-sm text-gray-600">
+                        <span class="mr-3">{{
+                          applicantDetails.program_offered
+                        }}</span>
+                        <span
+                          class="mr-3 border-r border-gray-200 max-h-0"
+                        ></span>
+                        <span>{{ applicantDetails.institution_name }}</span>
+                      </p>
+                      <p class="text-sm text-gray-600">
+                        {{ formatDate(applicantDetails.start_date) }} |
+                        {{ currentYear(applicantDetails.start_date) }}
+                      </p>
+                      <p class="text-sm text-gray-600"></p>
+                    </div>
+                  </div>
+                  <div class="text-left mb-6">
+                    <p class="text-lg font-bold mb-2">
+                      Job Title: {{ applicantDetails.job_title }}
+                    </p>
+                    <p class="text-sm text-gray-600">
+                      {{ applicantDetails.cover_letter }}
+                    </p>
+                  </div>
+                  <div class="flex justify-around">
+                    <button
+                      @click="updateListStatus('rejected')"
+                      class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
+                    >
+                      Reject
+                    </button>
+                    <button
+                      @click="updateListStatus('in-review')"
+                      class="w-2/6 mx-4 bg-blue-600 border text-white px-6 py-2 rounded-lg font-bold"
+                    >
+                      Shortlist
+                    </button>
+                    <button
+                      @click="updateListStatus('offer-extended')"
+                      class="w-2/6 bg-green-600 border text-white px-6 py-2 rounded-lg font-bold"
+                    >
+                      Make Offer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
     <!-- MODALS END HERE -->
@@ -145,70 +247,7 @@
             </table>
           </div>
         </div>
-                  <nav
-            class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
-            aria-label="Table navigation"
-          >
-            <span
-              class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto"
-              >Showing
-              <span class="font-semibold text-gray-900">1-10</span>
-              of
-              <span class="font-semibold text-gray-900">1000</span></span
-            >
-            <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-              <li>
-                <a
-                  href="#"
-                  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
-                  >Previous</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  >1</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  >2</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  aria-current="page"
-                  class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
-                  >3</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  >4</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  >5</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
-                  >Next</a
-                >
-              </li>
-            </ul>
-          </nav>
+
       </div>
     </div>
   </div>
@@ -270,6 +309,11 @@ const openListing = async (listingId) => {
 
 const modalStore = useModalStore();
 
+const closeModal = (n) => {
+  const modalId = n;
+  hideModal(modalId);
+};
+
 const updateApplicant = (n) => {
   // close modal
   const modalId = "updateApplicantStatusModal";
@@ -285,6 +329,47 @@ const updateApplicant = (n) => {
     try {
       console.log("trying to run the function");
       // modalStore.showMessage("test het")
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  modalStore.OpenYesOrNOClick(func);
+};
+
+
+const updateListStatus = () => {
+  hideModal('updateListingStatus');
+  let info = "update " + selectedJob.job_title + "?";
+  modalStore.changeDialog(info);
+  let func = {};
+
+  // IF USER SELECTS YES CONTINUE FUNCTION
+  func.yesfunc = async function () {
+    try {
+      console.log("url", mainStore.urlbase + "api/listing/update/id");
+      const response = await fetch(
+        mainStore.urlbase + "api/listing/update-appl-status",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: employerAuth.ctoken,
+          },
+          body: JSON.stringify(selectedJob),
+        }
+      );
+
+      if (response.ok) {
+        const responseData = await response.json();
+        applicants.value = responseData.data;
+      } else {
+        console.error(
+          "Error fetching listing:",
+          response.status,
+          response.statusText
+        );
+      }
     } catch (error) {
       console.log(error);
     }

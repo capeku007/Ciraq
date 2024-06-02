@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-2 grid-rows-1 gap-x-4 h-[95svh] overflow-hidden">
     <div class="overflow-y-auto shadow rounded-2xl bg-white max-h-[95svh] min-h-[95svh] p-4">
-      <div class="bg-white pb-4 sticky top-0 z-10">
+      <div class="bg-white pb-4 sticky top-0 z-2">
       <h2 class="text-base font-semibold leading-7 text-gray-900">
         Create a new listing
       </h2>
