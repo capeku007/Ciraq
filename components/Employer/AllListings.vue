@@ -43,52 +43,44 @@
                 <div class="content">
                   <div class="flex items-center mb-4">
                     <div class="mr-4">
-                      <div
+                      <!-- <div
                         v-if="applicantDetails.profile_img"
                         :style="{
                           backgroundImage: `url(${applicantDetails.profile_img})`,
                         }"
                         class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
-                      ></div>
-                      <div
-                        v-else
-                        class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
-                      >
-                        {{
-                          initialsFromName(
-                            applicantDetails.fname,
-                            applicantDetails.lname
-                          )
-                        }}
-                      </div>
+                      ></div> -->
+<div
+  style="
+    backgroundImage: `url(../assets/knustlogo.png)`,
+  "
+  class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
+>
+</div>
                     </div>
                     <div>
                       <p class="text-lg font-bold">
-                        {{ applicantDetails.fname }}
-                        {{ applicantDetails.lname }}
+                        {{ company.company_name}}
                       </p>
                       <p class="text-sm text-gray-600">
                         <span class="mr-3">{{
-                          applicantDetails.program_offered
+                          selectedJob.location_name
                         }}</span>
                         <span
                           class="mr-3 border-r border-gray-200 max-h-0"
                         ></span>
-                        <span>{{ applicantDetails.institution_name }}</span>
+                        <span>{{ selectedJob.deadline }}</span>
                       </p>
-                      <p class="text-sm text-gray-600">
-                        {{ formatDate(applicantDetails.start_date) }} |
-                        {{ currentYear(applicantDetails.start_date) }}
-                      </p>
+                      
                       <p class="text-sm text-gray-600"></p>
                     </div>
                   </div>
                   <div class="text-left mb-6">
                     <p class="text-lg font-bold mb-2">
-                      Job Title: {{ applicantDetails.job_title }}
+                      Job Title: {{ selectedJob.job_title }}
                     </p>
                     <p class="text-sm text-gray-600">
-                      {{ applicantDetails.cover_letter }}
+                      {{ selectedJob.job_description }}
                     </p>
                   </div>
                   <div class="flex justify-around">

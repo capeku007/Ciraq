@@ -1,8 +1,9 @@
 
 <template>
-  <div     class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden"
->
-    <div class=" md:flex no-wrap md:-mx-1">
+  <div
+    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden"
+  >
+    <div class="md:flex no-wrap md:-mx-1">
       <!--  List (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && showJobList)"
@@ -53,63 +54,88 @@
             </span>
           </div>
         </div>
-        <ul class="h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
+        <ul
+          v-if="!isLoading"
+          class="h-[77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]"
+        >
           <li v-for="job in listings" :key="job.id" @click="selectListing(job)">
             <div class="card p-4 bg-white">
-              <div class="flex items-center space-x-3 ">
+              <div class="flex items-center space-x-3">
                 <div class="flex-shrink-0">
                   <img
-                    class="w-10 h-10 rounded-lg "
+                    class="w-10 h-10 rounded-lg"
                     src="../assets/knustlogo.png"
                     alt="company image"
                   />
                 </div>
                 <div class="flex-1 min-w-0">
-                   <p class="text-base font-semibold truncate">
+                  <p class="text-base font-semibold truncate">
                     {{ job.job_title }}
                   </p>
-                  <p class="text-xs font-normal text-[#F7B900] truncate">
-                    {{ job.location }}
+                  <p class="text-xs font-normal text-gray-500 truncate">
+                    {{ job.location_name }}
                   </p>
-                 
                 </div>
-                
               </div>
               <div
                 class="flex justify-between mt-4 space-x-3 rtl:space-x-reverse"
               >
                 <span
-                  class="inline-flex items-center bg-gray-200  text-xs font-normal px-2.5 py-0.5 rounded-lg"
+                  class="inline-flex items-center bg-gray-200 text-xs font-normal px-2.5 py-0.5 rounded-lg"
                 >
-                  {{ job.companyLocation }}
+                  <i class="bx bx-briefcase-alt-2"></i>&nbsp;
+                  {{ job.employment_type }}
                 </span>
 
                 <span
-                  class="inline-flex items-center bg-gray-200  text-xs font-normal px-2 py-1 rounded-lg"
+                  class="inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
                 >
-                  {{ job.location }}
+                  <i class="bx bx-map"></i> &nbsp; {{ job.location_name }}
                 </span>
                 <span
                   class="inline-flex items-center bg-gray-200 text-xs font-normal px-2.5 py-0.5 rounded-lg"
                 >
-                  GH₵ {{ job.pay }}
+                  <i class="bx bx-money"></i>&nbsp;
+                  {{ job.salary_compensation }}
                 </span>
               </div>
-              
             </div>
           </li>
         </ul>
+        <div
+          v-else
+          class="flex justify-center items-center h-[77svh] max-h-[77svh] min-h-[77svh]"
+        >
+          <div class="loader"></div>
+        </div>
       </div>
 
       <!--  Body (visible on mobile) -->
-      <div v-if="!isMobile || (isMobile && !showJobList)" class=" md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden">
-        
-        <div class="m-2 bg-white rounded-xl overflow-hidden">
+      <div
+        v-if="!isMobile || (isMobile && !showJobList)"
+        class="md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden"
+      >
+        <div
+          v-if="selectedListing"
+          class="m-2 bg-white rounded-xl overflow-hidden"
+        >
           <ListingInfo
             :selectedListing="selectedListing"
             @loadJobsMobile="loadJobsMobile"
           />
         </div>
+        <div v-else class="grid grid-rows-[1fr] max-h-full h-full">
+    <div class="bg-white flex justify-center items-center overflow-hidden animate-zoom">
+      <!-- Display this when selectedPerson is null -->
+
+      <img
+        src="/assets/logo.png"
+        class="h-64 animate-zoom overflow-hidden"
+        alt="Select a person"
+      />
+      <!-- <p class="pt-4 text-2xl">Open a task for more info.</p> -->
+    </div>
+  </div>
         <!-- <div></div> -->
       </div>
     </div>
@@ -138,7 +164,7 @@ const isMobile = ref(false);
 const showJobList = ref(true);
 
 const selectListing = (job) => {
-
+  console.log("selected job", job);
   selectedListing.value = job;
 
   if (isMobile.value) {
@@ -158,19 +184,22 @@ const handleResize = () => {
     showJobList.value = true; // Reset to show message list on larger screens
   }
 };
+
+const isLoading = ref(false);
+
 const loadAllListings = async () => {
+  isLoading.value = true; // Set loading state to true before fetching data
+
   try {
     const response = await fetch(mainStore.urlbase + "api/alllistings", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: authStore.token, 
+        Authorization: authStore.token,
       },
     });
     if (response.ok) {
       const responseData = await response.json();
-      // Update listings state
-      console.log("listings:", responseData.data);
       listings.value = responseData.data;
     } else {
       console.error(
@@ -182,6 +211,8 @@ const loadAllListings = async () => {
   } catch (error) {
     console.error("Unable to load listing:", error);
   }
+
+  isLoading.value = false; // Set loading state to false after fetching data
 };
 
 onMounted(() => {
@@ -306,4 +337,20 @@ onBeforeUnmount(() => {
   position: absolute;
   display: block;
 }
+@keyframes zoom {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-zoom {
+  animation: zoom 3s infinite;
+}
+
 </style>
