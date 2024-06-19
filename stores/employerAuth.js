@@ -12,6 +12,7 @@ export const useEmployerAuth = defineStore("employerAuth", {
       uName: null,
       ctoken: useCookie("xtoken").value || null,
       company,
+      isLoading: false, 
     }
   },
   getters: {
@@ -43,6 +44,7 @@ export const useEmployerAuth = defineStore("employerAuth", {
         }
       
         try {
+          this.isLoading = true; 
           const response = await fetch(mainStore.urlbase + "api/company/login", {
             method: "POST",
             headers: {
@@ -57,12 +59,15 @@ export const useEmployerAuth = defineStore("employerAuth", {
           if (responseData.successful) {
             this.setToken(responseData.token);
             this.fetchUser();
+            navigateTo("/employer/dashboard")
           } else {
             const error = new Error(responseData.message || "Failed to login.");
             throw error;
           }
         } catch (error) {
           console.error("Failed to login:", error);
+        } finally {
+          this.isLoading = false; 
         }
       },
 
@@ -72,6 +77,7 @@ export const useEmployerAuth = defineStore("employerAuth", {
         // Store user details in localStorage
         localStorage.setItem('companyDetails', JSON.stringify(data));
         this.company = data;
+        location.reload();
       }
     },
 

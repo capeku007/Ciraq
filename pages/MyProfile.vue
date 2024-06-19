@@ -350,7 +350,7 @@ definePageMeta({
 useHead({
   title: 'Profile',
   meta: [
-    { name: "jobs you've applied for", content: 'Student job list' }
+    { name: "my profile", content: 'my profile' }
   ],
 })
 

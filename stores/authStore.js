@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { useMainStore } from "./main";
 import { useEmployerAuth } from '~/stores/employerAuth';
+import { toast } from "vue3-toastify";
 
 export const useAuthStore = defineStore("authStore", {
   state: () => {
@@ -12,6 +13,7 @@ export const useAuthStore = defineStore("authStore", {
       uName: null,
       token: useCookie("token").value || null,
       user,
+      isLoading: false, 
     }
   },
   getters: {
@@ -41,6 +43,7 @@ export const useAuthStore = defineStore("authStore", {
         authStore.logout();
       }
       try {
+        this.isLoading = true; 
         const response = await fetch(mainStore.urlbase + "api/login", { 
           method: "POST",
           headers: {
@@ -55,12 +58,28 @@ export const useAuthStore = defineStore("authStore", {
         if (response.ok) {
           this.setToken(responseData.token)
           this.fetchUser()
+          navigateTo("/dashboard")
+          toast("Login successful", { 
+            position: "top-right", 
+            duration: 200, 
+            type: "success", 
+            responsive: true,
+          });
+
         } else{
           const error = new Error(responseData.message || "Failed to login.");
+          toast(responseData.message, { 
+            position: "top-right", 
+            duration: 200, 
+            type: "error", 
+            responsive: true,
+          });
           throw error;
         }
       } catch (error) {
         console.error("Failed to login:", error);
+      } finally {
+        this.isLoading = false; 
       }
     },
 
@@ -70,6 +89,7 @@ export const useAuthStore = defineStore("authStore", {
         // Store user details in localStorage
         localStorage.setItem('userDetails', JSON.stringify(data));
         this.user = data;
+        location.reload();
       }
     },
 

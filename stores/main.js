@@ -5,9 +5,14 @@ export const useMainStore = defineStore("mainStore", {
     urlbase: "https://ciraq.co/",
     dialoginfo: "",
     yesorNoClickFunc: { yesfunc: undefined, nofunc: undefined },
+    loginType: false, 
   }),
 
   actions: {
+    toggleLoginType() {
+      this.loginType = !this.loginType;
+    },
+    
     changeDialog( payload) {
       this.dialoginfo = payload
       console.log(this.dialoginfo)
