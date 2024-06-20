@@ -1,7 +1,7 @@
 <template>
   <div v-if="selectedListing" class="grid grid-rows-[1fr] max-h-full h-full">
 
-        <!-- APPLICATION STATUS UPDATE -->
+        <!-- COVER LETTER -->
     <div
       id="coverLetterModal"
       data-modal-target="coverLetterModal"

@@ -64,10 +64,7 @@ const closeModal = () => {
 
 
 onMounted(() => {
-  // Fetch user data and user image when component is mounted
-  authStore.fetchUser().then(() => {
-    authStore.fetchUserImage(authStore.getUser); // Call fetchUserImage with the user data
-  });
+
 });
 
 

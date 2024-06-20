@@ -27,7 +27,6 @@
 <script setup>
 import Comments from "@/components/Posts/Comments.vue";
 import { useAuthStore } from "../stores/authStore";
-import { reactive } from "vue";
 
 // Define loginData using reactive
 const { showClosableModal } = useModal();
