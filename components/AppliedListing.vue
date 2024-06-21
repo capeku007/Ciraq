@@ -59,7 +59,7 @@
                         <span>{{ selectedListing.institution_name }}</span>
                       </p>
                       <p class="text-sm text-gray-600">
-                        sjajs
+                        
                       </p>
                       <p class="text-sm text-gray-600"></p>
                     </div>
@@ -270,21 +270,6 @@ const viewCompany = () => {
   showClosableModal(modalId);
 };
 
-const applyJob = () => {
-  let info = "Confirm application for " + selectedListing.value.title + " task";
-  showMessage(info);
-
-  let func = {};
-  func.yesfunc = async () => {
-    try {
-      console.log("trying to run the function");
-      showMessage("");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  openYesOrNoClick(func);
-};
 
 const goBack = () => {
   // Implement your goBack logic here

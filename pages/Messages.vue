@@ -7,28 +7,49 @@
         v-if="!isMobile || (isMobile && showMessageList)"
         class=" rounded-xl w-full md:w-4/12 md:mx-1 grid grid-rows-[[7svh]_1fr] h-[85svh] max-h-[85svh] min-h-[85svh] bg-white m-2 "
       >
-        <div class="m-2">
-          <h5 class="text-2xl px-4">Messages</h5>
-        </div>
-        <ul class="people h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
-          <li
-            class="person"
-            v-for="person in people"
-            :key="person.id"
-            @click="loadMessages(person)"
-          >
-            <img :src="person.avatar" alt="" />
-            <span class="name text-lime-950 text-text-lg font-medium">{{
-              person.name
-            }}</span>
-            <span class="time text-gray-600">{{ person.time }}</span>
-            <span class="preview">{{
-              person.messages.length > 0
-                ? person.messages[person.messages.length - 1].text
-                : ""
-            }}</span>
-          </li>
-        </ul>
+<div class="m-2 flex justify-between items-center">
+      <div class="left">
+        <h5 class="text-base sm:text-lg px-4">Messages</h5>
+      </div>
+      <div class="right flex space-x-4 mr-4">
+        <i class='text-xl bx bx-message-dots' :class="{ 'active': activeList === 'messages' }" @click="setActiveList('messages')"></i>
+        <i class='text-xl bx bx-user-voice' :class="{ 'active': activeList === 'friends' }" @click="setActiveList('friends')"></i>
+        <i class='text-xl bx bx-group' :class="{ 'active': activeList === 'requests' }" @click="setActiveList('requests')"></i>
+      </div>
+    </div>
+
+    <ul v-if="activeList === 'messages'" class="people h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
+      <li class="person" v-for="person in people" :key="person.id" @click="loadMessages(person)">
+        <img :src="person.avatar" alt="" />
+        <span class="name text-lime-950 text-text-lg font-medium">{{ person.name }}</span>
+        <span class="time text-gray-600">{{ person.time }}</span>
+        <span class="preview">
+          {{ person.messages.length > 0 ? person.messages[person.messages.length - 1].text : "" }}
+        </span>
+      </li>
+    </ul>
+
+    <ul v-if="activeList === 'friends'" class="people h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
+      <li class="person" v-for="friend in friends" :key="friend.id" @click="loadMessages(friend)">
+        <img :src="friend.avatar" alt="" />
+        <span class="name text-lime-950 text-text-lg font-medium">{{ friend.name }}</span>
+        <span class="time text-gray-600">{{ friend.time }}</span>
+        <span class="preview">
+          {{ friend.messages.length > 0 ? friend.messages[friend.messages.length - 1].text : "" }}
+        </span>
+      </li>
+    </ul>
+
+    <ul v-if="activeList === 'requests'" class="people h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
+      <li class="person" v-for="request in requests" :key="request.id" @click="loadMessages(request)">
+        <img :src="request.avatar" alt="" />
+        <span class="name text-lime-950 text-text-lg font-medium">{{ request.name }}</span>
+        <span class="time text-gray-600">{{ request.time }}</span>
+        <span class="preview">
+          {{ request.messages.length > 0 ? request.messages[request.messages.length - 1].text : "" }}
+        </span>
+      </li>
+    </ul>
       </div>
 
       <!-- Message Body (visible on mobile) -->
@@ -51,7 +72,7 @@
 <script setup>
 definePageMeta({
   layout: "mobile",
-  middleware: ["unauthstd"],
+  // auth:false
 });
 useHead({
   title: 'Chats',
@@ -61,159 +82,54 @@ useHead({
 })
 </script>
 <script>
+import { io } from 'socket.io-client';
+import { useAuthStore } from "../stores/authStore";
+
+
 export default {
   data() {
     return {
-      people: [
-        {
-          id: "person1",
-          name: "Boateng Prince",
-          avatar:
-            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/thomas.jpg",
-          time: "2:09 PM",
-          messages: [
-            { sender: "user", text: "Hey, how are you doing?" },
-            { sender: "sender", text: "I'm good, thanks! How about you?" },
-            { sender: "sender", text: "Another message from the user." },
-          ],
-        },
-        {
-          id: "person2",
-          name: "Akoto God is Great",
-          avatar: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/dog.png",
-          time: "1:44 PM",
-          messages: [
-            // Add dummy messages for Dog Woofson
-            { sender: "user", text: "Yo killa, whatsup" },
-            { sender: "sender", text: "Idey boss, waguan" },
-            { sender: "user", text: "You hear of ciraq?" },
-          ],
-        },
-        {
-          id: "person3",
-          name: "Kwamena Bartez",
-          avatar:
-            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/louis-ck.jpeg",
-          time: "2:09 PM",
-          messages: [
-            // Add dummy messages for Louis CK
-          ],
-        },
-        {
-          id: "person1",
-          name: "Boateng Prince",
-          avatar:
-            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/thomas.jpg",
-          time: "2:09 PM",
-          messages: [
-            { sender: "user", text: "Hey, how are you doing?" },
-            { sender: "sender", text: "I'm good, thanks! How about you?" },
-            { sender: "sender", text: "Another message from the user." },
-          ],
-        },
-        {
-          id: "person2",
-          name: "Akoto God is Great",
-          avatar: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/dog.png",
-          time: "1:44 PM",
-          messages: [
-            // Add dummy messages for Dog Woofson
-            { sender: "user", text: "Yo killa, whatsup" },
-            { sender: "sender", text: "Idey boss, waguan" },
-            { sender: "user", text: "You hear of ciraq?" },
-          ],
-        },
-        {
-          id: "person3",
-          name: "Kwamena Bartez",
-          avatar:
-            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/louis-ck.jpeg",
-          time: "2:09 PM",
-          messages: [
-            // Add dummy messages for Louis CK
-          ],
-        },
-        {
-          id: "person1",
-          name: "Boateng Prince",
-          avatar:
-            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/thomas.jpg",
-          time: "2:09 PM",
-          messages: [
-            { sender: "user", text: "Hey, how are you doing?" },
-            { sender: "sender", text: "I'm good, thanks! How about you?" },
-            { sender: "sender", text: "Another message from the user." },
-          ],
-        },
-        {
-          id: "person2",
-          name: "Akoto God is Great",
-          avatar: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/dog.png",
-          time: "1:44 PM",
-          messages: [
-            // Add dummy messages for Dog Woofson
-            { sender: "user", text: "Yo killa, whatsup" },
-            { sender: "sender", text: "Idey boss, waguan" },
-            { sender: "user", text: "You hear of ciraq?" },
-          ],
-        },
-        {
-          id: "person3",
-          name: "Kwamena Bartez",
-          avatar:
-            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/louis-ck.jpeg",
-          time: "2:09 PM",
-          messages: [
-            // Add dummy messages for Louis CK
-          ],
-        },
-        {
-          id: "person1",
-          name: "Boateng Prince",
-          avatar:
-            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/thomas.jpg",
-          time: "2:09 PM",
-          messages: [
-            { sender: "user", text: "Hey, how are you doing?" },
-            { sender: "sender", text: "I'm good, thanks! How about you?" },
-            { sender: "sender", text: "Another message from the user." },
-          ],
-        },
-        {
-          id: "person2",
-          name: "Akoto God is Great",
-          avatar: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/dog.png",
-          time: "1:44 PM",
-          messages: [
-            // Add dummy messages for Dog Woofson
-            { sender: "user", text: "Yo killa, whatsup" },
-            { sender: "sender", text: "Idey boss, waguan" },
-            { sender: "user", text: "You hear of ciraq?" },
-          ],
-        },
-        {
-          id: "person3",
-          name: "Kwamena Bartez",
-          avatar:
-            "https://s3-us-west-2.amazonaws.com/s.cdpn.io/382994/louis-ck.jpeg",
-          time: "2:09 PM",
-          messages: [
-            // Add dummy messages for Louis CK
-          ],
-        },
-        // Add more people as needed
-      ],
+      people: [],
       selectedPerson: null,
       isMobile: false,
       showMessageList: true,
+      socket: null,
+      authStore: null,
     };
   },
+
   methods: {
+    logit() {
+      console.log("🚀 ~ logit ~ this.people", this.socket, this.authStore.token)
+    },
     loadMessages(person) {
       this.selectedPerson = person;
       // Toggle between Message List and Message Body on mobile
       if (this.isMobile) {
         this.showMessageList = false;
+      }
+
+      // Emit event to join chat room
+      this.socket.emit('joinChat', {friendship_id:person.friendship_id, name: person.friend_name, sender: this.authStore.token});
+    },
+
+    async fetchUsers() {
+     try {
+      const as = useAuthStore();
+       const res = await fetch('http://192.168.5.249:5001/chats/friends', {
+         method: 'GET',
+         headers: {
+           'Content-Type': 'application/json',
+           Authorization: as.token,
+          } 
+        });
+        console.log("🚀 ~ fetchUsers ~ this.authStore.token:", this.authStore.token)
+
+        let data = await res.json();
+        this.people = data.data;
+        console.log("🚀 ~ fetchUsers ~ this.people:", this.people)
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -238,15 +154,44 @@ export default {
   mounted() {
     this.isMobile = window.innerWidth < 768; // Adjust the threshold as needed
     window.addEventListener("resize", this.handleResize);
-  },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.handleResize);
-  },
+    this.fetchUsers();
+
+     this.authStore = useAuthStore();
+
+     if(this.authStore.token){
+       this.socket = io('http://192.168.5.249:5001/chat', {
+         auth: {
+           token: this.authStore.token
+         }
+       });
+     } else {
+       console.log("No token found can't connect to socket");
+     }
+
+    this.socket.on('connection', () => {
+      console.log('Connected to /chat namespace');
+    });
+
+
+    this.socket.on('joinError', (error) => {
+      console.log('Error joining chat:', error);
+    })
+
+    this.socket.on('connect_error', (error) => {
+      console.log('Connection error:', error);
+    });
+},
 };
 </script>
 
-
 <style scoped>
+.active {
+  color: #007bff;
+}
+i {
+  cursor: pointer;
+}
+
 .maxWidth {
   max-width: 90%;
   word-wrap: break-word; /* Ensure long words break to the next line */

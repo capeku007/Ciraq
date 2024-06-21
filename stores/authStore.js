@@ -89,7 +89,7 @@ export const useAuthStore = defineStore("authStore", {
         // Store user details in localStorage
         localStorage.setItem('userDetails', JSON.stringify(data));
         this.user = data;
-        location.reload();
+        // location.reload();
       }
     },
 

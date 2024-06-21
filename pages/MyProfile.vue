@@ -1,5 +1,5 @@
 <template>
-<!-- view job modal -->
+  <!-- view job modal -->
   <div
     id="jobInfo"
     tabindex="-1"
@@ -7,7 +7,9 @@
     aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
   >
-    <div class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden">
+    <div
+      class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+    >
       <div class="relative bg-white rounded-lg shadow">
         <div class="p-4 md:p-5">
           <div class="py-4 sticky top-0 z-10 bg-white rounded-lg">
@@ -105,7 +107,7 @@
     </div>
   </div>
 
-    <!-- edit modal -->
+  <!-- edit modal -->
   <div
     id="editProfile"
     tabindex="-1"
@@ -113,143 +115,230 @@
     aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
   >
-    <div class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden">
+    <div
+      class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+    >
       <div class="relative bg-white rounded-lg shadow">
+        <i
+          @click="hideModal('editProfile')"
+          class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 text-2xl text-gray-400 hover:text-red-600"
+        ></i>
         <div class="p-4 md:p-5">
-  <div
-    class="flex justify-center items-center max-w-md mx-auto rounded-lg overflow-hidden md:max-w-lg"
-  >
-    <div class="relative flex flex-wrap w-11/12">
-      <div class="w-full">
-        <EditProfile/>
-      </div>
-    </div>
-  </div>
+          <div
+            class="flex justify-center items-center max-w-md mx-auto rounded-lg overflow-hidden md:max-w-lg"
+          >
+            <div class="relative flex flex-wrap w-11/12">
+              <div class="w-full">
+                <div class="w-full mt-6 px-4 relative">
+                  <label
+                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlfor="grid-password"
+                  >
+                    BIO
+                  </label>
+                  <textarea
+                    type="text"
+                    v-model="user.bio"
+                    id="chat"
+                    style="resize: none"
+                    rows="4"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    placeholder="Your bio..."
+                  ></textarea>
+                </div>
+
+                <div class="mt-4">
+                  <button
+                    @click="updateBio()"
+                    class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr]  p-2 h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden">
+  <!-- edit modal -->
+  <div
+    id="editImg"
+    tabindex="-1"
+    data-modal-target="editImg"
+    aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
+  >
+    <div
+      class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+    >
+      <div class="relative bg-white rounded-lg shadow">
+        <div class="p-4 md:p-5">
+          <div
+            class="flex justify-center items-center max-w-md mx-auto rounded-lg overflow-hidden md:max-w-lg"
+          >
+            <div class="relative flex flex-wrap w-11/12">
+              <div class="w-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] p-2 h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden"
+  >
     <div class="parent bg-white">
       <div class="div1">
         <!-- component -->
-        <div class="min-h-[17svh] max-h-[17svh] w-full flex justify-center items-center px-2 pt-2 sm:pt-4">
-          <div class="absolute flex justify-center items-center">
-            <div class="w-full h-1/2 flex flex-col justify-center items-center">
-              <img
-                class=" w-[4rem] sm:w-[5rem] rounded-full"
-                src="https://vojislavd.com/ta-template-demo/assets/img/profile.jpg" alt=""
-              />
-              <p class="text-gray-700 font-bold">{{user.fname }} {{user.lname}}</p>
-              <p class="text-gray-500 text-xs">Bsc Computer Science | Year 3</p>
+        <div
+          class="min-h-[16svh] max-h-[16svh] w-full flex justify-center items-center px-2 pt-2 sm:pt-4"
+        >
+          <div class="sm:pl-4 flex w-full items-center mb-4">
+            <div class="relative mr-4">
+              <div class="absolute right-1 top-1 z-10">
+                <input
+                  type="file"
+                  id="imageUpload"
+                  accept=".png, .jpg, .jpeg"
+                  class="hidden"
+                  @change="onFileChange"
+                />
+                <label
+                  for="imageUpload"
+                  class="inline-block w-6 h-6 rounded-full bg-white shadow-md cursor-pointer transition-all duration-200 ease-in-out hover:bg-gray-100 hover:border-gray-300 relative"
+                >
+                  <i
+                    class="bx bx-camera absolute inset-1.5 flex items-center justify-center text-gray-600 text-xs"
+                  ></i>
+                </label>
+              </div>
+              <div
+                class="w-[4.5rem] h-[4.5rem] sm:w-[5rem] sm:h-[5rem] rounded-full overflow-hidden shadow mx-auto flex justify-center bg-blue-300/20 bg-cover bg-center bg-no-repeat"
+              >
+                <div
+                  :style="{ backgroundImage: `url(${imageSrc})` }"
+                  class="w-full h-full bg-cover bg-no-repeat bg-center"
+                ></div>
+              </div>
             </div>
-          </div>
-
-          <div
-            class=" w-full flex flex-col justify-around items-center"
-          >
-            <div class="w-full h-1/2 flex justify-between items-center px-1">
-              <div class="flex flex-col justify-center items-center">
-                <h1 class="text-xs">{{user.institution}}</h1>
-                <div class="flex items-center">
-                  <button
-                  @click="edituserProfile"
-                    class="flex items-center py-1 px-2 rounded-lg text-red-600 hover:bg-red-600 hover:text-white transition-colors duration-300"
-                  >
-                    <i class="bx bx-edit"></i>
-                    <!-- Assuming this is your icon -->
-                    <span class="hidden sm:inline ml-1">Edit Account</span>
-                  </button>
-                </div>
-              </div>
-
-              <div class="flex flex-col justify-center items-center">
-                <h1 class="text-xs">{{user.degree_program}}</h1>
-                <div class="flex items-center">
-                  <button
-                    class="flex items-center py-1 px-2 rounded-lg text-[#007ABB] hover:bg-[#007ABB] hover:text-white transition-colors duration-300"
-                  >
-                    <i class="bx bx-chat"></i>
-                    <!-- Assuming this is your icon -->
-                    <span class="hidden sm:inline ml-1">Message</span>
-                  </button>
-                </div>
-              </div>
+            <div>
+              <p class="text-lg font-bold">
+                {{ user.fname }}
+                {{ user.lname }}
+              </p>
+              <p class="text-sm text-gray-600">
+                <!-- <span class="mr-3">{{ user.program_offered }}</span> -->
+                <!-- <span class="mr-3 border-r border-gray-200 max-h-0"></span> -->
+                <span>{{ user.institution_name }}</span>
+              </p>
+              <p class="text-sm text-gray-600">
+                {{ formatDate(user.dob) }} | {{ user.gender }} |
+                {{ currentYear(user.start_date) }}
+              </p>
+              <p class="text-sm text-gray-600"></p>
+            </div>
+            <div class="ml-auto">
+              <button
+                @click="showModal('editProfile')"
+                class="flex items-center py-1 px-2 rounded-lg text-red-600 hover:bg-red-600 hover:text-white transition-colors duration-300"
+              >
+                <i class="bx bx-edit"></i>
+                <span class="hidden sm:inline ml-1">Edit Bio</span>
+              </button>
             </div>
           </div>
         </div>
-        <!-- <div class="flex justify-center">
-          <div class="border-b border-gray-300 w-8/12"></div>
-        </div> -->
+
         <!-- scrollable -->
-        <div class="h-[63vh] px-2">
+        <div class="h-[63vh] overflow-y-auto w-full px-2">
           <!-- Professional summary -->
           <div class="pb-1 mt-1 bg-white rounded-lg">
             <button
               class="flex items-center justify-between w-full p-1 mt-2 font-medium text-gray-500 gap-3"
-              :class="{ active: active }"
-              @click="toggleAccordion"
             >
               <span class="uppercase sm:pl-4 text-black text-xs font-bold">
                 Professional Summary</span
               >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 transform transition-transform text-black"
-                :class="{ 'rotate-180': active }"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
             </button>
             <div
-              @click="toggleAccordion"
-              class="accordion-content px-2 text-xs sm:text-sm mt-0 pt-0"
-              v-show="active"
+              class="ml-8 accordion-content px-2 text-xs sm:text-sm mt-0 pt-0"
             >
-              {{user}}
+              {{ user.bio }}
+            </div>
+          </div>
+
+          <!-- Education summary -->
+          <div class="pb-1 mt-4 bg-white rounded-lg">
+            <button
+              class="flex items-center justify-between w-full p-1 mt-2 font-medium text-gray-500 gap-3"
+            >
+              <span class="uppercase sm:pl-4 text-black text-xs font-bold">
+                Education</span
+              >
+            </button>
+            <div
+              class="sm:ml-8 ml-4 accordion-content px-2 text-xs sm:text-sm mt-0 pt-0"
+            >
+              <div class="flex flex-col space-y-4 sm:mr-8 mr-4">
+                <div
+                  class="flex flex-col sm:flex-row justify-between items-start sm:items-center"
+                >
+                  <div class="order-1 font-semibold">
+                    {{ user.institution_name }} <br />
+                    <span class="font-normal text-sm text-gray-600">{{
+                      user.program_offered
+                    }}</span>
+                  </div>
+                  <div class="order-2 text-sm text-gray-600 mt-0 sm:mt-0">
+                    location <br />
+                    <span class="font-medium text-sm text-gray-600">
+                      {{ user.start_date }}</span
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- tabs -->
-          <div class="flex justify-center items-center px-2">
-            <div class="h-[58vh] overflow-y-auto w-full">
+          <div class="flex mt-2 px-2">
+            <div class="w-full">
               <ul
-                class="flex justify-center items-center sticky top-0 z-10 bg-white rounded-lg"
+                class="flex mt-2 sm:pl-4 sticky top-0 z-10 bg-white rounded-lg"
               >
                 <li
-                  style="padding: 0.5rem"
+                  style="padding: 0.2rem"
                   v-for="(tab, index) in tabs"
                   :key="index"
                   @click="activeTab = index"
-                  class="text-xs md:text-sm lg:text-base"
+                  class="uppercase sm:pl-4 text-black text-xs font-bold"
                   :class="
                     activeTab === index
-                      ? 'text-[#132E35] border-b-2 border-[#132E35] pb-4'
-                      : 'text-gray-500 border-b-2 pb-4'
+                      ? 'text-[#132E35] border-b-2 border-[#132E35] pb-1'
+                      : 'text-gray-500 border-b-2 pb-1'
                   "
                 >
                   {{ tab }}
                 </li>
               </ul>
 
-              <div class="w-full bg-white mt-2 p-2 mx-auto">
+              <div class="w-full bg-white p-2">
                 <div class="" v-show="activeTab === 0">
                   <!-- Work History timeLine -->
-                  <div class="sm:w-11/12 sm:pl-40">
+                  <div class="sm:w-11/12 ml-4">
                     <ol class="relative border-s border-gray-200">
-                      <li @click="openWorkHistoryInfo">
+                      <li
+                        @click="openWorkHistoryInfo"
+                        v-for="(work, index) in user.work_history"
+                        :key="index"
+                      >
                         <div class="p-4 mb-5 bg-white">
                           <span
-                            class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
+                            class="absolute flex w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
                           >
                             <i class="bx bxs-briefcase"></i>
                           </span>
@@ -260,7 +349,8 @@
                             <span
                               class="text-sm font-normal leading-none text-gray-400 px-2.5 py-0.5"
                             >
-                              11/11/2022 - 03/27/2024
+                              {{ formatDate(work.start_date) }}-
+                              {{ formatDate(work.start_date) }}
                             </span>
                           </div>
                           <div
@@ -277,12 +367,12 @@
                               <p
                                 class="text-xs sm:text-base font-normal text-gray-500 truncate"
                               >
-                                job.company
+                                {{ work.company_name }}
                               </p>
                               <p
                                 class="text-base sm:text-lg font-semibold truncate"
                               >
-                                job.title
+                                {{ work.position }}
                               </p>
                             </div>
                           </div>
@@ -292,34 +382,6 @@
                   </div>
                 </div>
 
-                <div v-show="activeTab === 1">
-                  <!-- Education timeLine -->
-                  <div class="sm:w-11/12 sm:pl-40">
-                    <ol class="relative border-s border-gray-200">
-                      <li class="mb-10 ms-6">
-                        <span
-                          class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
-                        >
-                          <i class="bx bxs-briefcase"></i>
-                        </span>
-                        <p
-                          class="mb-1 text-base sm:text-lg font-semibold text-gray-900"
-                        >
-                          Kwame Nkrumah University of Science and Technology
-                          KNUST
-                        </p>
-                        <time
-                          class="mb-2 text-xs sm:text-sm font-normal leading-none text-gray-400"
-                        >
-                          12/22/2020 - 12/11/2024</time
-                        >
-                        <p class="text-sm font-normal text-gray-500">
-                          Bsc Computer Science
-                        </p>
-                      </li>
-                    </ol>
-                  </div>
-                </div>
                 <div v-show="activeTab === 2">
                   <p class="text-center">Coming soon</p>
                 </div>
@@ -332,27 +394,120 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "../stores/authStore";
-// import EditProfile from "@components/Student/EditProfile.vue"
-import EditProfile from "../components/student/EditProfile.vue"
+import { useMainStore } from "~/stores/main";
+import { useFormatDate } from "@/composables/useFormatDate";
+const { formatDate, currentYear, initialsFromName } = useFormatDate();
 const activeTab = ref(0);
-const tabs = ref(["Work History", "Education", "Projects"]);
+const tabs = ref(["Work History", "Projects"]);
 const authStore = useAuthStore();
-const { showClosableModal } = useModal();
+const { showClosableModal, showModal, hideModal } = useModal();
 const active = ref(false);
 definePageMeta({
   layout: "mobile",
   middleware: ["unauthstd"],
 });
 useHead({
-  title: 'Profile',
-  meta: [
-    { name: "my profile", content: 'my profile' }
-  ],
-})
+  title: "Profile",
+  meta: [{ name: "my profile", content: "my profile" }],
+});
+
+const mainStore = useMainStore();
+const userInfo = ref();
+
+const newBio = ref("");
+
+const updateBio = async () => {
+  let requestBody = {
+    bio: user.bio,
+  };
+  try {
+    const response = await fetch(
+      mainStore.urlbase + "api/user/update-accountinfo",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authStore.token,
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      const error = new Error(responseData.message || "Failed to update bio.");
+      throw error;
+    } else {
+      console.log("bio updated successfully:", responseData);
+      // Add any additional logic or state updates here
+      return responseData;
+    }
+  } catch (error) {
+    console.error("Failed to update profile:", error);
+    // Handle the error as needed (e.g., display an error message to the user)
+  } finally{
+    hideModal('editProfile');
+    authStore.fetchUser()
+  }
+};
+
+
+
+const imageSrc = ref('http://i.pravatar.cc/500?img=7'); // Default image URL
+const uploadedFileName1 = ref(null);
+const stdid_img_name = ref(null);
+
+const onFileChange = async (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      imageSrc.value = event.target.result; // Set the preview image
+    };
+    reader.readAsDataURL(file);
+
+    stdid_img_name.value = file;
+    uploadedFileName1.value = null; // Reset the uploaded file name
+
+    // Wait for the DOM to update
+    await nextTick();
+    uploadedFileName1.value = file.name; // Set the uploaded file name
+
+    // Prepare the form data
+    const formData = new FormData();
+    formData.append("studentid", file);
+
+    // Make the API request
+    try {
+
+const response = await fetch(
+  mainStore.urlbase + "api/user/update-accountinfo",
+  {
+    method: "PUT",
+    headers: {
+      Authorization: authStore.token,
+    },
+    body: formData,
+  }
+);
+
+      if (response.data.successful) {
+        console.log("Image upload successful");
+      } else {
+        console.error("Image upload failed");
+      }
+    } catch (error) {
+      console.error("Failed to upload image:", error);
+    }
+  } else {
+    imageSrc.value = 'http://i.pravatar.cc/500?img=7'; // Reset to default image
+    uploadedFileName1.value = null;
+  }
+};
 
 const toggleAccordion = () => {
   active.value = !active.value;
@@ -360,8 +515,8 @@ const toggleAccordion = () => {
 
 // user details
 const user = authStore.getUser || {
-  fname:"John",
-  lname:"saint"
+  fname: "John",
+  lname: "saint",
 };
 const userImage = authStore.getUserImage;
 
@@ -372,16 +527,9 @@ const openWorkHistoryInfo = () => {
 };
 onMounted(() => {
   // Fetch user data and user image when component is mounted
-
 });
 
 
-//edit profile
-const edituserProfile= () => {
-  // Initialize useModal composable
-  const modalId = "editProfile";
-  showClosableModal(modalId);
-};
 </script>
 
 <style scoped>
@@ -431,5 +579,4 @@ svg {
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
-
 </style>

@@ -1,5 +1,5 @@
 <template>
-<!-- view job modal -->
+  <!-- view job modal -->
   <div
     id="jobInfo"
     tabindex="-1"
@@ -7,7 +7,7 @@
     aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
   >
-    <JobViewStd/>
+    <JobViewStd />
   </div>
 
   <div class="h-[81svh] m-2 p-2">
@@ -15,57 +15,48 @@
       <div class="div1">
         <!-- component -->
         <div class="h-[16.2vh] w-full flex justify-center items-center">
-                            <div class="flex w-full items-center mb-4">
-                    <div class="mr-4">
-                      <div
-                        v-if="selectedUser.profile_img"
-                        :style="{
-                          backgroundImage: `url(${selectedUser.profile_img})`,
-                        }"
-                        class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
-                      ></div>
-                      <div
-                        v-else
-                        class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
-                      >
-                        {{
-                          initialsFromName(
-                            selectedUser.fname,
-                            selectedUser.lname
-                          )
-                        }}
-                      </div>
-                    </div>
-                    <div>
-                      <p class="text-lg font-bold">
-                        {{ selectedUser.fname }}
-                        {{ selectedUser.lname }}
-                      </p>
-                      <p class="text-sm text-gray-600">
-                        <span class="mr-3">{{
-                          selectedUser.program_offered
-                        }}</span>
-                        <span
-                          class="mr-3 border-r border-gray-200 max-h-0"
-                        ></span>
-                        <span>{{ selectedUser.institution_name }}</span>
-                      </p>
-                      <p class="text-sm text-gray-600">
-                        {{ formatDate(selectedUser.dob) }} | {{selectedUser.gender}} |
-                        {{ currentYear(selectedUser.start_date) }}
-                      </p>
-                      <p class="text-sm text-gray-600"></p>
-                    </div>
-                     <div class="ml-auto">
-                                        <button
-                    class="flex items-center py-1 px-2 rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300"
-                  >
-                    <i class="bx bx-chat"></i>
-                    <!-- Assuming this is your icon -->
-                    <span class="hidden sm:inline ml-1">Message</span>
-                  </button>
-                    </div>
-                  </div>
+          <div class="flex w-full items-center mb-4">
+            <div class="mr-4">
+              <div
+                v-if="selectedUser.profile_img"
+                :style="{
+                  backgroundImage: `url(${selectedUser.profile_img})`,
+                }"
+                class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+              ></div>
+              <div
+                v-else
+                class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
+              >
+                {{ initialsFromName(selectedUser.fname, selectedUser.lname) }}
+              </div>
+            </div>
+            <div>
+              <p class="text-lg font-bold">
+                {{ selectedUser.fname }}
+                {{ selectedUser.lname }}
+              </p>
+              <p class="text-sm text-gray-600">
+                <span class="mr-3">{{ selectedUser.program_offered }}</span>
+                <span class="mr-3 border-r border-gray-200 max-h-0"></span>
+                <span>{{ selectedUser.institution_name }}</span>
+              </p>
+              <p class="text-sm text-gray-600">
+                {{ formatDate(selectedUser.dob) }} | {{ selectedUser.gender }} |
+                {{ currentYear(selectedUser.start_date) }}
+              </p>
+              <p class="text-sm text-gray-600"></p>
+            </div>
+            <div class="ml-auto">
+              <button
+                class="flex items-center py-1 px-2 rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300"
+              >
+                <i class="bx bx-chat"></i>
+                <!-- Assuming this is your icon -->
+                <span class="hidden sm:inline ml-1">Message</span>
+              </button>
+            </div>
+          </div>
           <!-- <div class="absolute flex justify-center items-center">
             <div class="w-full h-1/2 flex flex-col justify-center items-center">
                                     <div
@@ -151,7 +142,7 @@
               class="accordion-content px-2 text-xs sm:text-sm mt-0 pt-0"
               v-show="active"
             >
-              {{selectedUser.bio}}
+              {{ selectedUser.bio }}
             </div>
           </div>
 
@@ -166,7 +157,7 @@
                   v-for="(tab, index) in tabs"
                   :key="index"
                   @click="activeTab = index"
-                  class="uppercase sm:pl-4 text-black font-bold text-xs "
+                  class="uppercase sm:pl-4 text-black font-bold text-xs"
                   :class="
                     activeTab === index
                       ? 'text-[#132E35] border-b-2 border-[#132E35] pb-4'
@@ -182,11 +173,14 @@
                   <!-- Work History timeLine -->
                   <div class="sm:w-11/12 sm:pl-40">
                     <ol class="relative border-s border-gray-200">
-                      <li @click="openWorkHistoryInfo"  v-for="(work, index) in selectedUser.work_history"
-                  :key="index">
+                      <li
+                        @click="openWorkHistoryInfo"
+                        v-for="(work, index) in selectedUser.work_history"
+                        :key="index"
+                      >
                         <div class="p-4 mb-5 bg-white">
                           <span
-                            class="absolute flex  w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
+                            class="absolute flex w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
                           >
                             <i class="bx bxs-briefcase"></i>
                           </span>
@@ -197,7 +191,8 @@
                             <span
                               class="text-sm font-normal leading-none text-gray-400 px-2.5 py-0.5"
                             >
-                              {{formatDate(work.start_date)}}- {{formatDate(work.start_date)}}
+                              {{ formatDate(work.start_date) }}-
+                              {{ formatDate(work.start_date) }}
                             </span>
                           </div>
                           <div
@@ -214,12 +209,12 @@
                               <p
                                 class="text-xs sm:text-base font-normal text-gray-500 truncate"
                               >
-                                {{work.company_name}}
+                                {{ work.company_name }}
                               </p>
                               <p
                                 class="text-base sm:text-lg font-semibold truncate"
                               >
-                                {{work.position}}
+                                {{ work.position }}
                               </p>
                             </div>
                           </div>
@@ -242,15 +237,16 @@
                         <p
                           class="mb-1 text-base sm:text-lg font-semibold text-gray-900"
                         >
-                          {{selectedUser.institution_name}}
+                          {{ selectedUser.institution_name }}
                         </p>
                         <time
                           class="mb-2 text-xs sm:text-sm font-normal leading-none text-gray-400"
                         >
-                          {{formatDate(selectedUser.start_date)}} - {{formatDate(selectedUser.end_date)}}</time
+                          {{ formatDate(selectedUser.start_date) }} -
+                          {{ formatDate(selectedUser.end_date) }}</time
                         >
                         <p class="text-sm font-normal text-gray-500">
-                         {{selectedUser.program_offered}}
+                          {{ selectedUser.program_offered }}
                         </p>
                       </li>
                     </ol>
@@ -272,7 +268,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "../stores/authStore";
-
 import { useFormatDate } from "@/composables/useFormatDate";
 const { formatDate, currentYear, initialsFromName } = useFormatDate();
 
@@ -281,7 +276,6 @@ const tabs = ref(["Work History", "Education"]);
 const authStore = useAuthStore();
 const { showClosableModal } = useModal();
 const active = ref(false);
-
 
 const { selectedUser } = defineProps({
   selectedUser: {
@@ -299,9 +293,7 @@ const openWorkHistoryInfo = () => {
   const modalId = "jobInfo";
   showClosableModal(modalId);
 };
-onMounted(() => {
-
-});
+onMounted(() => {});
 </script>
 
 <style scoped>
@@ -351,5 +343,4 @@ svg {
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
-
 </style>

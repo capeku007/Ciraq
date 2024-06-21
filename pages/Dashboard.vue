@@ -69,11 +69,11 @@
                   />
                 </div>
                 <div class="flex-1 min-w-0">
+                  <p class="text-xs font-normal text-gray-500 truncate">
+                    {{ job.company_name }}
+                  </p>
                   <p class="text-base font-semibold truncate">
                     {{ job.job_title }}
-                  </p>
-                  <p class="text-xs font-normal text-gray-500 truncate">
-                    {{ job.location_name }}
                   </p>
                 </div>
               </div>

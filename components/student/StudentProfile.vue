@@ -30,7 +30,6 @@
 
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "../stores/authStore";
-import EditProfile from "../components/student/EditProfile.vue"
 
 
 const activeTab = ref(0);
