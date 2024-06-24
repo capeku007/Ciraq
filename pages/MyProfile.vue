@@ -425,7 +425,7 @@ const updateBio = async () => {
   };
   try {
     const response = await fetch(
-      mainStore.urlbase + "api/user/update-accountinfo",
+      mainStore.urlbase + "user/update-accountinfo",
       {
         method: "PUT",
         headers: {
@@ -485,7 +485,7 @@ const onFileChange = async (e) => {
     try {
 
 const response = await fetch(
-  mainStore.urlbase + "api/user/update-accountinfo",
+  mainStore.urlbase + "user/update-accountinfo",
   {
     method: "PUT",
     headers: {

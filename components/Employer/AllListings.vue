@@ -269,7 +269,7 @@ const openListing = async (listingId) => {
     selectedJob.value = {};
 
     const response = await fetch(
-      `${mainStore.urlbase}api/listing/listing-byid/${listingId}`,
+      `${mainStore.urlbase}listing/listing-byid/${listingId}`,
       {
         method: "GET",
         headers: {
@@ -339,9 +339,9 @@ const updateListStatus = () => {
   // IF USER SELECTS YES CONTINUE FUNCTION
   func.yesfunc = async function () {
     try {
-      console.log("url", mainStore.urlbase + "api/listing/update/id");
+      console.log("url", mainStore.urlbase + "listing/update/id");
       const response = await fetch(
-        mainStore.urlbase + "api/listing/update-appl-status",
+        mainStore.urlbase + "listing/update-appl-status",
         {
           method: "PUT",
           headers: {

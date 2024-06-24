@@ -416,7 +416,7 @@ const updateProfile = () => {
   // IF USER SELECTS YES, CONTINUE FUNCTION
   func.yesfunc = async () => {
     try {
-      const response = await fetch(mainStore.urlbase + "api/company/update-account", {
+      const response = await fetch(mainStore.urlbase + "company/update-account", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

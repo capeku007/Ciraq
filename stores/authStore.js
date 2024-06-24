@@ -44,7 +44,7 @@ export const useAuthStore = defineStore("authStore", {
       }
       try {
         this.isLoading = true; 
-        const response = await fetch(mainStore.urlbase + "api/login", { 
+        const response = await fetch(mainStore.urlbase + "login", { 
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -89,7 +89,7 @@ export const useAuthStore = defineStore("authStore", {
         // Store user details in localStorage
         localStorage.setItem('userDetails', JSON.stringify(data));
         this.user = data;
-        // location.reload();
+        location.reload();
       }
     },
 
@@ -99,7 +99,7 @@ export const useAuthStore = defineStore("authStore", {
       if (this.token) {
     
         try {
-          const response = await fetch(mainStore.urlbase + "api/user/", {
+          const response = await fetch(mainStore.urlbase + "user/", {
             method: "GET", 
             headers: {
               "Content-Type": "application/json",
@@ -141,7 +141,7 @@ export const useAuthStore = defineStore("authStore", {
       const mainStore = useMainStore();
       
       try {
-        const response = await fetch(mainStore.urlbase + "api/register", { 
+        const response = await fetch(mainStore.urlbase + "register", { 
           method: "POST",
           body: formData
         });
@@ -167,6 +167,7 @@ export const useAuthStore = defineStore("authStore", {
       this.setUser(null)
       // Remove user details from localStorage
       localStorage.removeItem('userDetails');
+      location.reload();
     }
   },
 });  

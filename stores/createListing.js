@@ -22,7 +22,7 @@ export const useCreateStore = defineStore("createListStore", {
       const employerAuth = useEmployerAuth();
       console.log("Received this, will send this",formData)
       try {
-        const response = await fetch(mainStore.urlbase + "api/listing/create", { 
+        const response = await fetch(mainStore.urlbase + "listing/create", { 
           headers: {
             'Content-Type': 'application/json',
             Authorization: employerAuth.ctoken,

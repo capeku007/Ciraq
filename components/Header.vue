@@ -58,10 +58,10 @@
                   </li>
 
                   <li>
-                    <nuxt-link
-                      to="/"
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                      >Sign out</nuxt-link
+                    <button
+                      @click="authStore.logout()"
+                      class="block px-4 py-2 text-sm w-full text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                      >Sign out</button
                     >
                   </li>
                 </ul>
@@ -210,6 +210,9 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "../stores/authStore";
+const authStore = useAuthStore();
+
 const { showClosableModal } = useModal();
 const loggedIn = ref(true);
 const edituserPassword = () => {

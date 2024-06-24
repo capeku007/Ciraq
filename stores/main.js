@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 
 export const useMainStore = defineStore("mainStore", {
   state: () => ({
-    urlbase: "https://ciraq.co/",
+    urlbase: "https://ciraq.co/api/",
+    // urlbase: "http://192.168.5.249:5001/",
     dialoginfo: "",
     yesorNoClickFunc: { yesfunc: undefined, nofunc: undefined },
     loginType: false, 

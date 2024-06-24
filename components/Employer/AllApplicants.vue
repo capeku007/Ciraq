@@ -326,7 +326,7 @@ const viewApplicant = async (n) => {
     selectedUser.value = {};
 
     const response = await fetch(
-      `${mainStore.urlbase}api/company/user/${n.user_id}`,
+      `${mainStore.urlbase}company/user/${n.user_id}`,
       {
         method: "GET",
         headers: {
@@ -392,9 +392,9 @@ const updateApplicant = (newStatus) => {
         application_id: applicantDetails.value.application_id,
         appl_status: newStatus,
       };
-      console.log("url", mainStore.urlbase + "api/listing/update-app-status");
+      console.log("url", mainStore.urlbase + "listing/update-app-status");
       const response = await fetch(
-        mainStore.urlbase + "api/listing/update-appl-status",
+        mainStore.urlbase + "listing/update-appl-status",
         {
           method: "PUT",
           headers: {
@@ -430,7 +430,7 @@ const applicants = ref([]);
 //   try {
 //     isLoading.value = true;
 //     const response = await fetch(
-//       mainStore.urlbase + "api/listing/allcompany-appl",
+//       mainStore.urlbase + "listing/allcompany-appl",
 //       {
 //         method: "GET",
 //         headers: {

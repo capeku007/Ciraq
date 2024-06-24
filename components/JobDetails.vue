@@ -245,10 +245,10 @@ const updateListing = () => {
   // IF USER SELECTS YES CONTINUE FUNCTION
   func.yesfunc = async function () {
     try {
-      console.log("url", mainStore.urlbase + "api/listing/update/id");
+      console.log("url", mainStore.urlbase + "listing/update/id");
      
       const response = await fetch(
-        mainStore.urlbase + "api/listing/update/id",
+        mainStore.urlbase + "listing/update/id",
         {
           method: "PUT",
           headers: {

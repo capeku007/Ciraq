@@ -7,14 +7,39 @@
     aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
   >
-    <div class="relative p-4 w-full max-w-md max-h-full">
-      <StudentProfile />
+    <div v-if="selectedUser"  class="relative p-4 w-full max-w-md max-h-full">
+      <StudentCard :selectedUser="selectedUser"/>
     </div>
   </div>
 
   <div
-    class="grid grid-rows-[1fr_12%] gap-0 max-h-full h-full overflow-y-hidden"
+    class="grid grid-rows-[9%_1fr_12%] gap-0 max-h-full h-full overflow-y-hidden"
   >
+  <!-- search student here -->
+            <div class="flex items-center w-full mx-auto">
+            <label for="voice-search" class="sr-only">Search</label>
+            <div class="relative w-full">
+              <input
+                type="text"
+                id="voice-search"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Student name"
+                v-model="userSearchQuery"
+                required
+              />
+
+              <button
+          @click="searchUser()"
+                type="button"
+                class="absolute inset-y-0 end-0 flex items-center pe-2"
+              >
+                <i
+                  class="bx bx-search inline-flex items-center py-2.5 px-3 text-sm font-medium text-white bg-blue-700 rounded-3xl border border-blue-700"
+                  aria-hidden="true"
+                ></i>
+              </button>
+            </div>
+          </div>
     <div
       class="relative max-w-full overflow-auto rounded-2xl"
       :style="{
@@ -33,19 +58,36 @@
           height: itemHeight + 'vh',
         }"
       >
-        <li @click="viewProfile">
-          <div class="bg-white shadow rounded-lg">
+        <li @click="viewProfile(person)">
+          <!-- <div class="bg-white shadow rounded-lg">
             <div class="flex items-center flex-col">
               <img
-                class="w-10 h-10 rounded-full"
-                src="/assets/images/profile-img.jpg"
-                alt=""
-              />
+  class="w-10 h-10 rounded-full"
+  :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
+  :alt="`${person.fname} ${person.lname}'s profile image`"
+/>
               <div class="font-medium px-4">
-                <p>Cristian</p>
+                <p>{{person.fname }} {{person.lname }}</p>
               </div>
             </div>
-          </div>
+          </div> -->
+
+            <div
+    class="pin"
+    v-for="(person, index) in people"
+    :key="index"
+    :style="{
+      top: person.top + 'vh',
+      left: person.left + 'vw',
+    }"
+    @click="viewProfile(person)"
+  >
+    <img 
+      :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
+      :alt="`${person.fname} ${person.lname}'s profile image`"
+      class="profile-image"
+    />
+  </div>
         </li>
       </ul>
     </div>
@@ -140,8 +182,13 @@
 <script setup>
 import { ref } from "vue";
 import backgroundImageUrl from "../assets/Maps.png";
-import StudentProfile from "../components/student/StudentProfile.vue";
+import StudentProfile from "./student/StudentCard.vue";
+import {useAuthStore} from "../stores/authStore"
+import profilePlaceholder from '~/assets/images/profilePlace.jpg';
+import { useMainStore } from "~/stores/main";
 
+const mainStore = useMainStore();
+const authStore = useAuthStore();
 const { showClosableModal } = useModal();
 const { showDropDown, hideDropDown } = useDropDown();
 
@@ -153,26 +200,54 @@ const showDrop = (n, a) => {
 };
 
 const people = ref([]);
+const selectedUser = ref(null);
 const itemWidth = 20; // Adjust this value to match your desired item width
 const itemHeight = 10; // Adjust this value to match your desired item height
 const minSpacing = 10; // Minimum spacing between people in vh and vw
+const randomizePositions = async () => {
+try {
+    // Fetch people from the API
+    const response = await fetch(
+      mainStore.urlbase + "chats/suggest_fr",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': authStore.token,
+        }
+      }
+    );
 
-const randomizePositions = () => {
-  people.value = Array.from({ length: 5 }, () => ({
-    top: Math.random() * (60 - itemHeight) + 10, // Adjusted to keep items within 10vh to 70vh range
-    left: Math.random() * (80 - itemWidth) + 10, // Adjusted to keep items within 10vw to 80vw range
-  }));
+    if (!response.ok) {
+      throw new Error('Failed to fetch suggested friends');
+    }
 
-  // Check for collisions and adjust positions if needed
-  for (let i = 0; i < people.value.length; i++) {
-    for (let j = i + 1; j < people.value.length; j++) {
-      if (checkCollision(people.value[i], people.value[j])) {
-        spacePeople(people.value[i], people.value[j]);
-        j = i; // Reset the inner loop to check against the adjusted item
+    const data = await response.json();
+    
+    // Assuming the API returns an array of people
+    const fetchedPeople = data.data || [];
+
+    // Combine fetched data with random positions
+    people.value = fetchedPeople.map(person => ({
+      ...person,
+      top: Math.random() * (60 - itemHeight) + 10,
+      left: Math.random() * (80 - itemWidth) + 10,
+    }));
+
+    // Check for collisions and adjust positions if needed
+    for (let i = 0; i < people.value.length; i++) {
+      for (let j = i + 1; j < people.value.length; j++) {
+        if (checkCollision(people.value[i], people.value[j])) {
+          spacePeople(people.value[i], people.value[j]);
+          j = i; // Reset the inner loop to check against the adjusted item
+        }
       }
     }
+  } catch (error) {
+    console.error('Error fetching suggested friends:', error);
+    // Handle the error appropriately (e.g., show a notification to the user)
   }
-};
+  };
 
 const checkCollision = (person1, person2) => {
   return (
@@ -202,9 +277,10 @@ const spacePeople = (person1, person2) => {
   }
 };
 
-const viewProfile = () => {
+const viewProfile = (person) => {
   // Initialize useModal composable
   const modalId = "viewProfile";
+  selectedUser.value=person
   showClosableModal(modalId);
 };
 
@@ -233,6 +309,38 @@ const universities = [
   // Add more universities with their mail formats
 ];
 
+const userSearchQuery  = ref("");
+const searchUser  = async () => {
+    try {
+    const response = await fetch(
+      mainStore.urlbase + "chats/search_fr/" +userSearchQuery.value,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authStore.token,
+        }
+      }
+    );
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      const error = new Error(responseData.message || "Failed to update bio.");
+      throw error;
+    } else {
+      console.log("bio updated successfully:", responseData);
+      // Add any additional logic or state updates here
+      return responseData;
+    }
+  } catch (error) {
+    console.error("Failed to update profile:", error);
+    // Handle the error as needed (e.g., display an error message to the user)
+  } finally{
+    hideModal('editProfile');
+    authStore.fetchUser()
+  }
+}
 const searchQuery = ref("");
 const selectedUniversity = ref(null);
 
@@ -258,6 +366,46 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.pin {
+  width: 70px;
+  height: 70px;
+  background: #044013;
+  position: absolute;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.pin::before {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #044013;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.profile-image {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.pin:hover {
+  transform: rotate(-45deg) scale(1.1);
+}
+
+
 option {
   padding: 16px;
   margin: 8px;

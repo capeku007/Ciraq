@@ -191,7 +191,7 @@ const loadAllListings = async () => {
   isLoading.value = true; // Set loading state to true before fetching data
 
   try {
-    const response = await fetch(mainStore.urlbase + "api/alllistings", {
+    const response = await fetch(mainStore.urlbase + "alllistings", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

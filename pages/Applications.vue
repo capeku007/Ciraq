@@ -190,7 +190,7 @@ const handleResize = () => {
 const loadAllListings = async () => {
   isLoading.value = true;
   try {
-    const response = await fetch(mainStore.urlbase + "api/user-applications", {
+    const response = await fetch(mainStore.urlbase + "user-applications", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

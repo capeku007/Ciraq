@@ -4,18 +4,22 @@
     <div class="content">
       <div class="flex items-center mb-4">
         <div class="mr-4">
-          <img class="w-24 h-24 rounded-full" src="https://i.postimg.cc/bryMmCQB/profile-image.jpg" alt="Profile Image">
-        </div>
+          
+              <img
+  class="w-24 h-24 rounded-full"
+  :src="selectedUser.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${selectedUser.profile_img}` : profilePlaceholder"
+  :alt="`${selectedUser.fname} ${selectedUser.lname}'s profile image`"
+/>   </div>
         <div>
-          <p class="text-lg font-bold">Ethan Rivers</p>
-          <p class="text-sm text-gray-600"><span class="mr-3 ">Bsc Industrial Art</span><span class="mr-3 border-r border-gray-200  max-h-0"></span><span>KNUST</span></p>
-          <p class="text-sm text-gray-600">Year 3</p>
-          <p class="text-sm text-gray-600">No active jobs</p>
+          <p class="text-lg font-bold">{{selectedUser.fname }} {{selectedUser.lname}}</p>
+          <p class="text-sm text-gray-600"><span class="mr-3 ">{{selectedUser.program_offered}}</span><span class="mr-3 border-r border-gray-200  max-h-0"></span><span>{{selectedUser.institution_name}}</span></p>
+          <p class="text-sm text-gray-600">{{selectedUser.start_date}}</p>
+          <!-- <p class="text-sm text-gray-600">No active jobs</p> -->
         </div>
       </div>
       <div class="text-left mb-6">
         <!-- <p class="text-lg font-bold mb-2">About</p> -->
-        <p class="text-sm text-gray-600">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolores, placeat obcaecati. Eaque fugit eveniet error voluptates totam enim molestias vitae, amet aliquid deleniti ipsa ea.</p>
+        <p class="text-sm text-gray-600">{{selectedUser.bio}}</p>
       </div>
       <div class="flex justify-around">
         <button @click="closeModal" class="w-2/5 bg-gray-200 border border-black px-6 py-2 rounded-lg font-bold hover:bg-red-600 hover:text-white transition-colors duration-300">Close</button>
@@ -30,30 +34,17 @@
 
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "../stores/authStore";
-
-
-const activeTab = ref(0);
-const tabs = ref(["Work History", "Education", "Projects"]);
+import profilePlaceholder from '~/assets/images/profilePlace.jpg';
 const authStore = useAuthStore();
 const { showClosableModal, hideModal } = useModal();
 const active = ref(false);
 
-const toggleAccordion = () => {
-  active.value = !active.value;
-};
-
-// user details
-const user = authStore.getUser || {
-  fname:"John",
-  lname:"saint"
-};
-const userImage = authStore.getUserImage;
-
-const openWorkHistoryInfo = () => {
-  // Initialize useModal composable
-  const modalId = "jobInfo";
-  showClosableModal(modalId);
-};
+const { selectedUser } = defineProps({
+  selectedUser: {
+    type: Object,
+    required: true,
+  },
+});
 
 const closeModal = () => {
   // Initialize useModal composable
@@ -61,17 +52,12 @@ const closeModal = () => {
   hideModal(modalId);
 };
 
-
 onMounted(() => {
 
 });
 
-
-//edit profile
 const edituserProfile= () => {
-  // Initialize useModal composable
-  const modalId = "editProfile";
-  showClosableModal(modalId);
+
 };
 </script>
 

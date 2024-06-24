@@ -405,7 +405,7 @@ const createListing = () => {
   func.yesfunc = async function () {
     try {
       console.log('about to send this', reqObj);
-      const response = await fetch(mainStore.urlbase + "api/listing/create", {
+      const response = await fetch(mainStore.urlbase + "listing/create", {
         headers: {
           Authorization: employerAuth.ctoken,
         },

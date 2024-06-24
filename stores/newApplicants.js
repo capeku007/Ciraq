@@ -21,7 +21,7 @@ export const useApplicantStore = defineStore('newApplicantStore', {
       try {
         this.isLoading = true;
         const response = await fetch(
-            mainStore.urlbase + "api/listing/allcompany-appl",
+            mainStore.urlbase + "listing/allcompany-appl",
             {
               method: "GET",
               headers: {

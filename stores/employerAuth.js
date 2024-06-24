@@ -45,7 +45,7 @@ export const useEmployerAuth = defineStore("employerAuth", {
       
         try {
           this.isLoading = true; 
-          const response = await fetch(mainStore.urlbase + "api/company/login", {
+          const response = await fetch(mainStore.urlbase + "company/login", {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
@@ -88,7 +88,7 @@ export const useEmployerAuth = defineStore("employerAuth", {
       if (this.ctoken) {
     console.log("ctoken", this.ctoken);
         try {
-          const response = await fetch(mainStore.urlbase + "api/company/companyinfo", {
+          const response = await fetch(mainStore.urlbase + "company/companyinfo", {
             method: "GET", 
             headers: {
               "Content-Type": "application/json",

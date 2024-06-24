@@ -267,9 +267,6 @@ const toggleForgotPassword2 = () => {
 
 const handleResize = () => {
   isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
-  if (!isMobile.value) {
-    showJobList.value = true; // Reset to show message list on larger screens
-  }
 };
 
 onMounted(() => {
@@ -333,7 +330,7 @@ const loginUser2 = async () => {
     0,
     0,
     0.5
-  ); /* Adjust the color and opacity as needed */
+  );
 }
 
 .flex {

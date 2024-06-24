@@ -141,7 +141,7 @@ const listings = ref([]);
 const fetchData = async () => {
   try {
     const response = await fetch(
-      mainStore.urlbase + "api/listing/all-active-company-listing",
+      mainStore.urlbase + "listing/all-active-company-listing",
       {
         method: "GET",
         headers: {

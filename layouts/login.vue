@@ -9,7 +9,7 @@
         <img src="../assets/logo.png" width="45" height="45" alt="Inc Logo" />
       </a>
       <nav class="menu">
-        <ul class="menu-bar">
+        <ul class="menu-bar bg-white ">
           <!-- <li>
             <button class="nav-link dropdown-btn" data-dropdown="dropdown1" aria-haspopup="true" aria-expanded="false" aria-label="browse">
               Browse
@@ -520,6 +520,10 @@ button {
     align-items: stretch;
     row-gap: 1rem;
     padding: 1rem;
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      width: 100%;
   }
 
   .menu-bar .nav-link {

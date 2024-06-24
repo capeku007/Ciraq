@@ -240,7 +240,7 @@ const applyJob = () => {
 func.yesfunc = async function () {
   try {
     const response = await fetch(
-      mainStore.urlbase + "api/appl/apply",
+      mainStore.urlbase + "appl/apply",
       {
         method: "POST",
         headers: {

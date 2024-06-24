@@ -19,13 +19,14 @@
     </div>
 
     <ul v-if="activeList === 'messages'" class="people h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
-      <li class="person" v-for="person in people" :key="person.id" @click="loadMessages(person)">
-        <img :src="person.avatar" alt="" />
-        <span class="name text-lime-950 text-text-lg font-medium">{{ person.name }}</span>
-        <span class="time text-gray-600">{{ person.time }}</span>
+      <li class="person" v-for="person in people" :key="person.user_id" @click="loadMessages(person)">
+        <img   :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
+  :alt="`${person.fname} ${person.lname}'s profile image`" />
+        <span class="name text-lime-950 text-text-lg font-medium">{{ person.friend_name }}</span>
+        <span class="time text-gray-600"></span>
         <span class="preview">
-          {{ person.messages.length > 0 ? person.messages[person.messages.length - 1].text : "" }}
-        </span>
+  {{ person.institution_name}}
+</span>
       </li>
     </ul>
 
@@ -70,119 +71,129 @@
   </div>
 </template>
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { io } from 'socket.io-client';
+import { useAuthStore } from "../stores/authStore";
+import profilePlaceholder from '~/assets/images/profilePlace.jpg';
+
+import { useMainStore } from "~/stores/main";
+
+const mainStore = useMainStore();
 definePageMeta({
   layout: "mobile",
-  // auth:false
+  middleware: ["unauthstd"],
 });
+
 useHead({
   title: 'Chats',
   meta: [
     { name: "connect", content: 'Student job list' }
   ],
 })
-</script>
-<script>
-import { io } from 'socket.io-client';
-import { useAuthStore } from "../stores/authStore";
 
+const activeList = ref('messages')
+const people = ref([])
+const friends = ref([]) 
+const requests = ref([])
+const socket = ref(null);
+const authStore = useAuthStore();
 
-export default {
-  data() {
-    return {
-      people: [],
-      selectedPerson: null,
-      isMobile: false,
-      showMessageList: true,
-      socket: null,
-      authStore: null,
-    };
-  },
+const selectedPerson = ref(null)
+const isMobile = ref(false)
+const showMessageList = ref(true)
 
-  methods: {
-    logit() {
-      console.log("🚀 ~ logit ~ this.people", this.socket, this.authStore.token)
-    },
-    loadMessages(person) {
-      this.selectedPerson = person;
-      // Toggle between Message List and Message Body on mobile
-      if (this.isMobile) {
-        this.showMessageList = false;
-      }
+const setActiveList = (list) => {
+  activeList.value = list
+}
 
-      // Emit event to join chat room
-      this.socket.emit('joinChat', {friendship_id:person.friendship_id, name: person.friend_name, sender: this.authStore.token});
-    },
-
-    async fetchUsers() {
-     try {
-      const as = useAuthStore();
-       const res = await fetch('http://192.168.5.249:5001/chats/friends', {
-         method: 'GET',
-         headers: {
-           'Content-Type': 'application/json',
-           Authorization: as.token,
-          } 
-        });
-        console.log("🚀 ~ fetchUsers ~ this.authStore.token:", this.authStore.token)
-
-        let data = await res.json();
-        this.people = data.data;
-        console.log("🚀 ~ fetchUsers ~ this.people:", this.people)
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    loadMessagesMobile() {
-      // Toggle between Message List and Message Body on mobile
-      if (this.isMobile) {
-        this.showMessageList = true;
-      }
-    },
-    sendMessage(text) {
-      if (this.selectedPerson) {
-        this.selectedPerson.messages.push({ sender: "sender", text });
-      }
-    },
-    handleResize() {
-      this.isMobile = window.innerWidth < 768; // Adjust the threshold as needed
-      if (!this.isMobile) {
-        this.showMessageList = true; // Reset to show message list on larger screens
-      }
-    },
-  },
-  mounted() {
-    this.isMobile = window.innerWidth < 768; // Adjust the threshold as needed
-    window.addEventListener("resize", this.handleResize);
-    this.fetchUsers();
-
-     this.authStore = useAuthStore();
-
-     if(this.authStore.token){
-       this.socket = io('http://192.168.5.249:5001/chat', {
-         auth: {
-           token: this.authStore.token
-         }
-       });
-     } else {
-       console.log("No token found can't connect to socket");
-     }
-
-    this.socket.on('connection', () => {
-      console.log('Connected to /chat namespace');
-    });
-
-
-    this.socket.on('joinError', (error) => {
-      console.log('Error joining chat:', error);
-    })
-
-    this.socket.on('connect_error', (error) => {
-      console.log('Connection error:', error);
-    });
-},
+const logit = () => {
+  console.log("🚀 ~ logit ~ people", socket.value, authStore.token);
 };
+
+const loadMessages = (person) => {
+  console.log("person", person)
+  selectedPerson.value = person;
+  if (isMobile.value) {
+    showMessageList.value = false;
+  }
+  socket.value.emit('joinChat', {friendship_id: person.friendship_id, name: person.friend_name, sender: authStore.token});
+};
+
+const fetchUsers = async () => {
+  try {
+    const res = await fetch(
+      mainStore.urlbase + 'chats/friends', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: authStore.token,
+      } 
+    });
+    console.log("🚀 ~ fetchUsers ~ authStore.token:", authStore.token);
+
+    let data = await res.json();
+    people.value = data.data;
+    console.log("🚀 ~ fetchUsers ~ people:", people.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const loadMessagesMobile = () => {
+  if (isMobile.value) {
+    showMessageList.value = true;
+  }
+};
+
+const sendMessage = (text) => {
+  if (selectedPerson.value) {
+    selectedPerson.value.messages.push({ sender: "sender", text });
+  }
+};
+
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768
+  if (!isMobile.value) {
+    showMessageList.value = true
+  }
+}
+
+
+onMounted(() => {
+  isMobile.value = window.innerWidth < 768;
+  window.addEventListener("resize", handleResize);
+  fetchUsers();
+
+  if(authStore.token){
+    socket.value = io(
+      mainStore.urlbase + 'chat', {
+      auth: {
+        token: authStore.token
+      }
+    });
+  } else {
+    console.log("No token found can't connect to socket");
+  }
+
+  socket.value.on('chatMessage', (message) => {
+    console.log('Connected to /chat namespace');
+    console.log('message', message);
+  });
+
+  socket.value.on('joinError', (error) => {
+    console.log('Error joining chat:', error);
+  });
+
+  socket.value.on('connect_error', (error) => {
+    console.log('Connection error:', error);
+  });
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+});
 </script>
+
 
 <style scoped>
 .active {
