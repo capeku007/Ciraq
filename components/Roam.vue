@@ -40,57 +40,32 @@
               </button>
             </div>
           </div>
+<div
+  class="relative max-w-full h-full overflow-auto rounded-2xl"
+  :style="{
+    backgroundImage: `url(${backgroundImageUrl})`,
+    backgroundSize: 'cover',
+  }"
+>
+  <div class="absolute inset-0">
     <div
-      class="relative max-w-full overflow-auto rounded-2xl"
+      v-for="(person, index) in people"
+      :key="index"
+      class="pin absolute"
       :style="{
-        backgroundImage: `url(${backgroundImageUrl})`,
-        backgroundSize: 'cover',
+        top: person.top + 'px',
+        left: person.left + 'px',
       }"
+      @click="viewProfile(person)"
     >
-      <ul
-        class="item p-4"
-        v-for="(person, index) in people"
-        :key="index"
-        :style="{
-          top: person.top + 'vh',
-          left: person.left + 'vw',
-          width: 'auto',
-          height: itemHeight + 'vh',
-        }"
-      >
-        <li @click="viewProfile(person)">
-          <!-- <div class="bg-white shadow rounded-lg">
-            <div class="flex items-center flex-col">
-              <img
-  class="w-10 h-10 rounded-full"
-  :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
-  :alt="`${person.fname} ${person.lname}'s profile image`"
-/>
-              <div class="font-medium px-4">
-                <p>{{person.fname }} {{person.lname }}</p>
-              </div>
-            </div>
-          </div> -->
-
-            <div
-    class="pin"
-    v-for="(person, index) in people"
-    :key="index"
-    :style="{
-      top: person.top + 'vh',
-      left: person.left + 'vw',
-    }"
-    @click="viewProfile(person)"
-  >
-    <img 
-      :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
-      :alt="`${person.fname} ${person.lname}'s profile image`"
-      class="profile-image"
-    />
-  </div>
-        </li>
-      </ul>
+      <img 
+        :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
+        :alt="`${person.fname} ${person.lname}'s profile image`"
+        class="profile-image"
+      />
     </div>
+  </div>
+</div>
     <div class="flex w-full">
       <div class="w-4/5">
 
@@ -201,9 +176,9 @@ const showDrop = (n, a) => {
 
 const people = ref([]);
 const selectedUser = ref(null);
-const itemWidth = 20; // Adjust this value to match your desired item width
-const itemHeight = 10; // Adjust this value to match your desired item height
-const minSpacing = 10; // Minimum spacing between people in vh and vw
+const itemWidth = 5; // Adjust this value to match your desired item width
+const itemHeight = 5; // Adjust this value to match your desired item height
+const minSpacing = 8; // Minimum spacing between people in vh and vw
 const randomizePositions = async () => {
 try {
     // Fetch people from the API
@@ -229,9 +204,9 @@ try {
 
     // Combine fetched data with random positions
     people.value = fetchedPeople.map(person => ({
-      ...person,
-      top: Math.random() * (60 - itemHeight) + 10,
-      left: Math.random() * (80 - itemWidth) + 10,
+  ...person,
+  top: Math.random() * (100 - itemHeight / window.innerHeight * 100),
+  left: Math.random() * (100 - itemWidth / window.innerWidth * 100),
     }));
 
     // Check for collisions and adjust positions if needed
@@ -309,11 +284,12 @@ const universities = [
   // Add more universities with their mail formats
 ];
 
-const userSearchQuery  = ref("");
-const searchUser  = async () => {
-    try {
+const userSearchQuery = ref("");
+
+const searchUser = async () => {
+  try {
     const response = await fetch(
-      mainStore.urlbase + "chats/search_fr/" +userSearchQuery.value,
+      mainStore.urlbase + "chats/search_fr/" + userSearchQuery.value,
       {
         method: "GET",
         headers: {
@@ -326,19 +302,32 @@ const searchUser  = async () => {
     const responseData = await response.json();
 
     if (!response.ok) {
-      const error = new Error(responseData.message || "Failed to update bio.");
-      throw error;
+      throw new Error(responseData.message || "Failed to search for users.");
     } else {
-      console.log("bio updated successfully:", responseData);
-      // Add any additional logic or state updates here
-      return responseData;
+      console.log("Search completed successfully:", responseData);
+      
+      // Assuming the API returns an array of users in responseData.data
+      const searchResults = responseData.data || [];
+      
+    people.value = searchResults.map(person => ({
+  ...person,
+  top: Math.random() * (100 - itemHeight / window.innerHeight * 100),
+  left: Math.random() * (100 - itemWidth / window.innerWidth * 100),
+    }));
+
+    // Check for collisions and adjust positions if needed
+    for (let i = 0; i < people.value.length; i++) {
+      for (let j = i + 1; j < people.value.length; j++) {
+        if (checkCollision(people.value[i], people.value[j])) {
+          spacePeople(people.value[i], people.value[j]);
+          j = i; // Reset the inner loop to check against the adjusted item
+        }
+      }
+    }
     }
   } catch (error) {
-    console.error("Failed to update profile:", error);
+    console.error("Failed to search for users:", error);
     // Handle the error as needed (e.g., display an error message to the user)
-  } finally{
-    hideModal('editProfile');
-    authStore.fetchUser()
   }
 }
 const searchQuery = ref("");
@@ -367,10 +356,9 @@ onMounted(() => {
 
 <style scoped>
 .pin {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   background: #044013;
-  position: absolute;
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
   cursor: pointer;
@@ -381,8 +369,8 @@ onMounted(() => {
 .pin::before {
   content: '';
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 54px;
+  height: 54px;
   background: #044013;
   border-radius: 50%;
   top: 50%;
@@ -391,8 +379,8 @@ onMounted(() => {
 }
 
 .profile-image {
-  width: 54px;
-  height: 54px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
   position: absolute;
@@ -411,9 +399,9 @@ option {
   margin: 8px;
 }
 
-.item {
+/* .item {
   position: absolute;
-}
+} */
 ::-webkit-scrollbar {
   width: 2.5px;
   height: 2.5px;
