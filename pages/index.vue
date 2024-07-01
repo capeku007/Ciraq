@@ -234,8 +234,8 @@ definePageMeta({
   layout: "login",
 });
 
-const uname = ref("capeku248");
-const pword = ref("Godi$Great");
+const uname = ref("cboateng640");
+const pword = ref("Yc0mb1nat0r$");
 const error = ref(null);
 const isMobile = ref(false);
 const showPassword = ref(false);

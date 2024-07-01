@@ -7,25 +7,15 @@
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
     >
-      <div
-        class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
-      >
-        <div class="relative bg-white rounded-lg shadow">
-          <i
-            @click="closeModal('viewApplicantModal')"
-            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 text-2xl text-gray-400 hover:text-red-600"
+    <div
+        class="relative p-2 bg-white rounded-2xl w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+      >  <i
+            @click="hideModal('viewApplicantModal')"
+            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
           ></i>
 
-          <div class="p-4 md:p-5">
-            <div class="mx-auto rounded-lg overflow-hidden">
-              <div class="relative flex flex-wrap w-11/12">
-                <div class="w-full">
-                  <ProfileView :selectedUser="selectedUser" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- TODO: UPDATE TO  -->
+        <ProfileView :selectedUser="selectedUser" />
       </div>
     </div>
 
@@ -45,7 +35,8 @@
             class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 text-2xl text-gray-400 hover:text-red-600"
           ></i>
 
-          <div class="">
+          <div class=""
+    v-if="applicantDetails">
             <div class="mx-auto rounded-lg overflow-hidden">
               <div class="bg-white rounded-2xl p-4 shadow-md mb-12">
                 <div class="content">
@@ -54,7 +45,7 @@
                       <div
                         v-if="applicantDetails.profile_img"
                         :style="{
-                          backgroundImage: `url(${applicantDetails.profile_img})`,
+                          backgroundImage: `url(https://ciraq.co/api/public/uploads/profile_images/${applicantDetails.profile_img})`,
                         }"
                         class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
                       ></div>
@@ -218,6 +209,7 @@
                   <th scope="col" class="px-6 py-3">Name</th>
                   <th scope="col" class="px-6 py-3">School</th>
                   <th scope="col" class="px-6 py-3">Listing</th>
+                  <th scope="col" class="px-6 py-3">Status</th>
                   <th scope="col" class="px-6 py-3"></th>
                 </tr>
               </thead>
@@ -236,7 +228,7 @@
                       <div
                         v-if="applicant.profile_img"
                         :style="{
-                          backgroundImage: `url(${applicant.profile_img})`,
+                          backgroundImage: `url(https://ciraq.co/api/public/uploads/profile_images/${applicant.profile_img})`,
                         }"
                         class="mx-auto flex justify-center w-8 h-8 bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
                       ></div>
@@ -263,6 +255,7 @@
                   </th>
                   <td class="px-6 py-1">{{ applicant.institution_name }}</td>
                   <td class="px-6 py-1">{{ applicant.job_title }}</td>
+                  <td class="px-6 py-1">{{ applicant.appl_status }}</td>
                   <td class="px-6 py-1">
                     <button
                       type="button"
@@ -302,6 +295,7 @@ const { formatDate, currentYear, initialsFromName } = useFormatDate();
 const { hideModal, showModal, showClosableModal } = useModal();
 
 
+const selectedJob = ref({});
 const selectedJobId = ref(null);
 const isLoading = ref(false);
 
@@ -357,12 +351,13 @@ const viewApplicant = async (n) => {
   isLoading.value = false;
 };
 
-const applicantDetails = ref({});
+const applicantDetails = ref(null);
 
 const openApplication = (n) => {
   // Initialize useModal composable
   // isLoading.value = true;
-  // applicantDetails.value = n;
+  console.log(n)
+  applicantDetails.value = n;
   const modalId = "updateApplicantStatusModal";
   showModal(modalId);
   isLoading.value = false;

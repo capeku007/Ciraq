@@ -1,7 +1,7 @@
 <template>
   <div v-if="selectedListing" class="grid grid-rows-[1fr] max-h-full h-full">
 
-        <!-- COVER LETTER -->
+    <!-- COVER LETTER -->
     <div
       id="coverLetterModal"
       data-modal-target="coverLetterModal"
@@ -23,17 +23,13 @@
                 <div class="content">
                   <div class="flex items-center mb-4">
                     <div class="mr-4">
-                      <!-- <div
-                        v-if="company_id.profile_img"
+                      <div
                         :style="{
-                          backgroundImage: `url(${applicantDetails.profile_img})`,
+                          backgroundImage: `url(${imageSrc})`,
                         }"
                         class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
-                      ></div> -->
-                      <div
-                        class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
-                      >
-                      </div>
+                      ></div>
+                      
                     </div>
                     <div>
                       <p class="text-lg font-bold">
@@ -97,7 +93,7 @@
             <div class="flex-shrink-0">
               <img
                 class="w-10 h-10 rounded-lg sm:w-16 sm:h-16"
-                src="../assets/knustlogo.png"
+  :src="selectedListing.company_logo ? `https://ciraq.co/api/public/uploads/profile_images/${selectedListing.company_logo}` : companyPlaceholder"
                 alt="company image"
               />
             </div>
@@ -190,7 +186,7 @@
         <div class="mt-4">
           <button
             @click="showClosableModal('coverLetterModal')"
-            class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            class="border-0 px-3 py-3 text-white bg-[#1A56DB] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           >
             Start application
           </button>
@@ -206,6 +202,7 @@
 import { ref } from "vue";
 import useModal from "../composables/useModal";
 import { useModalStore } from "../stores/modalStore.js";
+import companyPlaceholder from '~/assets/images/companyPlace.jpg';
 const { hideModal, showModal, showClosableModal } = useModal();
 const authStore = useAuthStore();
 
@@ -220,6 +217,7 @@ const { selectedListing } = defineProps({
 const touchStartX = ref(0);
 const cover_letter = ref('');
 
+const imageSrc =  selectedListing.company_logo || companyPlaceholder; 
  const modalStore = useModalStore();
 const handleResize = () => {
   isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed

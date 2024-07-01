@@ -305,6 +305,47 @@
           </div>
         </div>
 
+        <!-- SCHOOL DATES -->
+        <div class="flex w-full gap-px">
+          <div class="w-full mt-4 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              id="password1"
+            >
+              ID NUMBER
+            </label>
+            <input
+              v-model="signUpData.id_number"
+              type="number"
+              @input="validatePassword"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            />
+          </div>
+
+          <!-- START DATE -->
+          <div class="w-full mt-4 px-4 relative">
+            <label
+              class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              id="password"
+            >
+              START DATE
+            </label>
+            <input
+              v-model="signUpData.start_date"
+              type="date"
+              class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            />
+            <p
+              v-if="
+                signUpData.p_word !== confirm_p_word && confirm_p_word !== ''
+              "
+              class="text-sm text-red-600"
+            >
+              Passwords do not match
+            </p>
+          </div>
+        </div>
+
         <!-- PASSWORD -->
         <div class="flex w-full gap-px">
           <div class="w-full mt-4 px-4 relative">
@@ -412,6 +453,13 @@
             <li class="flex border-b py-2">
               <span class="font-bold w-24">Program:</span>
               <span class="text-gray-700">{{ signUpData.degree_program }}</span>
+            </li>            <li class="flex border-b py-2">
+              <span class="font-bold w-24">ID Number:</span>
+              <span class="text-gray-700">{{ signUpData.id_number }}</span>
+            </li>
+            <li class="flex border-b py-2">
+              <span class="font-bold w-24">Start Date:</span>
+              <span class="text-gray-700">{{ signUpData.start_date }}</span>
             </li>
             <li class="flex border-b py-2">
               <span class="font-bold w-24">Mobile:</span>
@@ -540,33 +588,32 @@ export default {
       profile_img: null,
       signUpData: {
         fname: "",
-        mname: "",
+        // mname: "",
         lname: "",
         tel: "",
         p_word: "",
         std_mail: "",
-        personal_mail: "",
+        start_date: "",
         std_id: "",
-        id_type: "",
         id_number: "",
-        registration_date: "",
+        // registration_date: "",
         is_active: "1",
-        skills: "",
+        // skills: "",
         institution: "",
         degree_program: "",
-        graduation_year: "",
-        gpa: "",
-        work_experience: "",
-        portfolio_links: "",
-        resume_cv_link: "",
-        preferred_location: "",
-        availability_start: "",
-        availability_end: "",
-        weekly_hours: "",
-        linkedin_profile: "",
-        github_profile: "",
-        languages_spoken: "",
-        refs: "",
+        // graduation_year: "",
+        // gpa: "",
+        // work_experience: "",
+        // portfolio_links: "",
+        // resume_cv_link: "",
+        // preferred_location: "",
+        // availability_start: "",
+        // availability_end: "",
+        // weekly_hours: "",
+        // linkedin_profile: "",
+        // github_profile: "",
+        // languages_spoken: "",
+        // refs: "",
         gender: "",
         dob: "",
       },
@@ -579,7 +626,7 @@ export default {
         UCC: "/assets/ucc.png",
         default: "/assets/knustlogo.png",
       },
-      currentIndex: 2,
+      currentIndex: 0,
       formData: {
         firstName: "",
         lastName: "",
@@ -679,34 +726,16 @@ export default {
       this.isDropdownOpen = false; // Close dropdown after selection
     },
 
-    // handleImageUpload1(event) {
-    //   const input = event.target;
-    //   if (input.files && input.files[0]) {
-    //     this.stdid_img_name = input.files[0];
-    //     this.uploadedFileName1 = null; // Reset the uploadedFileName
-    //     this.$nextTick(() => {
-    //       this.uploadedFileName1 = input.name; // Set the uploadedFileName with the new file name
-    //     });
-    //   } else {
-    //     this.uploadedFileName1 = null;
-    //   }
-    // },
     handleImageUpload1(event) {
       const input = event.target;
       if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.previewImage = e.target.result; // Set the previewImage to the loaded image data
-        };
-        reader.readAsDataURL(input.files[0]);
-
+       
         this.stdid_img_name = input.files[0];
         this.uploadedFileName1 = null; // Reset the uploadedFileName
         this.$nextTick(() => {
           this.uploadedFileName1 = input.name; // Set the uploadedFileName with the new file name
         });
       } else {
-        this.previewImage = null;
         this.uploadedFileName1 = null;
       }
     },
@@ -714,11 +743,19 @@ export default {
       const input = event.target;
       if (input.files && input.files[0]) {
         this.profile_img = input.files[0];
+         const reader = new FileReader();
+        reader.onload = (e) => {
+          this.previewImage = e.target.result; // Set the previewImage to the loaded image data
+        };
+        reader.readAsDataURL(input.files[0]);
+
         this.uploadedFileName = null; // Reset the uploadedFileName
         this.$nextTick(() => {
           this.uploadedFileName = input.name; // Set the uploadedFileName with the new file name
         });
       } else {
+        
+        this.previewImage = null;
         this.uploadedFileName = null;
       }
     },
@@ -771,7 +808,7 @@ export default {
     },
 
     validateEmail() {
-      const allowedDomains = ["st.knust.edu.gh", "ug.edu.gh", "yahoo.com"];
+      const allowedDomains = ["st.knust.edu.gh", "ug.edu.gh", "gmail.com"];
       const emailRegex = /\S+@\S+\.\S+/;
 
       if (emailRegex.test(this.signUpData.std_mail)) {

@@ -3,109 +3,22 @@
   <div
     id="jobInfo"
     tabindex="-1"
-    data-modal-target="jobInfo"
-    aria-hidden="true"
-    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
-  >
-    <div
-      class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+      data-modal-target="jobInfo"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
     >
-      <div class="relative bg-white rounded-lg shadow">
-        <div class="p-4 md:p-5">
-          <div class="py-4 sticky top-0 z-10 bg-white rounded-lg">
-            <div class="flex items-center space-x-3">
-              <div class="flex-shrink-0">
-                <img
-                  class="w-10 h-10 rounded-lg sm:w-16 sm:h-16"
-                  src="../assets/knustlogo.png"
-                  alt="company image"
-                />
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-xs sm:text-base font-normal text-gray-500">
-                  job.company
-                </p>
-                <p class="text-base sm:text-lg font-semibold">job.title</p>
-              </div>
-            </div>
-            <div
-              class="flex justify-between mt-4 space-x-3 rtl:space-x-reverse"
-            >
-              <span
-                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
-              >
-                hybrid
-              </span>
+                    
+      <div
+        class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+      >  <i
+            @click="hideModal('jobInfo')"
+            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
+          ></i>
 
-              <span
-                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2 py-1 rounded-lg"
-              >
-                intermediate
-              </span>
-              <span
-                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
-              >
-                Part Time
-              </span>
-            </div>
-          </div>
-          <!-- job description -->
-          <div>
-            <div>
-              <p class="text-base sm:text-lg font-semibold">Job Description</p>
-              <p class="text-xs sm:text-base font-normal text-gray-500">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Doloribus distinctio odit, eaque vel fugit excepturi impedit
-                atque facere, quia sint repellendus laudantium deserunt incidunt
-                quod voluptatem, minima facilis? Beatae sunt harum recusandae
-                cum fugit ipsam corrupti quod ipsum modi consequuntur
-                perspiciatis dolorem, nesciunt earum reiciendis repellat
-                deleniti quam, maiores hic! Fugit earum quidem placeat iusto
-                tempora nisi esse, doloribus eveniet itaque aliquid maxime totam
-                veniam dignissimos ut cupiditate voluptates deleniti architecto
-                consectetur alias minima repudiandae! Dolorum vero magnam ea
-                eius.
-              </p>
-            </div>
-            <div class="mt-4">
-              <h2 class="text-sm sm:text-base font-semibold">
-                A Must Have Skill
-              </h2>
-              <ul
-                class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
-              >
-                <li>Javascript</li>
-                <li>Html css</li>
-                <li>Figma</li>
-              </ul>
-            </div>
-            <div class="mt-4">
-              <h2 class="text-sm sm:text-base font-semibold">
-                Candidate Recruitment
-              </h2>
-              <ul
-                class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
-              >
-                <li>Studying computer science or relate subjects</li>
-                <li>1-2 years experience in photoshop</li>
-                <li>Good communication design and creative skills</li>
-                <li>Max Age of 35 years</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- apply button -->
-          <div class="mt-4">
-            <!-- <button
-              class="border-0 px-3 py-3 text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-            >
-              Apply Job
-            </button> -->
-          </div>
-        </div>
+        <!-- TODO: UPDATE TO  -->
+        <JobViewStd :selectedJob="selectedJob" />
       </div>
-    </div>
-  </div>
+    </div>  
 
   <!-- edit modal -->
   <div
@@ -231,12 +144,10 @@
                 {{ user.lname }}
               </p>
               <p class="text-sm text-gray-600">
-                <!-- <span class="mr-3">{{ user.program_offered }}</span> -->
-                <!-- <span class="mr-3 border-r border-gray-200 max-h-0"></span> -->
                 <span>{{ user.institution_name }}</span>
               </p>
               <p class="text-sm text-gray-600">
-                {{ formatDate(user.dob) }} | {{ user.gender }} |
+                {{ user.program_offered }} |
                 {{ currentYear(user.start_date) }}
               </p>
               <p class="text-sm text-gray-600"></p>
@@ -294,9 +205,9 @@
                     }}</span>
                   </div>
                   <div class="order-2 text-sm text-gray-600 mt-0 sm:mt-0">
-                    location <br />
-                    <span class="font-medium text-sm text-gray-600">
-                      {{ user.start_date }}</span
+                     <br />
+                    <span class="font-normal text-sm text-gray-600">
+                      {{ user.start_date }} to {{user.graduation_date}}</span
                     >
                   </div>
                 </div>
@@ -332,7 +243,7 @@
                   <div class="sm:w-11/12 ml-4">
                     <ol class="relative border-s border-gray-200">
                       <li
-                        @click="openWorkHistoryInfo"
+                        @click="openWorkHistoryInfo(work.job_id)"
                         v-for="(work, index) in user.work_history"
                         :key="index"
                       >
@@ -359,7 +270,11 @@
                             <div class="flex-shrink-0">
                               <img
                                 class="w-10 h-10 rounded-lg sm:w-16 sm:h-16"
-                                src="../assets/knustlogo.png"
+                                :src="
+                                  work.company_logo
+                                    ? `https://ciraq.co/api/public/uploads/profile_images/${work.company_logo}`
+                                    : companyPlaceholder
+                                "
                                 alt="company image"
                               />
                             </div>
@@ -372,7 +287,7 @@
                               <p
                                 class="text-base sm:text-lg font-semibold truncate"
                               >
-                                {{ work.position }}
+                                {{ work.job_title }}
                               </p>
                             </div>
                           </div>
@@ -399,7 +314,10 @@ import { ref, onMounted } from "vue";
 import { useAuthStore } from "../stores/authStore";
 import { useMainStore } from "~/stores/main";
 import { useFormatDate } from "@/composables/useFormatDate";
-const { formatDate, currentYear, initialsFromName } = useFormatDate();
+import companyPlaceholder from "~/assets/images/companyPlace.jpg";
+import profilePlaceholder from "~/assets/images/profilePlace.jpg";
+
+const { formatDate, currentYear,currentAge, initialsFromName } = useFormatDate();
 const activeTab = ref(0);
 const tabs = ref(["Work History", "Projects"]);
 const authStore = useAuthStore();
@@ -413,11 +331,41 @@ useHead({
   title: "Profile",
   meta: [{ name: "my profile", content: "my profile" }],
 });
+const imageSrc =
+  `https://ciraq.co/api/public/uploads/profile_images/${authStore.getUser.profile_img}` ||
+  profilePlaceholder;
 
 const mainStore = useMainStore();
 const userInfo = ref();
 
 const newBio = ref("");
+
+const getwork = async () => {
+  try {
+    const response = await fetch(mainStore.urlbase + "work-history", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authStore.token,
+      },
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      const error = new Error(responseData.message || "Failed to update bio.");
+      throw error;
+    } else {
+      console.log("user work history:", responseData);
+      // Add any additional logic or state updates here
+      return responseData;
+    }
+  } catch (error) {
+    console.error("Failed to update profile:", error);
+    // Handle the error as needed (e.g., display an error message to the user)
+  } finally {
+  }
+};
 
 const updateBio = async () => {
   let requestBody = {
@@ -449,15 +397,13 @@ const updateBio = async () => {
   } catch (error) {
     console.error("Failed to update profile:", error);
     // Handle the error as needed (e.g., display an error message to the user)
-  } finally{
-    hideModal('editProfile');
-    authStore.fetchUser()
+  } finally {
+    hideModal("editProfile");
+    authStore.fetchUser();
   }
 };
 
 
-
-const imageSrc = ref('http://i.pravatar.cc/500?img=7'); // Default image URL
 const uploadedFileName1 = ref(null);
 const stdid_img_name = ref(null);
 
@@ -483,17 +429,16 @@ const onFileChange = async (e) => {
 
     // Make the API request
     try {
-
-const response = await fetch(
-  mainStore.urlbase + "user/update-accountinfo",
-  {
-    method: "PUT",
-    headers: {
-      Authorization: authStore.token,
-    },
-    body: formData,
-  }
-);
+      const response = await fetch(
+        mainStore.urlbase + "user/update-accountinfo",
+        {
+          method: "PUT",
+          headers: {
+            Authorization: authStore.token,
+          },
+          body: formData,
+        }
+      );
 
       if (response.data.successful) {
         console.log("Image upload successful");
@@ -504,7 +449,7 @@ const response = await fetch(
       console.error("Failed to upload image:", error);
     }
   } else {
-    imageSrc.value = 'http://i.pravatar.cc/500?img=7'; // Reset to default image
+    imageSrc.value = "http://i.pravatar.cc/500?img=7"; // Reset to default image
     uploadedFileName1.value = null;
   }
 };
@@ -520,16 +465,42 @@ const user = authStore.getUser || {
 };
 const userImage = authStore.getUserImage;
 
-const openWorkHistoryInfo = () => {
-  // Initialize useModal composable
-  const modalId = "jobInfo";
-  showClosableModal(modalId);
+const selectedJob = ref({});
+
+const openWorkHistoryInfo = async (listingId) => {
+  try {
+    selectedJob.value = {};
+
+    const response = await fetch(
+      `${mainStore.urlbase}appl/listing-byid/${listingId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authStore.token,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const responseData = await response.json();
+      selectedJob.value = responseData.data[0];
+      const modalId = "jobInfo";
+      showClosableModal(modalId);
+    } else {
+      console.error(
+        "Error fetching listing:",
+        response.status,
+        response.statusText
+      );
+    }
+  } catch (error) {
+    console.error("Unable to load listing:", error);
+  }
 };
 onMounted(() => {
   // Fetch user data and user image when component is mounted
 });
-
-
 </script>
 
 <style scoped>

@@ -1,9 +1,10 @@
 <template>
-    <div>
-    <div class="relative w-full max-w-4xl max-h-full overflow-y-auto">
+  <div>
+    <div class="relative w-full max-w-4xl overflow-y-auto max-h-[95svh] rounded-2xl scrollbar-none">
       <div class="relative bg-white rounded-lg shadow">
-        <div class="p-4 md:p-5">
-          <div class="py-4 sticky top-0 z-10 bg-white rounded-lg">
+        <div class="md:p-5 px-4 bg-white">
+          <div class="py-4 sticky top-0 z-10 bg-white">
+                 
             <div class="flex items-center space-x-3">
               <div class="flex-shrink-0">
                 <img
@@ -13,81 +14,95 @@
                 />
               </div>
               <div class="flex-1 min-w-0">
-                <p class="text-xs sm:text-base font-normal text-gray-500">
-                  job.company
+                <p class="text-base sm:text-lg font-semibold">
+                  {{ selectedJob.job_title }}
                 </p>
-                <p class="text-base sm:text-lg font-semibold">job.title</p>
+                <p class="text-xs sm:text-base font-normal text-gray-500">
+                  {{ selectedJob.company_name }}
+                </p>
               </div>
             </div>
-            <div
-              class="flex justify-between mt-4 space-x-3 rtl:space-x-reverse"
+          <div class="flex justify-between mt-4 space-x-3 rtl:space-x-reverse">
+            <span
+              class="inline-flex items-center bg-gray-200 text-xs font-normal px-2.5 py-0.5 rounded-lg"
             >
-              <span
-                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
-              >
-                hybrid
-              </span>
+              <i class="bx bx-briefcase-alt-2"></i>&nbsp;
+              {{ selectedJob.employment_type }}
+            </span>
 
-              <span
-                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2 py-1 rounded-lg"
-              >
-                intermediate
-              </span>
-              <span
-                class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
-              >
-                Part Time
-              </span>
-            </div>
+            <span
+              class="inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
+            >
+              <i class="bx bx-map"></i> &nbsp;
+              {{ selectedJob.location_name }}
+            </span>
+            <span
+              class="inline-flex items-center bg-gray-200 text-xs font-normal px-2.5 py-0.5 rounded-lg"
+            >
+              <i class="bx bx-money"></i>&nbsp;
+              {{ selectedJob.salary_compensation }}
+            </span>
+          </div>
           </div>
           <!-- job description -->
           <div>
             <div>
               <p class="text-base sm:text-lg font-semibold">Job Description</p>
               <p class="text-xs sm:text-base font-normal text-gray-500">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Doloribus distinctio odit, eaque vel fugit excepturi impedit
-                atque facere, quia sint repellendus laudantium deserunt incidunt
-                quod voluptatem, minima facilis? Beatae sunt harum recusandae
-                cum fugit ipsam corrupti quod ipsum modi consequuntur
-                perspiciatis dolorem, nesciunt earum reiciendis repellat
-                deleniti quam, maiores hic! Fugit earum quidem placeat iusto
-                tempora nisi esse, doloribus eveniet itaque aliquid maxime totam
-                veniam dignissimos ut cupiditate voluptates deleniti architecto
-                consectetur alias minima repudiandae! Dolorum vero magnam ea
-                eius.
+                {{ selectedJob.job_description }}
               </p>
             </div>
+
             <div class="mt-4">
-              <h2 class="text-sm sm:text-base font-semibold">
-                A Must Have Skill
-              </h2>
-              <ul
-                class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
-              >
-                <li>Javascript</li>
-                <li>Html css</li>
-                <li>Figma</li>
+              <h2 class="text-sm sm:text-base font-semibold">Location</h2>
+              <ul class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1">
+                <li>{{ selectedJob.location_name }}</li>
               </ul>
             </div>
             <div class="mt-4">
-              <h2 class="text-sm sm:text-base font-semibold">
-                Candidate Recruitment
-              </h2>
-              <ul
-                class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
-              >
-                <li>Studying computer science or relate subjects</li>
-                <li>1-2 years experience in photoshop</li>
-                <li>Good communication design and creative skills</li>
-                <li>Max Age of 35 years</li>
+              <h2 class="text-sm sm:text-base font-semibold">Required skills</h2>
+              <ul class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1">
+                <li v-for="(candidate, index) in selectedJob.required_qualifications" :key="index">
+                  {{ candidate }}
+                </li>
+              </ul>
+            </div>
+
+            <!-- desired skills -->
+            <div class="mt-4">
+              <h2 class="text-sm sm:text-base font-semibold">Desired skills</h2>
+              <ul class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1">
+                <li v-for="(candidate, index) in selectedJob.desired_qualifications" :key="index">
+                  {{ candidate }}
+                </li>
+              </ul>
+            </div>
+            <div class="mt-4">
+              <h2 class="text-sm sm:text-base font-semibold">Benefits</h2>
+              <ul class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1">
+                <li v-for="(benefit, index) in selectedJob.benefits" :key="index">
+                  {{ benefit }}
+                </li>
               </ul>
             </div>
           </div>
-
         </div>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 
+<script setup>
+import { useEmployerAuth } from "@/stores/employerAuth";
+import { useMainStore } from "~/stores/main";
+
+const mainStore = useMainStore();
+const employerAuth = useEmployerAuth();
+const company = employerAuth.company;
+
+const { selectedJob } = defineProps({
+  selectedJob: {
+    type: Object,
+  },
+});
+</script>

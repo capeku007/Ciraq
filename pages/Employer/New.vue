@@ -231,7 +231,7 @@
     </div>
 
     <!-- preview job -->
-    <div class="shadow rounded-2xl bg-white max-h-[95svh] p-4">
+    <div class="shadow rounded-2xl bg-white max-h-[95svh] overflow-y-auto p-4">
       <div class="md:p-5 px-4">
         <div class="py-4 sticky top-0 z-10 bg-white">
           <div class="flex items-center space-x-3">

@@ -131,7 +131,7 @@
           </ul>
           <a
             href="#"
-            class="flex items-center p-3 text-xs font-medium text-bg-[#044013] border-t border-gray-200 rounded-b-lg bg-gray-50"
+            class="flex items-center p-3 text-xs font-medium text-bg-[#1A56DB] border-t border-gray-200 rounded-b-lg bg-gray-50"
           >
             <img src="/assets/logo.png" class="h-4 mx-4" alt="Ciraq Logo" />
             Powered by ciraq inc
@@ -143,7 +143,7 @@
 
       <div class="w-1/5 mx-2">
         <button
-          class="border-0 px-3 py-3 mt-2 mx-auto text-white bg-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+          class="border-0 px-3 py-3 mt-2 mx-auto text-white bg-[#1A56DB] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           @click="randomizePositions"
           :disabled="disableRoam"
         >
@@ -176,9 +176,9 @@ const showDrop = (n, a) => {
 
 const people = ref([]);
 const selectedUser = ref(null);
-const itemWidth = 5; // Adjust this value to match your desired item width
-const itemHeight = 5; // Adjust this value to match your desired item height
-const minSpacing = 8; // Minimum spacing between people in vh and vw
+const itemWidth = 15; // Adjust this value to match your desired item width
+const itemHeight = 15; // Adjust this value to match your desired item height
+const minSpacing = 10; // Minimum spacing between people in vh and vw
 const randomizePositions = async () => {
 try {
     // Fetch people from the API
@@ -358,7 +358,7 @@ onMounted(() => {
 .pin {
   width: 60px;
   height: 60px;
-  background: #044013;
+  background: #1A56DB;
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
   cursor: pointer;
@@ -371,7 +371,7 @@ onMounted(() => {
   position: absolute;
   width: 54px;
   height: 54px;
-  background: #044013;
+  background: #1A56DB;
   border-radius: 50%;
   top: 50%;
   left: 50%;

@@ -64,7 +64,8 @@
                 <div class="flex-shrink-0">
                   <img
                     class="w-10 h-10 rounded-lg"
-                    src="../assets/knustlogo.png"
+                    
+  :src="job.company_logo ? `https://ciraq.co/api/public/uploads/profile_images/${job.company_logo}` : companyPlaceholder"
                     alt="company image"
                   />
                 </div>
@@ -145,6 +146,7 @@
 import { useListingStore } from "../stores/listingStore";
 import { useAuthStore } from "../stores/authStore";
 import { useMainStore } from "../stores/main";
+import companyPlaceholder from '~/assets/images/companyPlace.jpg';
 
 definePageMeta({
   layout: "mobile",

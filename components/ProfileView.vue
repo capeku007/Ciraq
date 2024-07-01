@@ -1,14 +1,22 @@
 <template>
   <!-- view job modal -->
-  <div
-    id="jobInfo"
-    tabindex="-1"
-    data-modal-target="jobInfo"
-    aria-hidden="true"
-    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
-  >
-    <JobViewStd />
-  </div>
+      <div
+      id="jobInfo"
+      data-modal-target="jobInfo"
+      aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
+    >
+    <div
+        class="relative p-2 bg-white rounded-2xl w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+      >  <i
+            @click="hideModal('jobInfo')"
+            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
+          ></i>
+
+        <!-- TODO: UPDATE TO  -->
+        <JobViewStd :selectedJob="selectedJob" />
+      </div>
+    </div>
 
   <div class="h-[81svh] m-2 p-2">
     <div class="parent">
@@ -20,7 +28,7 @@
               <div
                 v-if="selectedUser.profile_img"
                 :style="{
-                  backgroundImage: `url(${selectedUser.profile_img})`,
+                  backgroundImage: `url(https://ciraq.co/api/public/uploads/profile_images/${selectedUser.profile_img})`,
                 }"
                 class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
               ></div>
@@ -37,13 +45,15 @@
                 {{ selectedUser.lname }}
               </p>
               <p class="text-sm text-gray-600">
-                <span class="mr-3">{{ selectedUser.program_offered }}</span>
-                <span class="mr-3 border-r border-gray-200 max-h-0"></span>
                 <span>{{ selectedUser.institution_name }}</span>
               </p>
               <p class="text-sm text-gray-600">
-                {{ formatDate(selectedUser.dob) }} | {{ selectedUser.gender }} |
+                               {{ selectedUser.program_offered }} |
                 {{ currentYear(selectedUser.start_date) }}
+              </p>
+              <p class="text-sm text-gray-600">
+                               {{ currentAge(selectedUser.dob) }} |
+                {{ selectedUser.gender }}
               </p>
               <p class="text-sm text-gray-600"></p>
             </div>
@@ -57,124 +67,90 @@
               </button>
             </div>
           </div>
-          <!-- <div class="absolute flex justify-center items-center">
-            <div class="w-full h-1/2 flex flex-col justify-center items-center">
-                                    <div
-                        v-if="selectedUser.profile_img"
-                        :style="{
-                          backgroundImage: `url(${selectedUser.profile_img})`,
-                        }"
-                        class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
-                      ></div>
-                      <div
-                        v-else
-                        class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
-                      >
-                        {{
-                          initialsFromName(
-                            selectedUser.fname,
-                            selectedUser.lname
-                          )
-                        }}
-                      </div>
-              <h1 class="text-gray-700 font-bold">{{selectedUser.fname }} {{selectedUser.lname}}</h1>
-            </div>
-          </div>
-
-          <div
-            class=" w-full flex flex-col justify-around items-center"
-          >
-            <div class="w-full h-1/2 flex justify-between items-center px-1">
-              <div class="flex flex-col justify-center items-center">
-                <h1 class="text-xs">{{selectedUser.institution}}</h1>
-                <div class="flex items-center">
-
-                </div>
-              </div>
-
-              <div class="flex flex-col justify-center items-center">
-                <h1 class="text-xs">{{selectedUser.degree_program}}</h1>
-                <div class="flex items-center">
-                  <button
-                    class="flex items-center py-1 px-2 rounded-lg text-[#007ABB] hover:bg-[#007ABB] hover:text-white transition-colors duration-300"
-                  >
-                    <i class="bx bx-chat"></i>
-                    <span class="hidden sm:inline ml-1">Message</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div> -->
-        </div>
+       </div>
         <div class="flex justify-center">
           <div class="border-b border-gray-300 w-8/12"></div>
         </div>
         <!-- scrollable -->
-        <div class="h-[64.8vh]">
+        <div class="h-[63vh] overflow-y-auto w-full ">
           <!-- Professional summary -->
           <div class="pb-1 mt-1 bg-white rounded-lg">
             <button
               class="flex items-center justify-between w-full p-1 mt-2 font-medium text-gray-500 gap-3"
-              :class="{ active: active }"
-              @click="toggleAccordion"
             >
               <span class="uppercase sm:pl-4 text-black text-xs font-bold">
                 Professional Summary</span
               >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 transform transition-transform text-black"
-                :class="{ 'rotate-180': active }"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
             </button>
             <div
-              @click="toggleAccordion"
-              class="accordion-content px-2 text-xs sm:text-sm mt-0 pt-0"
-              v-show="active"
+              class="ml-8 accordion-content px-2 text-xs sm:text-sm mt-0 pt-0"
             >
               {{ selectedUser.bio }}
             </div>
           </div>
 
+          <!-- Education summary -->
+          <div class="pb-1 mt-4 bg-white rounded-lg">
+            <button
+              class="flex items-center justify-between w-full p-1 mt-2 font-medium text-gray-500 gap-3"
+            >
+              <span class="uppercase sm:pl-4 text-black text-xs font-bold">
+                Education</span
+              >
+            </button>
+            <div
+              class="sm:ml-8 ml-4 accordion-content px-2 text-xs sm:text-sm mt-0 pt-0"
+            >
+              <div class="flex flex-col space-y-4 sm:mr-8 mr-4">
+                <div
+                  class="flex flex-col sm:flex-row justify-between items-start sm:items-center"
+                >
+                  <div class="order-1 font-semibold">
+                    {{ selectedUser.institution_name }} <br />
+                    <span class="font-normal text-sm text-gray-600">{{
+                      selectedUser.program_offered
+                    }}</span>
+                  </div>
+                  <div class="order-2 text-sm text-gray-600 mt-0 sm:mt-0">
+                    location <br />
+                    <span class="font-medium text-sm text-gray-600">
+                      {{ selectedUser.start_date }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- tabs -->
-          <div class="">
-            <div class="h-[60vh] overflow-y-auto w-full">
+          <div class="flex mt-2 px-2">
+            <div class="w-full">
               <ul
-                class="flex justify-center items-center sticky top-0 z-10 bg-white rounded-lg"
+                class="flex mt-2 sm:pl-4 sticky top-0 z-10 bg-white rounded-lg"
               >
                 <li
-                  style="padding: 0.5rem"
+                  style="padding: 0.2rem"
                   v-for="(tab, index) in tabs"
                   :key="index"
                   @click="activeTab = index"
-                  class="uppercase sm:pl-4 text-black font-bold text-xs"
+                  class="uppercase sm:pl-4 text-black text-xs font-bold"
                   :class="
                     activeTab === index
-                      ? 'text-[#132E35] border-b-2 border-[#132E35] pb-4'
-                      : 'text-gray-500 border-b-2 pb-4'
+                      ? 'text-[#132E35] border-b-2 border-[#132E35] pb-1'
+                      : 'text-gray-500 border-b-2 pb-1'
                   "
                 >
                   {{ tab }}
                 </li>
               </ul>
 
-              <div class="w-full bg-white mt-2 p-2 mx-auto">
+              <div class="w-full bg-white p-2">
                 <div class="" v-show="activeTab === 0">
                   <!-- Work History timeLine -->
-                  <div class="sm:w-11/12 sm:pl-40">
+                  <div class="sm:w-11/12 ml-4">
                     <ol class="relative border-s border-gray-200">
                       <li
-                        @click="openWorkHistoryInfo"
+                        @click="openWorkHistoryInfo(work.job_id)"
                         v-for="(work, index) in selectedUser.work_history"
                         :key="index"
                       >
@@ -201,7 +177,7 @@
                             <div class="flex-shrink-0">
                               <img
                                 class="w-10 h-10 rounded-lg sm:w-16 sm:h-16"
-                                src="../assets/knustlogo.png"
+                                :src="work.company_logo ? `https://ciraq.co/api/public/uploads/profile_images/${work.company_logo}` : companyPlaceholder"
                                 alt="company image"
                               />
                             </div>
@@ -224,37 +200,9 @@
                   </div>
                 </div>
 
-                <div v-show="activeTab === 1">
-                  <!-- Education timeLine -->
-                  <div class="sm:w-11/12 sm:pl-40">
-                    <ol class="relative border-s border-gray-200">
-                      <li class="mb-10 ms-6">
-                        <span
-                          class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white"
-                        >
-                          <i class="bx bxs-briefcase"></i>
-                        </span>
-                        <p
-                          class="mb-1 text-base sm:text-lg font-semibold text-gray-900"
-                        >
-                          {{ selectedUser.institution_name }}
-                        </p>
-                        <time
-                          class="mb-2 text-xs sm:text-sm font-normal leading-none text-gray-400"
-                        >
-                          {{ formatDate(selectedUser.start_date) }} -
-                          {{ formatDate(selectedUser.end_date) }}</time
-                        >
-                        <p class="text-sm font-normal text-gray-500">
-                          {{ selectedUser.program_offered }}
-                        </p>
-                      </li>
-                    </ol>
-                  </div>
-                </div>
-                <!-- <div v-show="activeTab === 2">
+                <div v-show="activeTab === 2">
                   <p class="text-center">Coming soon</p>
-                </div> -->
+                </div>
               </div>
             </div>
           </div>
@@ -269,12 +217,17 @@
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "../stores/authStore";
 import { useFormatDate } from "@/composables/useFormatDate";
-const { formatDate, currentYear, initialsFromName } = useFormatDate();
+import { useMainStore } from "~/stores/main";
+import { useEmployerAuth } from "~/stores/employerAuth";
+import companyPlaceholder from '~/assets/images/companyPlace.jpg';
+const mainStore = useMainStore();
+const employerAuth = useEmployerAuth();
+const { formatDate,currentAge, currentYear, initialsFromName } = useFormatDate();
 
 const activeTab = ref(0);
 const tabs = ref(["Work History", "Education"]);
 const authStore = useAuthStore();
-const { showClosableModal } = useModal();
+const { showModal,hideModal } = useModal();
 const active = ref(false);
 
 const { selectedUser } = defineProps({
@@ -287,11 +240,38 @@ const toggleAccordion = () => {
   active.value = !active.value;
 };
 
+const selectedJob = ref({});
 // user details
-const openWorkHistoryInfo = () => {
-  // Initialize useModal composable
-  const modalId = "jobInfo";
-  showClosableModal(modalId);
+const openWorkHistoryInfo = async (listingId) => {
+  try {
+    selectedJob.value = {};
+
+    const response = await fetch(
+      `${mainStore.urlbase}listing/listing-byid/${listingId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: employerAuth.ctoken,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const responseData = await response.json();
+      selectedJob.value = responseData.data[0];
+      const modalId = "jobInfo";
+      showModal(modalId);
+    } else {
+      console.error(
+        "Error fetching listing:",
+        response.status,
+        response.statusText
+      );
+    }
+  } catch (error) {
+    console.error("Unable to load listing:", error);
+  }
 };
 onMounted(() => {});
 </script>

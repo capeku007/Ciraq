@@ -91,14 +91,19 @@
                     </p>
                   </div>
                   <div class="flex justify-around">
-                  
                     <button
-                      @click="updateApplicant('')"
+                      @click="updateApplicant('rejected')"
                       class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
                     >
-                      Withdraw
+                      Reject
                     </button>
                     
+                    <button
+                      @click="updateApplicant('offer-extended')"
+                      class="w-2/6 bg-green-600 border text-white px-6 py-2 rounded-lg font-bold"
+                    >
+                      Make Offer
+                    </button>
                   </div>
                 </div>
               </div>
@@ -115,7 +120,7 @@
           class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 bg-white"
         >
           <div class="flex items-center text-base font-semibold ml-4">
-            <p> Applicants</p>
+            <p>Shortlisted Applicants</p>
             <button @click="refreshApplicants" class="flex items-baseline">
               <i class="ml-4 text-lg bx bx-revision"></i>
             </button>
@@ -290,9 +295,9 @@ const isLoading = ref(false);
 
 const filteredApplicants = computed(() => {
   if (selectedJobId.value === null) {
-    return geHiredApplicants.value;
+    return getShortlistApplicants.value;
   } else {
-    return geHiredApplicants.value.filter(applicant => applicant.job_id === selectedJobId.value);
+    return getShortlistApplicants.value.filter(applicant => applicant.job_id === selectedJobId.value);
   }
 });
 
@@ -422,13 +427,13 @@ import { useApplicantStore } from "@/stores/newApplicants";
 import { storeToRefs } from "pinia";
 
 const newApplicantStore = useApplicantStore();
-const {  getIsLoading, geHiredApplicants } =
+const { getShortlistApplicants, getShortlistsLength, getIsLoading } =
   storeToRefs(newApplicantStore);
 
 const searchQuery = ref("");
 const buttonText = ref("All Listings");
 const filteredListings = computed(() =>
-  geHiredApplicants.value.filter((item) =>
+  getShortlistApplicants.value.filter((item) =>
     (item.job_title?.toLowerCase() || "").includes(
       searchQuery.value.toLowerCase()
     )
@@ -436,7 +441,7 @@ const filteredListings = computed(() =>
 );
 
 const refreshApplicants = () => {
-  newApplicantStore.loadAllHires();
+  newApplicantStore.loadAllShortlists();
 };
 
 onMounted(() => {

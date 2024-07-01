@@ -29,8 +29,8 @@
                 <div class="flex items-start gap-2.5">
                   <img
                     class="w-8 h-8 rounded-full"
-                    src="/assets/images/profile-img.jpg"
-                    alt="image"
+                    :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
+  :alt="`${person.fname} ${person.lname}'s profile image`"
                   />
                   <div class="flex flex-col gap-1 w-full">
                     <div class="flex items-center space-x-2">
@@ -71,8 +71,8 @@
             <div class="flex justify-center w-[15%]">
               <img
                 class="w-10 h-10 rounded-full"
-                src="/assets/images/profile-img.jpg"
-                alt="Rounded avatar"
+                                    :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
+  :alt="`${person.fname} ${person.lname}'s profile image`"
               />
             </div>
 
@@ -106,9 +106,11 @@
 </template>
 
 <script setup>
+import profilePlaceholder from '~/assets/images/profilePlace.jpg';
 const bottomSheet = ref(null);
 const sheetContent = ref(null);
 const dragIcon = ref(null);
+const person = ref({});
 
 let isDragging = false;
 let startY, startHeight;

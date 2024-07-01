@@ -1,26 +1,26 @@
 <template>
   <div>
     <!-- MODALS HERE -->
-  <!-- View listing -->
+    <!-- View listing -->
     <div
       id="viewListing"
       data-modal-target="viewListing"
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
     >
-                    
       <div
         class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
-      >  <i
-            @click="closeModal('viewListing')"
-            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
-          ></i>
+      >
+        <i
+          @click="closeModal('viewListing')"
+          class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
+        ></i>
 
         <!-- TODO: UPDATE TO  -->
         <JobDetails :selectedJob="selectedJob" />
       </div>
-    </div>  
-    
+    </div>
+
     <!-- Update listing status -->
     <div
       id="updateListingStatus"
@@ -28,85 +28,73 @@
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
     >
-                    
       <div
         class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
-      >  <i
-            @click="closeModal('updateListingStatus')"
-            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
-          ></i>
+      >
+        <i
+          @click="closeModal('updateListingStatus')"
+          class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
+        ></i>
 
         <!-- TODO: UPDATE TO  -->
-                  <div class="" v-if="applicantDetails">
-            <div class="mx-auto rounded-lg overflow-hidden">
-              <div class="bg-white rounded-2xl p-4 shadow-md mb-12">
-                <div class="content">
-                  <div class="flex items-center mb-4">
-                    <div class="mr-4">
-                      <!-- <div
-                        v-if="applicantDetails.profile_img"
-                        :style="{
-                          backgroundImage: `url(${applicantDetails.profile_img})`,
-                        }"
-                        class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
-                      ></div> -->
-<div
-  style="
-    backgroundImage: `url(../assets/knustlogo.png)`,
-  "
-  class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
->
-</div>
-                    </div>
-                    <div>
-                      <p class="text-lg font-bold">
-                        {{ company.company_name}}
-                      </p>
-                      <p class="text-sm text-gray-600">
-                        <span class="mr-3">{{
-                          selectedJob.location_name
-                        }}</span>
-                        <span
-                          class="mr-3 border-r border-gray-200 max-h-0"
-                        ></span>
-                        <span>{{ selectedJob.deadline }}</span>
-                      </p>
-                      
-                      <p class="text-sm text-gray-600"></p>
-                    </div>
+        <div class="">
+          <div class="mx-auto rounded-lg overflow-hidden">
+            <div class="bg-white rounded-2xl p-4 shadow-md mb-12">
+              <div class="content">
+                <div class="flex items-center mb-4">
+                  <div class="mr-4">
+                    <div
+                      style="backgroundimage: `url(../assets/knustlogo.png) `"
+                      class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
+                    ></div>
                   </div>
-                  <div class="text-left mb-6">
-                    <p class="text-lg font-bold mb-2">
-                      Job Title: {{ selectedJob.job_title }}
+                  <div>
+                    <p class="text-lg font-bold">
+                      {{ selectedJob.company_name }}
                     </p>
                     <p class="text-sm text-gray-600">
-                      {{ selectedJob.job_description }}
+                      <span class="mr-3">{{ selectedJob.location_name }}</span>
+                      <span
+                        class="mr-3 border-r border-gray-200 max-h-0"
+                      ></span>
+                      <span>{{ selectedJob.deadline }}</span>
                     </p>
+
+                    <p class="text-sm text-gray-600"></p>
                   </div>
-                  <div class="flex justify-around">
-                    <button
-                      @click="updateListStatus('rejected')"
-                      class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
-                    >
-                      Reject
-                    </button>
-                    <button
-                      @click="updateListStatus('in-review')"
-                      class="w-2/6 mx-4 bg-blue-600 border text-white px-6 py-2 rounded-lg font-bold"
-                    >
-                      Shortlist
-                    </button>
-                    <button
-                      @click="updateListStatus('offer-extended')"
-                      class="w-2/6 bg-green-600 border text-white px-6 py-2 rounded-lg font-bold"
-                    >
-                      Make Offer
-                    </button>
-                  </div>
+                </div>
+                <div class="text-left mb-6">
+                  <p class="text-lg font-bold mb-2">
+                    Job Title: {{ selectedJob.job_title }}
+                  </p>
+                  <p class="text-sm text-gray-600">
+                    {{ selectedJob.job_description }}
+                  </p>
+                </div>
+                <div class="flex justify-around">
+                  <button
+                    @click="updateListStatus('rejected')"
+                    class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
+                  >
+                    Reject
+                  </button>
+                  <button
+                    @click="updateListStatus('in-review')"
+                    class="w-2/6 mx-4 bg-blue-600 border text-white px-6 py-2 rounded-lg font-bold"
+                  >
+                    Shortlist
+                  </button>
+                  <button
+                    @click="updateListStatus('offer-extended')"
+                    class="w-2/6 bg-green-600 border text-white px-6 py-2 rounded-lg font-bold"
+                  >
+                    Make Offer
+                  </button>
                 </div>
               </div>
             </div>
           </div>
+        </div>
       </div>
     </div>
     <!-- MODALS END HERE -->
@@ -239,7 +227,6 @@
             </table>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -253,6 +240,9 @@ import { useEmployerAuth } from "~/stores/employerAuth";
 import { useFormatDate } from "@/composables/useFormatDate";
 import { useEmployerListStore } from "@/stores/employerListStore";
 import { storeToRefs } from "pinia";
+import { useApplicantStore } from "@/stores/newApplicants";
+
+const newApplicantStore = useApplicantStore();
 
 const mainStore = useMainStore();
 const employerAuth = useEmployerAuth();
@@ -329,9 +319,8 @@ const updateApplicant = (n) => {
   modalStore.OpenYesOrNOClick(func);
 };
 
-
 const updateListStatus = () => {
-  hideModal('updateListingStatus');
+  hideModal("updateListingStatus");
   let info = "update " + selectedJob.job_title + "?";
   modalStore.changeDialog(info);
   let func = {};
@@ -398,6 +387,7 @@ const refreshlisting = () => {
 
 onMounted(() => {
   employerListStore.loadAllListings();
+  newApplicantStore.loadNewApplicants();
 
   watchEffect(() => {
     filteredListings.value;

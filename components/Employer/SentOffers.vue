@@ -91,14 +91,18 @@
                     </p>
                   </div>
                   <div class="flex justify-around">
-                  
                     <button
-                      @click="updateApplicant('')"
+                      @click="updateApplicant('with-drawn')"
                       class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
                     >
                       Withdraw
                     </button>
-                    
+                                        <button
+                      @click="updateApplicant('accepted')"
+                      class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
+                    >
+                      Accepted delete later
+                    </button>  
                   </div>
                 </div>
               </div>
@@ -290,9 +294,9 @@ const isLoading = ref(false);
 
 const filteredApplicants = computed(() => {
   if (selectedJobId.value === null) {
-    return geHiredApplicants.value;
+    return getOfferedApplicants.value;
   } else {
-    return geHiredApplicants.value.filter(applicant => applicant.job_id === selectedJobId.value);
+    return getOfferedApplicants.value.filter(applicant => applicant.job_id === selectedJobId.value);
   }
 });
 
@@ -422,13 +426,13 @@ import { useApplicantStore } from "@/stores/newApplicants";
 import { storeToRefs } from "pinia";
 
 const newApplicantStore = useApplicantStore();
-const {  getIsLoading, geHiredApplicants } =
+const { getShortlistApplicants, getShortlistsLength, getIsLoading, getOfferedApplicants } =
   storeToRefs(newApplicantStore);
 
 const searchQuery = ref("");
 const buttonText = ref("All Listings");
 const filteredListings = computed(() =>
-  geHiredApplicants.value.filter((item) =>
+  getOfferedApplicants.value.filter((item) =>
     (item.job_title?.toLowerCase() || "").includes(
       searchQuery.value.toLowerCase()
     )
@@ -436,7 +440,7 @@ const filteredListings = computed(() =>
 );
 
 const refreshApplicants = () => {
-  newApplicantStore.loadAllHires();
+  newApplicantStore.loadAllSentOffers();
 };
 
 onMounted(() => {

@@ -1,7 +1,7 @@
 <template>
   <div class="chat-container">
     <div class="chat" v-if="selectedPerson">
-      <div class="chat-title bg-gray-50 border border-gray-100 text-[#006565]">
+      <div class="chat-title bg-gray-50 border border-gray-100 text-[#1A56DB]">
         <h1>{{ selectedPerson.friend_name }}</h1>
         <h2>{{selectedPerson.institution_name}}. </h2>
         <figure class="avatar">
@@ -36,7 +36,7 @@
         ></textarea>
         <button
           @click="sendMessage"
-          class="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-[#006565] rounded-full border border-[#006565] hover:bg-[#006565] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#006565]"
+          class="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-[#1A56DB] rounded-full border border-[#1A56DB] hover:bg-[#1A56DB] hover:text-white "
         >
           <i class="bx bx-send"></i>
         </button>

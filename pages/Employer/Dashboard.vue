@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-[87svh] max-h-[87svh] grid grid-rows-[12svh_1fr]">
 <div class="flex bg-white flex-wrap rounded-lg">
-  <div class="w-3/12 p-2">
+  <div class="w-1/5 p-2">
     <label :class="[
           'flex border-2 rounded-lg py-2 px-4 w-full',
           showPage === '1' ? 'bg-blue-500 text-white' : 'hover:bg-blue-500 hover:text-white',
@@ -18,7 +18,7 @@
     </label>
   </div>
 
-  <div class="w-3/12 p-2">
+  <div class="w-1/5 p-2">
     <label
     :class="[
           'flex border-2 rounded-lg py-2 px-4 w-full',
@@ -35,7 +35,7 @@
     </label>
   </div>
 
-  <div class="w-3/12 p-2">
+  <div class="w-1/5 p-2">
     <label :class="[
           'flex border-2 rounded-lg py-2 px-4 w-full',
           showPage === '3' ? 'bg-yellow-300  text-white' : 'hover:bg-yellow-300  hover:text-white',
@@ -43,7 +43,7 @@
       <input type="radio" name="item" value="3" class="hidden" v-model="showPage"  >
       <div class="flex-1 min-w-0">
         <p class="text-sm font-normal truncate">Shortlisted</p>
-        <p class="text-2xl font-semibold truncate">19</p>
+        <p class="text-2xl font-semibold truncate">{{getShortlistsLength}}</p>
       </div>
       <div class="flex-shrink-0">
         <i class="bg-white text-yellow-300 border-yellow-300 border-2 p-2 rounded-full bx bx-user-plus text-2xl block"></i>
@@ -51,15 +51,31 @@
     </label>
   </div>
 
-  <div class="w-3/12 p-2">
+  <div class="w-1/5 p-2">
     <label :class="[
           'flex border-2 rounded-lg py-2 px-4 w-full',
-          showPage === '4' ? 'bg-green-600  text-white' : 'hover:bg-green-600  hover:text-white',
+          showPage === '4' ? 'bg-teal-500  text-white' : 'hover:bg-teal-500  hover:text-white',
         ]" class="flex border-2 rounded-lg py-2 px-4 w-full">
-      <input type="radio" name="item" value="4" class="hidden" v-model="showPage">
+      <input type="radio" name="item" value="4" class="hidden" v-model="showPage"  >
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-normal truncate">Sent Offers</p>
+        <p class="text-2xl font-semibold truncate">{{getOfferedLength}}</p>
+      </div>
+      <div class="flex-shrink-0">
+        <i class="bg-white text-teal-500 border-teal-500 border-2 p-2 rounded-full bx bx-user-plus text-2xl block"></i>
+      </div>
+    </label>
+  </div>
+
+  <div class="w-1/5 p-2">
+    <label :class="[
+          'flex border-2 rounded-lg py-2 px-4 w-full',
+          showPage === '5' ? 'bg-green-600  text-white' : 'hover:bg-green-600  hover:text-white',
+        ]" class="flex border-2 rounded-lg py-2 px-4 w-full">
+      <input type="radio" name="item" value="5" class="hidden" v-model="showPage">
       <div class="flex-1 min-w-0">
         <p class="text-sm font-normal truncate">Hired</p>
-        <p class="text-2xl font-semibold truncate">19</p>
+        <p class="text-2xl font-semibold truncate">{{getHiredLength}}</p>
       </div>
       <div class="flex-shrink-0">
         <i class="bg-white text-green-600 border-green-600 border-2 p-2 rounded-full bx bx-user-check text-2xl block"></i>
@@ -76,8 +92,9 @@
     <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '2'">
       <AllApplicants />
     </div>
-    <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '3'"><ShortListApplicants /></div>
-    <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '4'">4</div>
+    <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '3'"><AllShortLists /></div>
+    <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '4'"> <SentOffers/> </div>
+    <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '5'"> <Hires/> </div>
   </div>
 </template>
 <script setup>
@@ -89,7 +106,9 @@ import { useEmployerAuth } from "~/stores/employerAuth";
 // component import
 import AllApplicants from "@/components/Employer/AllApplicants.vue";
 import AllListings from "@/components/Employer/AllListings.vue";
-import ShortListApplicants from "@/components/Employer/ShortListApplicants.vue";
+import AllShortLists from "~/components/Employer/AllShortLists.vue";
+import SentOffers from "~/components/Employer/SentOffers.vue";
+import Hires from "~/components/Employer/Hires.vue";
 // component import
 const modalStore = useModalStore();
 const employerAuth = useEmployerAuth();
@@ -101,7 +120,7 @@ const { getListingsLength } = storeToRefs(employerListStore);
 
 import { useApplicantStore } from "@/stores/newApplicants";
 const newApplicantStore = useApplicantStore();
-const { getApplicantsLength } = storeToRefs(newApplicantStore);
+const { getApplicantsLength, getShortlistsLength,getOfferedLength,getHiredLength } = storeToRefs(newApplicantStore);
 
 useHead({
   title: "Dashboard",
@@ -170,6 +189,10 @@ const fetchData = async () => {
 
 onMounted(() => {
   employerListStore.loadAllListings();
+  newApplicantStore.loadNewApplicants();
+  newApplicantStore.loadAllShortlists();
+  newApplicantStore.loadAllSentOffers();
+  newApplicantStore.loadAllHires();
 });
 
 onBeforeUnmount(() => {});

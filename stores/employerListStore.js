@@ -21,7 +21,7 @@ export const useEmployerListStore = defineStore('employerListStore', {
       try {
         this.isLoading = true;
         const response = await fetch(
-          mainStore.urlbase + 'api/listing/all-active-company-listing',
+          mainStore.urlbase + 'listing/all-active-company-listing',
           {
             method: 'GET',
             headers: {
