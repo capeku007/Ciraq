@@ -94,7 +94,7 @@ const fetchChatHistory = async () => {
       throw new Error("Failed to fetch chat history");
     }
     const data = await response.json();
-    console.log("chat history", data);
+    // console.log("chat history", data);
     if (data.successful && data.data && data.data.messages) {
       messages.value = data.data.messages.map((msg) => ({
         id: msg.message_id,
@@ -141,12 +141,12 @@ socket.on("chatMessage", (message) => {
       sender: "other",
       timestamp: new Date(),
     };
+
+    console.log("message received by a user:", message)
     
     // Create a new array to trigger reactivity
     messages.value = [...messages.value, newMessage];
-    
-    console.log("🚀 Received chatMessage:", message);
-    
+        
     nextTick(() => {
       scrollToBottom();
     });
@@ -159,6 +159,7 @@ socket.on("chatMessage", (message) => {
   if (props.selectedPerson) {
     fetchChatHistory();
   }
+
 });
 
 const sendMessage = () => {
@@ -168,9 +169,10 @@ const sendMessage = () => {
       room: props.selectedPerson.friendship_id,
       sender: authStore.token,
       name: props.selectedPerson.friend_name,
+      recipient_id: props.selectedPerson.user_id,
     };
     socket.emit("chatMessage", message);
-
+    
     // Add the sent message to the end of the local messages array
     messages.value.push({
       id: Date.now().toString(), // temporary id

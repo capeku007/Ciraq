@@ -167,7 +167,7 @@ export const useAuthStore = defineStore("authStore", {
       this.setUser(null)
       // Remove user details from localStorage
       localStorage.removeItem('userDetails');
-      location.reload();
+      navigateTo("/")
     }
   },
 });  

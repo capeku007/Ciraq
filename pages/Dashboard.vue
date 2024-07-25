@@ -23,14 +23,17 @@
                 ></i>
               </div>
               <input
+              
                 type="text"
                 id="voice-search"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Temp tasks, keywords, or company"
-                required
+                v-model="jobQuery"
+                
               />
 
               <button
+              @click="searchUser()"
                 type="button"
                 class="absolute inset-y-0 end-0 flex items-center pe-2"
               >
@@ -179,6 +182,38 @@ const loadJobsMobile = () => {
     showJobList.value = true;
   }
 };
+
+
+const jobQuery = ref("");
+
+const searchUser = async () => {
+  try {
+    const response = await fetch(
+      mainStore.urlbase + "listing/search/" + jobQuery.value,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authStore.token,
+        }
+      }
+    );
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(responseData.message || "Failed to search for users.");
+    } else {
+      console.log("Search completed successfully:", responseData);
+      
+      // Assuming the API returns an array of users in responseData.data
+       listings.value = responseData.data;
+      
+    }
+  } catch (error) {
+    console.error("Failed to search for users:", error);
+  }
+}
 
 const handleResize = () => {
   isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed

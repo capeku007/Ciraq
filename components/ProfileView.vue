@@ -190,7 +190,7 @@
                               <p
                                 class="text-base sm:text-lg font-semibold truncate"
                               >
-                                {{ work.position }}
+                                {{ work.job_title }}
                               </p>
                             </div>
                           </div>
@@ -225,7 +225,7 @@ const employerAuth = useEmployerAuth();
 const { formatDate,currentAge, currentYear, initialsFromName } = useFormatDate();
 
 const activeTab = ref(0);
-const tabs = ref(["Work History", "Education"]);
+const tabs = ref(["Work History", "Projects"]);
 const authStore = useAuthStore();
 const { showModal,hideModal } = useModal();
 const active = ref(false);

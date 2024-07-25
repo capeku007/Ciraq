@@ -40,7 +40,7 @@
               >
                 <div class="px-4 py-3">
                   <span class="block text-sm text-gray-900 dark:text-white"
-                    >{{user.fname}} {{user.lname}}</span
+                    >{{ user.fname }} {{ user.lname }}</span
                   >
                   <span
                     class="block text-sm text-gray-500 truncate dark:text-gray-400"
@@ -48,13 +48,13 @@
                   >
                 </div>
                 <ul class="py-2" aria-labelledby="user-menu-button">
-
                   <li>
                     <button
                       @click="authStore.logout()"
                       class="block px-4 py-2 text-sm w-full text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                      >Sign out</button
                     >
+                      Sign out
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -128,12 +128,10 @@
                 </div>
               </div> -->
             </div>
-           
           </div>
         </div>
       </div>
     </nav>
-
   </div>
 </template>
 
@@ -141,8 +139,12 @@
 import { ref, computed } from 'vue';
 import { useAuthStore } from "../stores/authStore";
 import profilePlaceholder from '~/assets/images/profilePlace.jpg';
+import { io } from "socket.io-client";
+import { onMounted } from 'vue';
 
 const authStore = useAuthStore();
+
+const socket = ref(null);
 
 const imageSrc = computed(() => `https://ciraq.co/api/public/uploads/profile_images/${authStore.getUser.profile_img}` || profilePlaceholder);
 
@@ -153,7 +155,27 @@ const user = computed(() => authStore.getUser || {
 
 const { showClosableModal } = useModal();
 
+onMounted(() => {
+  if (authStore.token) {
+    socket.value = io("http://localhost:5001/notification", {
+      auth: {
+        token: authStore.token,
+      },
+    });
 
+    socket.value.on("connection", () => {
+      console.log("Connected to namespace");
+    });
+
+    socket.value.on("general", (msg)=>{
+      console.log("notification:", msg);
+    });
+
+    socket.value.on("friendRequest", (msg)=>{
+      console.log("Friend Request:", msg);
+    });
+
+  }
+});
 </script>
-<style scoped>
-</style>
+<style scoped></style>

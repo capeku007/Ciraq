@@ -184,6 +184,12 @@ onMounted(() => {
     console.log('Error joining chat:', error);
   });
 
+  
+  socket.value.on('joinChat', (msg) => {
+    console.log( msg);
+  });
+
+
   socket.value.on('connect_error', (error) => {
     console.log('Connection error:', error);
   });
