@@ -15,7 +15,7 @@
       >
         <span class="block h-1 w-10 bg-gray-300 rounded-full"></span>
       </div>
-      <div class="grid grid-rows-[7.5%_1fr_15%] min-h-[99svh] max-h-[99svh]">
+      <div class="grid grid-rows-[7.5%_1fr_15%] min-h-[99dvh] max-h-[99dvh]">
         <div class=""         @mousedown="dragStart"
         @touchstart="dragStart">
           <div class="">
@@ -74,11 +74,11 @@
 
           <div class="w-full" v-if="activeTab == 1">
             <div
-              class="min-h-[76svh] bg-red-500 flex justify-center items-center"
+              class="min-h-[76dvh] bg-red-500 flex justify-center items-center"
             >
               <div
                 v-if="!showVideo"
-                class="grid grid-rows-[1fr] min-h-[74svh] max-h-[74svh] overflow-hidden"
+                class="grid grid-rows-[1fr] min-h-[74dvh] max-h-[74dvh] overflow-hidden"
               >
                 <VideoRecorder
                   @videoRecorded="handleVideoRecorded"
@@ -88,13 +88,13 @@
 
               <div
                 v-if="showVideo"
-                class="min-h-[76svh] bg-red-500 flex justify-center items-center"
+                class="min-h-[76dvh] bg-red-500 flex justify-center items-center"
               >
                 <div
-                  class="grid grid-rows-[1fr] min-h-[74svh] max-h-[74svh] overflow-hidden"
+                  class="grid grid-rows-[1fr] min-h-[74dvh] max-h-[74dvh] overflow-hidden"
                 >
                   <div
-                    class="relative bg-yellow-200 min-h-[74svh] h-[74svh] max-h-[74svh]"
+                    class="relative bg-yellow-200 min-h-[74dvh] h-[74dvh] max-h-[74dvh]"
                   >
                     <video
                       class="rounded-lg h-full w-full object-cover"
@@ -113,13 +113,13 @@
                 </div>
 
                 <div
-                  class="min-h-[76svh] bg-red-500 flex justify-center items-center"
+                  class="min-h-[76dvh] bg-red-500 flex justify-center items-center"
                 >
                   <div
-                    class="grid grid-rows-[1fr] min-h-[74svh] max-h-[74svh] overflow-hidden"
+                    class="grid grid-rows-[1fr] min-h-[74dvh] max-h-[74dvh] overflow-hidden"
                   >
                     <div
-                      class="relative bg-yellow-200 min-h-[74svh] h-[74svh] max-h-[74svh]"
+                      class="relative bg-yellow-200 min-h-[74dvh] h-[74dvh] max-h-[74dvh]"
                     >
                       <img
                         :src="recordedImgUrl"
@@ -327,9 +327,9 @@ onUnmounted(() => {
   width: 100%;
   position: relative;
   background: #fff;
-  max-height: 100svh;
-  height: 99svh;
-  /* min-height: 99svh; */
+  max-height: 100dvh;
+  height: 99dvh;
+  /* min-height: 99dvh; */
   max-width: 1150px;
   padding: 10px 20px;
   transform: translateY(100%);

@@ -18,7 +18,7 @@
       </div>
     </div>
 
-  <div class="h-[81svh] m-2 p-2">
+  <div class="h-[81dvh] m-2 p-2">
     <div class="parent">
       <div class="div1">
         <!-- component -->

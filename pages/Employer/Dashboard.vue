@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[87svh] max-h-[87svh] grid grid-rows-[12svh_1fr]">
+  <div class="min-h-[87dvh] max-h-[87dvh] grid grid-rows-[12dvh_1fr]">
 <div class="flex bg-white flex-wrap rounded-lg">
   <div class="w-1/5 p-2">
     <label :class="[

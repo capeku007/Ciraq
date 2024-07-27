@@ -102,13 +102,13 @@
   </div>
 
   <div
-    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] p-2 h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden"
+    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] p-2 h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
   >
     <div class="parent bg-white">
       <div class="div1">
         <!-- component -->
         <div
-          class="min-h-[16svh] max-h-[16svh] w-full flex justify-center items-center px-2 pt-2 sm:pt-4"
+          class="min-h-[16dvh] max-h-[16dvh] w-full flex justify-center items-center px-2 pt-2 sm:pt-4"
         >
           <div class="sm:pl-4 flex w-full items-center mb-4">
             <div class="relative mr-4">

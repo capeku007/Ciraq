@@ -1,11 +1,11 @@
 <template>
-  <div     class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden"
+  <div     class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
 >
     <div class=" md:flex no-wrap md:-mx-1">
       <!-- Messages List (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && showMessageList)"
-        class=" rounded-xl w-full md:w-4/12 md:mx-1 grid grid-rows-[[7svh]_1fr] h-[85svh] max-h-[85svh] min-h-[85svh] bg-white m-2 "
+        class=" rounded-xl w-full md:w-4/12 md:mx-1 grid grid-rows-[[7dvh]_1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] bg-white m-2 "
       >
 <div class="m-2 flex justify-between items-center">
       <div class="left">
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <ul v-if="activeList === 'messages'" class="people h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
+    <ul v-if="activeList === 'messages'" class="people h-77dvh] max-h-[77dvh] min-h-[77dvh] overflow-y-auto my-auto pb-[10vh]">
       <li class="person" v-for="person in people" :key="person.user_id" @click="loadMessages(person)">
         <img   :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
   :alt="`${person.fname} ${person.lname}'s profile image`" />
@@ -30,7 +30,7 @@
       </li>
     </ul>
 
-    <ul v-if="activeList === 'friends'" class="people h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
+    <ul v-if="activeList === 'friends'" class="people h-77dvh] max-h-[77dvh] min-h-[77dvh] overflow-y-auto my-auto pb-[10vh]">
       <li class="person" v-for="friend in friends" :key="friend.id" @click="loadMessages(friend)">
         <img :src="friend.avatar" alt="" />
         <span class="name text-lime-950 text-text-lg font-medium">{{ friend.name }}</span>
@@ -41,7 +41,7 @@
       </li>
     </ul>
 
-    <ul v-if="activeList === 'requests'" class="people h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]">
+    <ul v-if="activeList === 'requests'" class="people h-77dvh] max-h-[77dvh] min-h-[77dvh] overflow-y-auto my-auto pb-[10vh]">
       <li class="person" v-for="request in requests" :key="request.id" @click="loadMessages(request)">
         <img :src="request.avatar" alt="" />
         <span class="name text-lime-950 text-text-lg font-medium">{{ request.name }}</span>
@@ -56,7 +56,7 @@
       <!-- Message Body (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && !showMessageList)"
-        class=" md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[86svh] max-h-[86svh] min-h-[86svh] overflow-hidden"
+        class=" md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[86dvh] max-h-[86dvh] min-h-[86dvh] overflow-hidden"
       >
 
          <div class="m-2 bg-white rounded-xl overflow-hidden">

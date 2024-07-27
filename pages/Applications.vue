@@ -1,12 +1,12 @@
 <template>
   <div
-    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden"
+    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
   >
     <div class="md:flex no-wrap md:-mx-1">
       <!--  List (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && showJobList)"
-        class="w-full md:w-4/12 md:mx-1 grid grid-rows-[[7svh]_1fr] h-[85svh] max-h-[85svh] min-h-[85svh]"
+        class="w-full md:w-4/12 md:mx-1 grid grid-rows-[[7dvh]_1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh]"
       >
         <div class="flex m-2">
           <!-- search input -->
@@ -23,7 +23,7 @@
           </select>
 
           <button
-            @click="loadAllListings"
+            @click="fetchApplications"
             class="bg-white border border-gray-300 rounded-lg ml-2 px-2 text-[#044013]"
           >
             <i class="text-lg bx bx-revision"></i>
@@ -31,12 +31,12 @@
         </div>
         <ul
           v-if="!isLoading"
-          class="h-77svh] max-h-[77svh] min-h-[77svh] overflow-y-auto my-auto pb-[10vh]"
+          class="h-77dvh] max-h-[77dvh] min-h-[77dvh] overflow-y-auto my-auto pb-[10vh]"
         >
           <li
             v-for="job in searchResults"
             :key="job.id"
-            @click="selectListing(job)"
+            @click="selectAppliedListing(job)"
           >
             <div class="card p-4 bg-white">
               <div class="flex items-center space-x-3">
@@ -115,7 +115,7 @@
         </ul>
         <div
           v-else
-          class="flex justify-center items-center h-[77svh] max-h-[77svh] min-h-[77svh]"
+          class="flex justify-center items-center h-[77dvh] max-h-[77dvh] min-h-[77dvh]"
         >
           <div class="loader"></div>
         </div>
@@ -124,14 +124,14 @@
       <!--  Body (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && !showJobList)"
-        class="md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[85svh] max-h-[85svh] min-h-[85svh] overflow-hidden"
+        class="md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
       >
         <div
-          v-if="selectedListing"
+          v-if="selectedAppliedListing"
           class="m-2 bg-white rounded-xl overflow-hidden"
         >
           <AppliedListing
-            :selectedListing="selectedListing"
+            :selectedListing="selectedAppliedListing"
             @loadJobsMobile="loadJobsMobile"
           />
         </div>
@@ -174,15 +174,15 @@ useHead({
   meta: [{ name: "jobs you've applied for", content: "Student job list" }],
 });
 
-const selectedListing = ref(null);
+const selectedAppliedListing = ref(null);
 const isMobile = ref(false);
 const showJobList = ref(true);
 
 const user = computed(() => useAuthStore().user);
 
-const selectListing = (job) => {
+const selectAppliedListing = (job) => {
   console.log("selected job", job);
-  selectedListing.value = job;
+  selectedAppliedListing.value = job;
 
   if (isMobile.value) {
     showJobList.value = false;
@@ -205,7 +205,7 @@ const handleResize = () => {
   }
 };
 
-const loadAllListings = async () => {
+const fetchApplications = async () => {
   isLoading.value = true;
   try {
     const response = await fetch(mainStore.urlbase + "user-applications", {
@@ -256,7 +256,7 @@ watch(listings, (newListings) => {
 });
 
 onMounted(() => {
-  loadAllListings();
+  fetchApplications();
   isMobile.value = window.innerWidth < 768;
   window.addEventListener("resize", handleResize);
 });

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="relative w-full max-w-4xl overflow-y-auto max-h-[95svh] rounded-2xl scrollbar-none">
+    <div class="relative w-full max-w-4xl overflow-y-auto max-h-[95dvh] rounded-2xl scrollbar-none">
       <div class="relative bg-white rounded-lg shadow">
         <div class="md:p-5 px-4 bg-white">
           <div class="py-4 sticky top-0 z-10 bg-white">

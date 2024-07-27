@@ -13,7 +13,7 @@
 
   <!-- tabs -->
   <div
-    class="grid grid-rows-[7.5%_1fr_2%] h-[86svh] max-h-[86svh] min-h-[86svh] overflow-y-hidden"
+    class="grid grid-rows-[7.5%_1fr_2%] h-[86dvh] max-h-[86dvh] min-h-[86dvh] overflow-y-hidden"
   >
     <div class="">
       <ul class="flex justify-center items-center rounded-3xl text-center p-1">
@@ -38,9 +38,9 @@
       <div class="sm:w-11/12 sm:pl-40" v-show="activeTab === 0">
         <!-- Education timeLine -->
 
-        <div class="flex max-h-[76svh] h-[76svh] min-h-[86svh] overflow-hidden">
-          <div class="max-h-[76svh] h-[76svh] w-full  rounded-2xl">
-            <div class="h-[calc(74svh-1rem)] bg-transparent m-4 ">
+        <div class="flex max-h-[76dvh] h-[76dvh] min-h-[86dvh] overflow-hidden">
+          <div class="max-h-[76dvh] h-[76dvh] w-full  rounded-2xl">
+            <div class="h-[calc(74dvh-1rem)] bg-transparent m-4 ">
               <Roam/>
             </div>
           </div>
@@ -50,9 +50,9 @@
       <div class="sm:w-11/12 sm:pl-40" v-show="activeTab === 1">
         <!-- Posts timeLine -->
         <!-- using the list method for now -->
-        <ul class="scrollContainer h-[76svh] max-h-[76svh] overflow-hidden">
+        <ul class="scrollContainer h-[76dvh] max-h-[76dvh] overflow-hidden">
           <li class="scrollItem bg-white shadow rounded-lg mb-8">
-            <div class="grid grid-rows-[10%_1fr_7%] h-[76svh] max-h-[76svh]">
+            <div class="grid grid-rows-[10%_1fr_7%] h-[76dvh] max-h-[76dvh]">
               <!-- profile starts here -->
 
               <div class="flex flex-row p-2 mx-3">
@@ -86,7 +86,7 @@
               <div class="mx-3 px-2">
                 <!-- with text and image -->
                 <div
-                  class="grid grid-rows-[7svh_1fr] gap-y-4 min-h-[63svh] max-h-[63svh] overflow-hidden"
+                  class="grid grid-rows-[7dvh_1fr] gap-y-4 min-h-[63dvh] max-h-[63dvh] overflow-hidden"
                 >
                   <div class="flex">
                     <p class="text-xs sm:text-base font-normal text-gray-900">
@@ -130,7 +130,7 @@
           </li>
 
           <li class="scrollItem bg-white shadow rounded-lg mb-8">
-            <div class="grid grid-rows-[10%_1fr_7%] h-[76svh] max-h-[76svh]">
+            <div class="grid grid-rows-[10%_1fr_7%] h-[76dvh] max-h-[76dvh]">
               <!-- profile starts here -->
 
               <div class="flex flex-row p-2 mx-3">
@@ -164,7 +164,7 @@
               <div class="mx-3 px-2">
                 <!-- with text and image -->
                 <div
-                  class="grid grid-rows-[1fr] gap-y-4 min-h-[63svh] max-h-[63svh] overflow-hidden"
+                  class="grid grid-rows-[1fr] gap-y-4 min-h-[63dvh] max-h-[63dvh] overflow-hidden"
                 >
                   <div class="flex justify-center items-center">
                     <p class="text-xs sm:text-base font-normal text-gray-900">
@@ -201,7 +201,7 @@
             </div>
           </li>
           <li class="scrollItem bg-white shadow rounded-lg mb-8">
-            <div class="grid grid-rows-[10%_1fr_7%] h-[76svh] max-h-[76svh]">
+            <div class="grid grid-rows-[10%_1fr_7%] h-[76dvh] max-h-[76dvh]">
               <!-- profile starts here -->
 
               <div class="flex flex-row p-2 mx-3">
@@ -235,10 +235,10 @@
               <div class="mx-3 px-2">
                 <!-- with text and image -->
                 <div
-                  class="grid grid-rows-[1fr] gap-y-4 min-h-[63svh] max-h-[63svh] overflow-hidden"
+                  class="grid grid-rows-[1fr] gap-y-4 min-h-[63dvh] max-h-[63dvh] overflow-hidden"
                 >
                   <div
-                    class="min-h-[63svh] max-h-[63svh] overflow-hidden flex justify-center items-center"
+                    class="min-h-[63dvh] max-h-[63dvh] overflow-hidden flex justify-center items-center"
                   >
                     <video
                       v-if="imageUrl"
@@ -360,9 +360,9 @@ const openComments = () => {
 }
 
 .image-preview-container {
-  height: 53svh;
-  min-height: 53svh;
-  max-height: 55svh;
+  height: 53dvh;
+  min-height: 53dvh;
+  max-height: 55dvh;
   overflow: hidden;
   display: flex;
   justify-content: center;

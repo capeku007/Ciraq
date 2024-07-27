@@ -1,6 +1,6 @@
 <template>
-  <div class="grid grid-cols-2 grid-rows-1 gap-x-4 h-[95svh] overflow-hidden">
-    <div class="overflow-y-auto shadow rounded-2xl bg-white max-h-[95svh] min-h-[95svh] p-4">
+  <div class="grid grid-cols-2 grid-rows-1 gap-x-4 h-[95dvh] overflow-hidden">
+    <div class="overflow-y-auto shadow rounded-2xl bg-white max-h-[95dvh] min-h-[95dvh] p-4">
       <div class="bg-white pb-4 sticky top-0 z-2">
       <h2 class="text-base font-semibold leading-7 text-gray-900">
         Create a new listing
@@ -231,7 +231,7 @@
     </div>
 
     <!-- preview job -->
-    <div class="shadow rounded-2xl bg-white max-h-[95svh] overflow-y-auto p-4">
+    <div class="shadow rounded-2xl bg-white max-h-[95dvh] overflow-y-auto p-4">
       <div class="md:p-5 px-4">
         <div class="py-4 sticky top-0 z-10 bg-white">
           <div class="flex items-center space-x-3">

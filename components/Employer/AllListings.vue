@@ -114,7 +114,7 @@
             <button
               id="AllfilterTrig"
               @click="showDrop()"
-              class="bg-white border py-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 h-30svh overflow-y-auto"
+              class="bg-white border py-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 h-30dvh overflow-y-auto"
               type="button"
             >
               {{ buttonText }}
@@ -178,7 +178,7 @@
             </div>
           </div>
         </div>
-        <div class="overflow-y-auto h-[68svh]">
+        <div class="overflow-y-auto h-[68dvh]">
           <div v-if="getIsLoading">
             <LoadScreen />
           </div>

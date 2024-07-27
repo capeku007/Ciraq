@@ -233,9 +233,9 @@ onUnmounted(() => {
   width: 100%;
   position: relative;
   background: #fff;
-  max-height: 100svh;
-  height: 50svh;
-  /* min-height: 30svh; */
+  max-height: 100dvh;
+  height: 50dvh;
+  /* min-height: 30dvh; */
   max-width: 1150px;
   padding: 25px 30px;
   transform: translateY(100%);

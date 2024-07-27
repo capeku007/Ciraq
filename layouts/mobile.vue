@@ -52,11 +52,11 @@ onMounted(() => {
 .container {
   display: grid;
   overflow: hidden;
-  min-height: 100svh;
-  max-height: 100svh;
+  min-height: 100dvh;
+  max-height: 100dvh;
 grid-template-rows: 7% 1fr 7%; 
     height: 100vh; 
-    height: 100svh; 
+    height: 100dvh; 
     min-height: 100vh; 
     max-height: 100vh; 
   grid-column-gap: 0px;
@@ -72,8 +72,8 @@ grid-template-rows: 7% 1fr 7%;
 }
 
 .body {
-  height: 85svh;
-  min-height: 85svh;
+  height: 85dvh;
+  min-height: 85dvh;
   overflow-y: hidden;
   background-color: #f7f7f7;
 }

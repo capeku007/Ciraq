@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-yellow-200 min-h-[74svh] h-[74svh] max-h-[74svh]">
+  <div class="relative bg-yellow-200 min-h-[74dvh] h-[74dvh] max-h-[74dvh]">
     <video ref="videoPlayer" class="rounded-lg h-full w-full object-cover" autoplay></video>
     <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center space-x-4">
     <button @click="takePicture" :disabled="recording" v-if="!recording" class="bg-green-500 text-white px-4 py-2 rounded-lg">Take Picture</button>
