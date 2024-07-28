@@ -253,6 +253,9 @@ Modals,
 </script>
 
 <style scoped>
+input, select, textarea {
+  font-size: 16px;
+}
 /* style.css */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap");
 

@@ -23,7 +23,6 @@ export const useMainStore = defineStore("mainStore", {
     async OpenYesOrNOClick( payload) {
       console.log("Yes or No click opened")
       // $("#yesorno").modal('show')
-
       const $modalElement = document.querySelector("#confirmModal");
       if ($modalElement) {
         const modal = new Modal($modalElement);
@@ -45,7 +44,6 @@ export const useMainStore = defineStore("mainStore", {
         }
         await yesorNoClickFunc.yesfunc()
       }
-  
     },
   
     async cancel( payload) {

@@ -28,10 +28,10 @@
 
   <nuxt-link
     class="inline-flex flex-col items-center text-xs font-medium pt-3 pb-2 px-4 text-gray-400 flex-grow"
-    to="/applications"
+    to="/skillforge"
   >
-    <i :class="{'bx bxs-envelope text-[#132E35]': $route.path === '/applications', 'bx bx-mail-send': $route.path !== '/applications'}" class="text-2xl block"></i>
-    <span class="block text-[10px]">Applied</span>
+    <i :class="{'bx bx-sitemap text-[#132E35]': $route.path === '/skillforge', 'bx bx-sitemap': $route.path !== '/skillforge'}" class="text-2xl block"></i>
+    <span class="block text-[10px]">SkillForge</span>
     <span class="block rounded-full"></span>
   </nuxt-link>
 

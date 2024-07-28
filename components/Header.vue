@@ -146,7 +146,7 @@ const authStore = useAuthStore();
 
 const socket = ref(null);
 
-const imageSrc = computed(() => `https://ciraq.co/api/public/uploads/profile_images/${authStore.getUser.profile_img}` || profilePlaceholder);
+const imageSrc = computed(() =>  profilePlaceholder);
 
 const user = computed(() => authStore.getUser || {
   fname: "Please",

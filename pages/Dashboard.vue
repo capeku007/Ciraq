@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
+    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[83dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
   >
     <div class="md:flex no-wrap md:-mx-1">
       <!--  List (visible on mobile) -->
@@ -69,14 +69,12 @@
           </transition>
           <!-- search input -->
         </div>
-        <div
-          class="h-[71dvh] max-h-[71dvh] min-h-[71dvh] overflow-hidden "
-        >
+        <div class="h-[71dvh] max-h-[71dvh] min-h-[71dvh] overflow-hidden">
           <transition name="fade" mode="out-in">
             <ul
               v-if="!isLoading && selectedTab === 'new'"
               key="new-listings"
-              class="h-[71dvh] max-h-[71dvh] min-h-[71dvh] overflow-y-auto my-auto pb-[10vh]"
+              class="h-[71dvh] max-h-[71dvh] min-h-[71dvh] overflow-y-auto my-auto"
             >
               <li
                 v-for="job in listings"
@@ -134,7 +132,7 @@
             <ul
               v-else-if="!isLoading && selectedTab === 'apps'"
               key="apps-listings"
-              class="h-77dvh] max-h-[77dvh] min-h-[77dvh] overflow-y-auto my-auto pb-[10vh]"
+              class="h-71dvh] max-h-[71dvh] min-h-[71dvh] overflow-y-auto my-auto pb-[10vh]"
             >
               <li
                 v-for="job in searchResults"
@@ -221,7 +219,7 @@
             <div
               v-else
               key="loading"
-              class="flex justify-center items-center h-[77dvh] max-h-[77dvh] min-h-[77dvh]"
+              class="flex justify-center items-center h-[71dvh] max-h-[71dvh]"
             >
               <div class="loader"></div>
             </div>
@@ -229,7 +227,7 @@
         </div>
 
         <!-- FLOATING TOGGLE -->
-        <div class="relative w-full">
+        <div class="relative w-full h-[7dvh]">
           <div class="flex relative bg-white p-1 rounded-full">
             <input
               type="radio"
@@ -246,7 +244,7 @@
               New Listings
               <span
                 v-if="listings.length > 0"
-                class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                class="absolute -top-2 -right-2 bg-purple-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
               >
                 {{ listings.length }}
               </span>
@@ -267,7 +265,7 @@
               My Applications
               <span
                 v-if="searchResults.length > 0"
-                class="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                class="absolute -top-2 -right-2 bg-purple-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
               >
                 {{ searchResults.length }}
               </span>
@@ -286,45 +284,43 @@
         class="md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
       >
         <transition name="fade" mode="out-in">
-<div>
+          <div>
             <div
-            v-if="selectedListing && selectedTab === 'new'"
-            key="listing-info"
-            class="m-2 bg-white rounded-xl overflow-hidden"
-          >
-            <ListingInfo
-              :selectedListing="selectedListing"
-              @loadJobsMobile="loadJobsMobile"
-            />
-          </div>
-          <div
-            v-if="selectedListing && selectedTab === 'apps'"
-            key="listing-info"
-            class="m-2 bg-white rounded-xl overflow-hidden"
-          >
-            <AppliedListing
-              :selectedListing="selectedAppliedListing"
-              @loadJobsMobile="loadJobsMobile"
-            />
-          </div>
-                    <div
-            v-else
-            key="empty-state"
-            class="grid grid-rows-[1fr] max-h-full h-full"
-          >
-            <div
-              class="bg-white flex justify-center items-center overflow-hidden animate-zoom"
+              v-if="selectedListing && selectedTab === 'new'"
+              key="listing-info"
+              class="m-2 bg-white rounded-xl overflow-hidden"
             >
-              <img
-                src="/assets/logo.png"
-                class="h-64 animate-zoom overflow-hidden"
-                alt="Select a person"
+              <ListingInfo
+                :selectedListing="selectedListing"
+                @loadJobsMobile="loadJobsMobile"
               />
             </div>
+            <div
+              v-if="selectedListing && selectedTab === 'apps'"
+              key="listing-info"
+              class="m-2 bg-white rounded-xl overflow-hidden"
+            >
+              <AppliedListing
+                :selectedListing="selectedAppliedListing"
+                @loadJobsMobile="loadJobsMobile"
+              />
+            </div>
+            <div
+              v-else
+              key="empty-state"
+              class="grid grid-rows-[1fr] max-h-full h-full"
+            >
+              <div
+                class="bg-white flex justify-center items-center overflow-hidden animate-zoom"
+              >
+                <img
+                  src="/assets/logo.png"
+                  class="h-64 animate-zoom overflow-hidden"
+                  alt="Select a person"
+                />
+              </div>
+            </div>
           </div>
-</div>
-
-
         </transition>
       </div>
     </div>

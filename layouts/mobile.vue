@@ -49,6 +49,10 @@ onMounted(() => {
 
 
 <style >
+input, select, textarea {
+  font-size: 16px;
+}
+
 .container {
   display: grid;
   overflow: hidden;
