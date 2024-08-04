@@ -267,7 +267,7 @@
     </section>
     <section>
       <!-- built for recruiting -->
-      <div class=" dark:bg-gray-800">
+      <!-- <div class=" dark:bg-gray-800">
         <div
           class="items-center max-w-screen-xl px-4 py-8 mx-auto lg:grid lg:grid-cols-4 lg:gap-16 xl:gap-24 lg:py-24 lg:px-6"
         >
@@ -332,7 +332,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- built for recruiting -->
 
     </section>
@@ -383,7 +383,7 @@
                 >
               </div>
             </div>
-            <div class="space-y-4 text-center">
+            <!-- <div class="space-y-4 text-center">
               <img
                 class="w-64 h-64 mx-auto object-cover rounded-xl md:w-40 md:h-40 lg:w-64 lg:h-64"
                 src="/assets/images/elvis.png"
@@ -398,7 +398,7 @@
                   >Partnerships Manager</span
                 >
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

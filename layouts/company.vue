@@ -25,7 +25,7 @@
         </li>
         
         <li>
-          <nuxt-link to="/employer/new" >
+          <nuxt-link to="/employer/chat" >
             <i class="bx bx-conversation"></i>
             <span class="links_name">Chats</span>
           </nuxt-link>
