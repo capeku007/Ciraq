@@ -7,12 +7,13 @@
       aria-hidden="true"
       class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
     >
-    <div
+      <div
         class="relative p-2 bg-white rounded-2xl w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
-      >  <i
-            @click="hideModal('viewApplicantModal')"
-            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
-          ></i>
+      >
+        <i
+          @click="hideModal('viewApplicantModal')"
+          class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
+        ></i>
 
         <!-- TODO: UPDATE TO  -->
         <ProfileView :selectedUser="selectedUser" />
@@ -35,8 +36,7 @@
             class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 text-2xl text-gray-400 hover:text-red-600"
           ></i>
 
-          <div class=""
-    v-if="applicantDetails">
+          <div class="" v-if="applicantDetails">
             <div class="mx-auto rounded-lg overflow-hidden">
               <div class="bg-white rounded-2xl p-4 shadow-md mb-12">
                 <div class="content">
@@ -224,7 +224,7 @@
                     class="flex items-center px-6 py-1 text-gray-900 whitespace-nowrap"
                     @click="viewApplicant(applicant)"
                   >
-                                        <div class="mr-4">
+                    <div class="mr-4">
                       <div
                         v-if="applicant.profile_img"
                         :style="{
@@ -236,12 +236,7 @@
                         v-else
                         class="mx-auto flex justify-center items-center w-8 h-8 bg-blue-300/20 rounded-full text-lg font-bold"
                       >
-                        {{
-                          initialsFromName(
-                            applicant.fname,
-                            applicant.lname
-                          )
-                        }}
+                        {{ initialsFromName(applicant.fname, applicant.lname) }}
                       </div>
                     </div>
                     <div class="ps-3">
@@ -261,11 +256,9 @@
                       type="button"
                       @click="openApplication(applicant)"
                       class="text-center inline-flex items-center px-3 py-1 text-blue-500 hover:text-white border border-blue-500 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm"
-
                     >
-                    Update
-                    <i class='ml-2 bx bx-edit-alt'></i>
-                      
+                      Update
+                      <i class="ml-2 bx bx-edit-alt"></i>
                     </button>
                   </td>
                 </tr>
@@ -294,7 +287,6 @@ import { useFormatDate } from "@/composables/useFormatDate";
 const { formatDate, currentYear, initialsFromName } = useFormatDate();
 const { hideModal, showModal, showClosableModal } = useModal();
 
-
 const selectedJob = ref({});
 const selectedJobId = ref(null);
 const isLoading = ref(false);
@@ -303,19 +295,21 @@ const filteredApplicants = computed(() => {
   if (selectedJobId.value === null) {
     return getApplicants.value;
   } else {
-    return getApplicants.value.filter(applicant => applicant.job_id === selectedJobId.value);
+    return getApplicants.value.filter(
+      (applicant) => applicant.job_id === selectedJobId.value
+    );
   }
 });
 
 const filterListing = (jobId) => {
   selectedJobId.value = jobId;
-  console.log(selectedJobId.value)
+  console.log(selectedJobId.value);
 };
 
 const selectedUser = ref({});
 const viewApplicant = async (n) => {
   //fetch user
-    isLoading.value = true;
+  isLoading.value = true;
   try {
     selectedUser.value = {};
 
@@ -335,7 +329,7 @@ const viewApplicant = async (n) => {
       console.log(" response", responseData);
       selectedUser.value = responseData.data;
       console.log(" selected user fetched", selectedUser.value);
-        isLoading.value = false;
+      isLoading.value = false;
       const modalId = "viewApplicantModal";
       showModal(modalId);
     } else {
@@ -356,7 +350,7 @@ const applicantDetails = ref(null);
 const openApplication = (n) => {
   // Initialize useModal composable
   // isLoading.value = true;
-  console.log(n)
+  console.log(n);
   applicantDetails.value = n;
   const modalId = "updateApplicantStatusModal";
   showModal(modalId);

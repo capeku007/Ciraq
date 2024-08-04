@@ -122,20 +122,6 @@ export const useAuthStore = defineStore("authStore", {
       }
     },
     
-    //fetch User Image
-    async fetchUserImage(n){
-      const mainStore = useMainStore();
-      if(this.token){
-        try {
-          // console.log("here's the user profile image name", n.stdid_img_name);
-          const responseImg = await mainStore.urlbase + "public/uploads/" + n.stdid_img_name;
-          this.userImage =  responseImg
-          console.log(this.userImage);
-        } catch (error) {
-          console.error("unable to load student image:", error);
-        }
-      }
-    },
 
     async signup(formData) {
       const mainStore = useMainStore();

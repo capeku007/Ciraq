@@ -1,139 +1,250 @@
 <template>
-  <div     class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
->
-    <div class=" md:flex no-wrap md:-mx-1">
+  <div
+    class=" mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[90dvh] max-h-[90dvh] min-h-[90dvh] overflow-hidden"
+  >
+    <div class="md:flex no-wrap md:-mx-1">
       <!-- Messages List (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && showMessageList)"
-        class=" rounded-xl w-full md:w-4/12 md:mx-1 grid grid-rows-[[7dvh]_1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] bg-white m-2 "
+        class="rounded-xl w-full md:w-4/12 md:mx-1 grid grid-rows-[[7svh]_1fr] h-[90dvh] max-h-[90dvh] min-h-[85svh] bg-white m-2"
       >
-<div class="m-2 flex justify-between items-center">
-      <div class="left">
-        <h5 class="text-base sm:text-lg px-4">Messages</h5>
-      </div>
-      <div class="right flex space-x-4 mr-4">
-        <i class='text-xl bx bx-message-dots' :class="{ 'active': activeList === 'messages' }" @click="setActiveList('messages')"></i>
-        <i class='text-xl bx bx-user-voice' :class="{ 'active': activeList === 'friends' }" @click="setActiveList('friends')"></i>
-        <i class='text-xl bx bx-group' :class="{ 'active': activeList === 'requests' }" @click="setActiveList('requests')"></i>
-      </div>
-    </div>
+        <div class="m-2 flex justify-between items-center">
+          <div class="left">
+            <h5 v-if="activeList === 'messages'" class="text-base sm:text-lg px-4">Messages</h5>
+            <h5 v-if="activeList === 'notifications'" class="text-base sm:text-lg px-4">Notifications</h5>
+            <h5 v-if="activeList === 'requests'" class="text-base sm:text-lg px-4">Requests</h5>
+            
+          </div>
+          <div class="right flex space-x-4 mr-4">
+            <i
+              class="rounded-full bg-gray-200 p-1.5 text-xl bx bx-message-dots"
+              :class="{ active: activeList === 'messages' }"
+              @click="setActiveList('messages')"
+            ></i>
+            
+            <i
+              class="rounded-full bg-gray-200 p-1.5 text-xl bx bx-group"
+              :class="{ active: activeList === 'requests' }"
+              @click="setActiveList('requests'), fetchRequests()"
+            ></i>
+            <i
+              class="rounded-full bg-gray-200 p-1.5 text-xl bx bx-bell"
+              :class="{ active: activeList === 'notifications' }"
+              @click="setActiveList('notifications'), fetchNotifications()"
+            ></i>
+          </div>
+        </div>
 
-    <ul v-if="activeList === 'messages'" class="people h-77dvh] max-h-[77dvh] min-h-[77dvh] overflow-y-auto my-auto pb-[10vh]">
-      <li class="person" v-for="person in people" :key="person.user_id" @click="loadMessages(person)">
-        <img   :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
-  :alt="`${person.fname} ${person.lname}'s profile image`" />
-        <span class="name text-lime-950 text-text-lg font-medium">{{ person.friend_name }}</span>
-        <span class="time text-gray-600"></span>
-        <span class="preview">
-  {{ person.institution_name}}
-</span>
-      </li>
-    </ul>
+        <ul
+          v-if="activeList === 'messages'"
+          class="people h-[82dvh] max-h-[82dvh] min-h-[82dvh] overflow-y-auto my-auto pb-[10dvh]"
+        >
+          <li
+            class="person"
+            v-for="person in people"
+            :key="person.user_id"
+            @click="loadMessages(person)"
+          >
+            <img
+              :src="
+                person.profile_img
+                  ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}`
+                  : profilePlaceholder
+              "
+              :alt="`${person.fname} ${person.lname}'s profile image`"
+            />
+            <span class="name text-lime-950 text-text-lg font-medium">{{
+              person.friend_name
+            }}</span>
+            <span class="time text-gray-600"></span>
+            <span class="preview">
+              {{ person.institution_name }}
+            </span>
+          </li>
+        </ul>
 
-    <ul v-if="activeList === 'friends'" class="people h-77dvh] max-h-[77dvh] min-h-[77dvh] overflow-y-auto my-auto pb-[10vh]">
-      <li class="person" v-for="friend in friends" :key="friend.id" @click="loadMessages(friend)">
-        <img :src="friend.avatar" alt="" />
-        <span class="name text-lime-950 text-text-lg font-medium">{{ friend.name }}</span>
-        <span class="time text-gray-600">{{ friend.time }}</span>
-        <span class="preview">
-          {{ friend.messages.length > 0 ? friend.messages[friend.messages.length - 1].text : "" }}
-        </span>
-      </li>
-    </ul>
+        <ul
+          v-if="activeList === 'notifications'"
+          class="people h-[82dvh] max-h-[82dvh] min-h-[82dvh] overflow-y-auto my-auto pb-[10dvh]"
+        >
+          <li
+            class="person"
+            v-for="notification in notifications"
+            :key="notification.id"
+          >
+            <img :src="notification.avatar" alt="" />
+            <span class="name text-lime-950 text-text-lg font-medium">{{
+              notification.name
+            }}</span>
+            <span class="time text-gray-600">{{ notification.time }}</span>
+            <span class="preview">
+              {{
+                notification.messages.length > 0
+                  ? notification.messages[notification.messages.length - 1].text
+                  : ""
+              }}
+            </span>
+          </li>
+        </ul>
 
-    <ul v-if="activeList === 'requests'" class="people h-77dvh] max-h-[77dvh] min-h-[77dvh] overflow-y-auto my-auto pb-[10vh]">
-      <li class="person" v-for="request in requests" :key="request.id" @click="loadMessages(request)">
-        <img :src="request.avatar" alt="" />
-        <span class="name text-lime-950 text-text-lg font-medium">{{ request.name }}</span>
-        <span class="time text-gray-600">{{ request.time }}</span>
-        <span class="preview">
-          {{ request.messages.length > 0 ? request.messages[request.messages.length - 1].text : "" }}
-        </span>
-      </li>
-    </ul>
+        <ul
+          v-if="activeList === 'requests'"
+          class="people h-[82dvh] max-h-[82dvh] min-h-[82dvh] overflow-y-auto my-auto pb-[10vh]"
+        >
+          <li
+            class="person"
+            v-for="request in requests"
+            :key="request.id"
+            @click="loadMessages(request)"
+          >
+            <img :src="request.avatar" alt="" />
+            <span class="name text-lime-950 text-text-lg font-medium">{{
+              request.name
+            }}</span>
+            <span class="time text-gray-600">{{ request.time }}</span>
+            <span class="preview">
+              {{
+                request.messages.length > 0
+                  ? request.messages[request.messages.length - 1].text
+                  : ""
+              }}
+            </span>
+          </li>
+        </ul>
       </div>
 
       <!-- Message Body (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && !showMessageList)"
-        class=" md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[86dvh] max-h-[86dvh] min-h-[86dvh] overflow-hidden"
+        class="md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[90dvh] max-h-[90dvh] min-h-[90dvh] overflow-hidden"
       >
-
-         <div class="m-2 bg-white rounded-xl overflow-hidden">
-        <MessageBody
-          :selectedPerson="selectedPerson"
-          @sendMessage="sendMessage"
-          @loadMessagesMobile="loadMessagesMobile"
-        />
+        <div class="m-2 bg-white rounded-xl overflow-hidden">
+          <MessageBody
+            :selectedPerson="selectedPerson"
+            @sendMessage="sendMessage"
+            @loadMessagesMobile="loadMessagesMobile"
+  @messageSentOrReceived="fetchUsers"
+          />
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { io } from 'socket.io-client';
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { io } from "socket.io-client";
 import { useAuthStore } from "../stores/authStore";
-import profilePlaceholder from '~/assets/images/profilePlace.jpg';
-
+import profilePlaceholder from "~/assets/images/profilePlace.jpg";
 import { useMainStore } from "~/stores/main";
 
 const mainStore = useMainStore();
+const authStore = useAuthStore();
+const { $indexedDB } = useNuxtApp();
+
 definePageMeta({
   layout: "mobile",
   middleware: ["unauthstd"],
 });
 
 useHead({
-  title: 'Chats',
-  meta: [
-    { name: "connect", content: 'Student job list' }
-  ],
-})
+  title: "Chats",
+  meta: [{ name: "connect", content: "Student job list" }],
+});
 
-const activeList = ref('messages')
-const people = ref([])
-const friends = ref([]) 
-const requests = ref([])
+const activeList = ref("messages");
+const people = ref([]);
+const notifications = ref([]);
+const requests = ref([]);
 const socket = ref(null);
-const authStore = useAuthStore();
 
-const selectedPerson = ref(null)
-const isMobile = ref(false)
-const showMessageList = ref(true)
+const selectedPerson = ref(null);
+const isMobile = ref(false);
+const showMessageList = ref(true);
 
 const setActiveList = (list) => {
-  activeList.value = list
-}
+  activeList.value = list;
+};
 
 const logit = () => {
   console.log("🚀 ~ logit ~ people", socket.value, authStore.token);
 };
 
 const loadMessages = (person) => {
-  console.log("person", person)
+  console.log("person", person);
   selectedPerson.value = person;
   if (isMobile.value) {
     showMessageList.value = false;
   }
-  socket.value.emit('joinChat', {friendship_id: person.friendship_id, name: person.friend_name, sender: authStore.token});
+  socket.value.emit("joinChat", {
+    friendship_id: person.friendship_id,
+    name: person.friend_name,
+    sender: authStore.token,
+  });
 };
 
 const fetchUsers = async () => {
   try {
-    const res = await fetch(
-      mainStore.urlbase + 'chats/friends', {
-      method: 'GET',
+    // First, try to get people from IndexedDB
+    const cachedPeople = await $indexedDB.getPeople();
+    if (cachedPeople.length > 0) {
+      people.value = cachedPeople;
+    }
+
+    // Then, fetch from the server
+    const res = await fetch(mainStore.urlbase + "chats/friends", {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: authStore.token,
-      } 
+      },
     });
-    console.log("🚀 ~ fetchUsers ~ authStore.token:", authStore.token);
 
     let data = await res.json();
-    people.value = data.data;
-    console.log("🚀 ~ fetchUsers ~ people:", people.value);
+    if (data.data) {
+      people.value = data.data;
+
+      // Update IndexedDB with the latest people data
+      for (const person of data.data) {
+        await $indexedDB.addPerson(person);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fetchRequests = async () => {
+  try {
+    const res = await fetch(mainStore.urlbase + "chats/friendRequests", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authStore.token,
+      },
+    });
+
+    let data = await res.json();
+    requests.value = data.data;
+    console.log("🚀 ~ requests:", data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fetchNotifications = async () => {
+  try {
+    const res = await fetch(mainStore.urlbase + "notification/unread", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authStore.token,
+      },
+    });
+
+    let data = await res.json();
+    notifications.value = data.data;
+    console.log("🚀 ~ url:", mainStore.urlbase + "notification/unread");
+    console.log("🚀 ~ notifications:", data);
   } catch (error) {
     console.log(error);
   }
@@ -152,55 +263,60 @@ const sendMessage = (text) => {
 };
 
 const handleResize = () => {
-  isMobile.value = window.innerWidth < 768
+  isMobile.value = window.innerWidth < 768;
   if (!isMobile.value) {
-    showMessageList.value = true
+    showMessageList.value = true;
   }
-}
+};
 
-
-onMounted(() => {
+onMounted(async () => {
+  await $indexedDB.initDB();
   isMobile.value = window.innerWidth < 768;
   window.addEventListener("resize", handleResize);
-  fetchUsers();
+  await fetchUsers();
+  fetchRequests();
+  fetchNotifications();
 
-  if(authStore.token){
-    socket.value = io(
-      mainStore.urlbase + 'chat', {
+  if (authStore.token) {
+    socket.value = io("https://ciraq.co/chat", {
+      path: "/api/socket.io",
       auth: {
-        token: authStore.token
-      }
+        token: authStore.token,
+      },
     });
   } else {
     console.log("No token found can't connect to socket");
   }
-
-  socket.value.on('chatMessage', (message) => {
-    console.log('Connected to /chat namespace');
-    console.log('message', message);
+  socket.value.on("general", (msg) => {
+    console.log(msg);
+  });
+  socket.value.on("chatMessage", (message) => {
+    console.log("Connected to /chat namespace");
+    console.log("message", message);
+    fetchUsers(); // Refresh the user list when a new message is received
   });
 
-  socket.value.on('joinError', (error) => {
-    console.log('Error joining chat:', error);
+  socket.value.on("joinError", (error) => {
+    console.log("Error joining chat:", error);
   });
 
-  
-  socket.value.on('joinChat', (msg) => {
-    console.log( msg);
+  socket.value.on("joinChat", (msg) => {
+    console.log(msg);
   });
 
-
-  socket.value.on('connect_error', (error) => {
-    console.log('Connection error:', error);
+  socket.value.on("connect_error", (error) => {
+    console.log("Connection error:", error);
   });
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("resize", handleResize);
 });
+
+const messageSentOrReceived = () => {
+  fetchUsers();
+};
 </script>
-
-
 <style scoped>
 .active {
   color: #007bff;
@@ -318,4 +434,3 @@ i {
 
 /* RIGHT SIDE */
 </style>
-

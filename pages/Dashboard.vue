@@ -1,14 +1,14 @@
 <template>
   <div
-    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[83dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
+    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[90dvh] max-h-[90dvh] min-h-[90dvh] overflow-hidden"
   >
     <div class="md:flex no-wrap md:-mx-1">
       <!--  List (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && showJobList)"
-        class="w-full md:w-4/12 md:mx-1 grid grid-rows-[[7dvh]_1fr_[7dvh]] h-[85dvh] max-h-[85dvh] min-h-[85dvh]"
+        class="w-full md:w-4/12 md:px-1 grid grid-rows-[[7dvh]_76dvh_[7dvh]] h-[90dvh] max-h-[90dvh] min-h-[90dvh]"
       >
-        <div class="m-2">
+        <div class="p-2 h-[7dvh]">
           <!-- search input -->
           <transition name="fade" mode="out-in">
             <div
@@ -53,10 +53,9 @@
               >
                 <option value="">All applications</option>
                 <option value="pending">Pending</option>
-                <option value="offered">Accepted</option>
-                <option value="hired">Hired</option>
+                <option value="offer-extended">Offers</option>
+                <option value="accepted">Hired</option>
                 <option value="rejected">Rejected</option>
-                <option value="shortlisted">Offers</option>
               </select>
 
               <button
@@ -69,12 +68,12 @@
           </transition>
           <!-- search input -->
         </div>
-        <div class="h-[71dvh] max-h-[71dvh] min-h-[71dvh] overflow-hidden">
+        <div class="h-[76dvh] max-h-[76dvh] min-h-[76dvh] overflow-hidden">
           <transition name="fade" mode="out-in">
             <ul
               v-if="!isLoading && selectedTab === 'new'"
               key="new-listings"
-              class="h-[71dvh] max-h-[71dvh] min-h-[71dvh] overflow-y-auto my-auto"
+              class="h-[76dvh] max-h-[76dvh] min-h-[76dvh] overflow-y-auto my-auto"
             >
               <li
                 v-for="job in listings"
@@ -132,7 +131,7 @@
             <ul
               v-else-if="!isLoading && selectedTab === 'apps'"
               key="apps-listings"
-              class="h-71dvh] max-h-[71dvh] min-h-[71dvh] overflow-y-auto my-auto pb-[10vh]"
+              class="h-[76dvh] max-h-[76dvh] min-h-[76dvh] overflow-y-auto my-auto"
             >
               <li
                 v-for="job in searchResults"
@@ -184,34 +183,33 @@
                     </span>
                   </div>
                   <div class="flex mt-2">
-                    <button
-                      disabled
-                      class="mr-4 px-2.5 py-1 text-[#044013] bg-white border-2 border-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    >
-                      {{ formatDate(job.appl_timestamp) }}
-                    </button>
 
                     <button
-                      disabled
-                      class="border-0 px-2.5 py-1 rounded-lg text-left text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      class="w-full mr-4 inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
+                    >
+                      <i class="bx bx-calendar"></i> &nbsp; {{ formatDate(job.appl_timestamp) }}
+                    </button>                    
+                    
+                    <button
+                      class="w-full inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
                       :class="{
-                        'bg-white text-gray-500': job.appl_status === 'pending',
-                        'bg-yellow-300 text-white':
-                          job.appl_status === 'offered',
+                        'bg-white text-gray-500 border border-gray-500': job.appl_status === 'pending',
+                        'bg-yellow-300 border':
+                          job.appl_status === 'offer-extended',
                         'bg-purple-500 text-white':
-                          job.appl_status === 'shortlisted',
-                        'bg-green-500 text-white': job.appl_status === 'hired',
-                        'bg-red-500 text-white': job.appl_status === 'rejected',
-                        'bg-[#044013] text-white':
+                          job.appl_status === 'in-review',
+                        'bg-green-500 text-white': job.appl_status === 'accepted',
+                        'bg-red-500 ': job.appl_status === 'rejected',
+                        'bg-[#044013] ':
                           job.appl_status !== 'pending' &&
                           job.appl_status !== 'offered' &&
                           job.appl_status !== 'shortlisted' &&
                           job.appl_status !== 'hired',
                       }"
                     >
-                      Status: {{ job.appl_status }}
+                      <i class="bx bx-loader-circle"></i> &nbsp; {{ job.appl_status }}
                     </button>
-                  </div>
+</div>
                 </div>
               </li>
             </ul>
@@ -219,7 +217,7 @@
             <div
               v-else
               key="loading"
-              class="flex justify-center items-center h-[71dvh] max-h-[71dvh]"
+              class="flex justify-center items-center h-[76dvh] max-h-[76dvh]"
             >
               <div class="loader"></div>
             </div>
@@ -227,7 +225,7 @@
         </div>
 
         <!-- FLOATING TOGGLE -->
-        <div class="relative w-full h-[7dvh]">
+        <div class="relative w-full py-1 px-2">
           <div class="flex relative bg-white p-1 rounded-full">
             <input
               type="radio"
@@ -244,7 +242,7 @@
               New Listings
               <span
                 v-if="listings.length > 0"
-                class="absolute -top-2 -right-2 bg-purple-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                class="absolute -top-2 -right-2 bg-purple-400 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
               >
                 {{ listings.length }}
               </span>
@@ -265,7 +263,7 @@
               My Applications
               <span
                 v-if="searchResults.length > 0"
-                class="absolute -top-2 -right-2 bg-purple-700 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                class="absolute -top-2 -right-2 bg-purple-400 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
               >
                 {{ searchResults.length }}
               </span>
@@ -281,29 +279,35 @@
       <!--  Body (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && !showJobList)"
-        class="md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
+        class="md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[90dvh] max-h-[90dvh] min-h-[90dvh] overflow-hidden"
       >
         <transition name="fade" mode="out-in">
           <div>
             <div
-              v-if="selectedListing && selectedTab === 'new'"
-              key="listing-info"
-              class="m-2 bg-white rounded-xl overflow-hidden"
+              v-if="
+                selectedTab === 'new' ? selectedListing : selectedAppliedListing
+              "
             >
-              <ListingInfo
-                :selectedListing="selectedListing"
-                @loadJobsMobile="loadJobsMobile"
-              />
-            </div>
-            <div
-              v-if="selectedListing && selectedTab === 'apps'"
-              key="listing-info"
-              class="m-2 bg-white rounded-xl overflow-hidden"
-            >
-              <AppliedListing
-                :selectedListing="selectedAppliedListing"
-                @loadJobsMobile="loadJobsMobile"
-              />
+              <div
+                v-if="selectedTab === 'new'"
+                key="new-listing-info"
+                class="m-2 overflow-hidden"
+              >
+                <ListingInfo
+                  :selectedListing="selectedListing"
+                  @loadJobsMobile="loadJobsMobile"
+                />
+              </div>
+              <div
+                v-else
+                key="applied-listing-info"
+                class="m-2 overflow-hidden"
+              >
+                <AppliedListing
+                  :selectedListing="selectedAppliedListing"
+                  @loadJobsMobile="loadJobsMobile"
+                />
+              </div>
             </div>
             <div
               v-else
@@ -331,6 +335,7 @@ import { useListingStore } from "../stores/listingStore";
 import { useAuthStore } from "../stores/authStore";
 import { useMainStore } from "../stores/main";
 import companyPlaceholder from "~/assets/images/companyPlace.jpg";
+import { useFormatDate } from "@/composables/useFormatDate";
 
 definePageMeta({
   layout: "mobile",
@@ -342,6 +347,7 @@ useHead({
 });
 
 const listingStore = useListingStore();
+const { formatDate } = useFormatDate();
 const authStore = useAuthStore();
 const mainStore = useMainStore();
 const listings = ref([]);
@@ -370,6 +376,8 @@ const selectListing = (job) => {
 
 const selectedAppliedListing = ref(null);
 const selectAppliedListing = (job) => {
+  selectedTab.value = "apps";
+  console.log("selected tab", selectedTab.value);
   console.log("selected job", job);
   selectedAppliedListing.value = job;
 
@@ -388,6 +396,7 @@ const jobQuery = ref("");
 
 const searchUser = async () => {
   try {
+    console.log(mainStore.urlbase + "listing/search/" + jobQuery.value)
     const response = await fetch(
       mainStore.urlbase + "listing/search/" + jobQuery.value,
       {
@@ -402,7 +411,7 @@ const searchUser = async () => {
     const responseData = await response.json();
 
     if (!response.ok) {
-      throw new Error(responseData.message || "Failed to search for users.");
+      throw new Error(responseData.message || "Failed to search for listings.");
     } else {
       console.log("Search completed successfully:", responseData);
 

@@ -102,7 +102,7 @@
   </div>
 
   <div
-    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] p-2 h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
+    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] p-2 h-[90dvh] max-h-[90dvh] min-h-[90dvh] overflow-hidden"
   >
     <div class="parent bg-white">
       <div class="div1">
@@ -165,7 +165,7 @@
         </div>
 
         <!-- scrollable -->
-        <div class="h-[63vh] overflow-y-auto w-full px-2">
+        <div class="h-[68dvh] overflow-y-auto w-full px-2">
           <!-- Professional summary -->
           <div class="pb-1 mt-1 bg-white rounded-lg">
             <button
@@ -302,6 +302,14 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div>
+            <button
+                      @click="authStore.logout()"
+                      class="block px-4 py-2 text-sm w-full text-red-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                    >
+                      Sign out
+                    </button>
           </div>
         </div>
       </div>

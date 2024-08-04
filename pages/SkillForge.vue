@@ -1,14 +1,14 @@
 <template>
   <div
-    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
+    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[90dvh] max-h-[90dvh] min-h-[90dvh] overflow-hidden"
   >
     <div class="md:flex no-wrap md:-mx-1">
       <!--  List (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && showJobList)"
-        class="w-full md:w-4/12 md:mx-1 grid grid-rows-[[7dvh]_1fr_[7dvh]] h-[85dvh] max-h-[85dvh] min-h-[85dvh]"
+        class="w-full md:w-4/12 md:px-1 grid grid-rows-[[7dvh]_76dvh_[7dvh]] h-[90dvh] max-h-[90dvh] min-h-[90dvh]"
       >
-        <div class="m-2">
+        <div class="p-2 h-[7dvh]">
           <!-- search input -->
           <transition name="fade" mode="out-in">
             <div key="new-search" class="flex items-center max-w-lg mx-auto">
@@ -45,12 +45,12 @@
           </transition>
           <!-- search input -->
         </div>
-        <div class="h-[71dvh] max-h-[71dvh] min-h-[71dvh] overflow-hidden">
+        <div class="h-[76dvh] max-h-[76dvh] min-h-[76dvh] overflow-hidden">
           <transition name="fade" mode="out-in">
             <ul
               v-if="!isLoading && selectedTab === 'myEnq'"
               key="my-enquiries"
-              class="h-[71dvh] max-h-[71dvh] min-h-[71dvh] overflow-y-auto my-auto pb-[10vh]"
+              class="h-[76dvh] max-h-[76dvh] min-h-[76dvh] overflow-y-auto my-auto"
             >
               <li
                 v-for="enquiry in userEnquiries"
@@ -103,12 +103,10 @@
             </ul>
 
             <ul
-              v-else-if=" selectedTab === 'newEnq'"
+              v-else-if="selectedTab === 'newEnq'"
               key="newEnq-listings"
-              class="h-71dvh] max-h-[71dvh] min-h-[71dvh] overflow-y-auto my-auto pb-[10vh]"
-            >
-
-            </ul>
+              class="h-[76dvh] max-h-[76dvh] min-h-[76dvh] overflow-y-auto my-auto"
+            ></ul>
 
             <div
               v-else
@@ -176,43 +174,42 @@
       <!--  Body (visible on mobile) -->
       <div
         v-if="!isMobile || (isMobile && !showJobList)"
-        class="md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
+        class="md:w-8/12 md:mx-1 grid grid-rows-[1fr] h-[90dvh] max-h-[90dvh] min-h-[90dvh] overflow-hidden"
       >
         <transition name="fade" mode="out-in">
-          <div>
-            <div
-          v-if="selectedEnquiry && selectedTab === 'myEnq'"
-          key="enquiry-info"
-          class="m-2 bg-white rounded-xl overflow-hidden"
-        >
-          <SelectedEnquiryView
-            :enquiry="selectedEnquiry"
-            @bidSelected="handleBidSelection"
-          />
-        </div>
-            <div
-              v-if="selectedTab === 'newEnq'"
-              key="listing-info"
-              class="m-2 bg-white rounded-xl overflow-hidden"
-            >
-              <NewEnquiry />
-            </div>
-            <div
-              v-else
-              key="empty-state"
-              class="grid grid-rows-[1fr] max-h-full h-full"
-            >
-              <div
-                class="bg-white flex justify-center items-center overflow-hidden animate-zoom"
-              >
-                <img
-                  src="/assets/logo.png"
-                  class="h-64 animate-zoom overflow-hidden"
-                  alt="Select a person"
-                />
-              </div>
-            </div>
-          </div>
+<div>
+  <div
+    v-if="selectedEnquiry"
+    key="enquiry-info"
+    class="m-2 bg-white rounded-xl overflow-hidden"
+  >
+    <SelectedEnquiryView
+      :enquiry="selectedEnquiry"
+    />
+  </div>
+  <div
+    v-else-if="selectedTab === 'newEnq'"
+    key="new-enquiry"
+    class="m-2 bg-white rounded-xl overflow-hidden"
+  >
+    <NewEnquiry />
+  </div>
+  <div
+    v-else
+    key="empty-state"
+    class="grid grid-rows-[1fr] max-h-full h-full"
+  >
+    <div
+      class="bg-white flex justify-center items-center overflow-hidden animate-zoom"
+    >
+      <img
+        src="/assets/logo.png"
+        class="h-64 animate-zoom overflow-hidden"
+        alt="Select a person"
+      />
+    </div>
+  </div>
+</div>
         </transition>
       </div>
     </div>
@@ -246,7 +243,7 @@ const isMobile = ref(false);
 const showJobList = ref(true);
 
 const selectedStatus = ref("");
-const selectedTab = ref("newEnq");
+const selectedTab = ref("myEnq");
 
 const toggleTab = (tab) => {
   selectedTab.value = tab;
@@ -297,7 +294,6 @@ const userEnquiries = ref([
   },
 ]);
 
-
 const selectedEnquiry = ref(null);
 
 const selectEnquiry = (enquiry) => {
@@ -309,7 +305,9 @@ const selectEnquiry = (enquiry) => {
   }
 };
 
-const newEnquiry = (job) => {
+const newEnquiry = () => {
+  selectedTab.value="newEnq"
+  console.log("Selected tab", selectedTab.value);
   if (isMobile.value) {
     showJobList.value = false;
   }

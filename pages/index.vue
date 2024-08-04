@@ -234,14 +234,14 @@ definePageMeta({
   layout: "login",
 });
 
-const uname = ref("cboateng640");
-const pword = ref("Yc0mb1nat0r$");
+const uname = ref("");
+const pword = ref("");
 const error = ref(null);
 const isMobile = ref(false);
 const showPassword = ref(false);
 
-const uname2 = ref("prince0420182558d@ktu.edu.gh");
-const pword2 = ref("12345678@");
+const uname2 = ref("");
+const pword2 = ref("");
 
 const forgotPassword = ref(false);
 

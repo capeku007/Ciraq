@@ -1,9 +1,7 @@
 <template>
-
-
   <!-- tabs -->
   <div
-    class="mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[85dvh] max-h-[85dvh] min-h-[85dvh] overflow-hidden"
+    class=" mx-auto max-w-4xl md:max-w-screen-lg lg:max-w-screen-xl grid grid-rows-[1fr] h-[90dvh] max-h-[90dvh] min-h-[90dvh] overflow-hidden"
   >
     
 
@@ -11,8 +9,8 @@
       <div class="sm:w-11/12 sm:pl-40">
         <!-- Education timeLine -->
 
-        <div class="flex max-h-[85dvh] h-[85dvh] min-h-[85dvh] overflow-hidden">
-          <div class="max-h-[85dvh] h-[85dvh] w-full mx-auto rounded-2xl">
+        <div class="flex max-h-[90dvh] h-[90dvh] min-h-[90dvh] overflow-hidden">
+          <div class="max-h-[90dvh] h-[90dvh] w-full mx-auto rounded-2xl">
             
               <Roam/>
           </div>

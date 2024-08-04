@@ -1,20 +1,21 @@
 <template>
-  <div class="bg-white rounded-xl p-6 h-full overflow-y-auto">
-    <div class="mb-6">
+  <div class="bg-white rounded-xl p-6 h-[90dvh] overflow-y-auto">
+    <div class=" py-4 sticky top-[-1.2rem] z-10 bg-white">
       <div class="flex items-center mb-4">
         <img :src="enquiry.countryFlag" alt="Country flag" class="w-10 h-10 rounded-lg mr-4">
         <h2 class="text-2xl font-bold">{{ enquiry.fieldOfStudy }} in {{ enquiry.country }}</h2>
       </div>
-      <div class="grid grid-cols-2 gap-4 text-sm">
+      <div class="mb-6 grid grid-cols-2 gap-4 text-sm">
         <div><span class="font-semibold">Program Level:</span> {{ enquiry.programLevel }}</div>
         <div><span class="font-semibold">School Type:</span> {{ enquiry.schoolType }}</div>
         <div><span class="font-semibold">Created:</span> {{ formatDate(enquiry.createdAt) }}</div>
         <div><span class="font-semibold">Status:</span> {{ enquiry.status }}</div>
       </div>
+      <h3 class="text-xl font-semibold mb-4">Agent Bids</h3>
     </div>
 
     <div class="mb-6">
-      <h3 class="text-xl font-semibold mb-4">Agent Bids</h3>
+      
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div v-for="bid in bids" :key="bid.id" class="bg-gray-50 rounded-lg p-4 shadow">
           <h4 class="font-bold text-lg mb-2">{{ bid.agentName }}</h4>

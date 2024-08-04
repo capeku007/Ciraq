@@ -1,14 +1,14 @@
 <template>
-  <div v-if="selectedListing" class="grid grid-rows-[1fr] max-h-full h-full">
+  <div v-if="selectedListing" class="grid grid-rows-[1fr] h-[90dvh]">
     <!-- COVER LETTER -->
     <div
       id="coverLetterModal"
       data-modal-target="coverLetterModal"
       aria-hidden="true"
-      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
+      class="fixed top-0 left-0 right-0 bottom-0 z-50 hidden w-full overflow-hidden flex items-center justify-center"
     >
       <div
-        class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+        class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto scrollbar-hidden rounded-lg shadow-xl m-4"
       >
         <div class="relative">
           <i
@@ -77,15 +77,13 @@
     </div>
 
     <!-- MODALS END HERE -->
-    <div
-      @touchstart="handleTouchStart"
-      @touchend="handleTouchEnd"
-      class="overflow-y-auto"
-    >
+
       <!-- NEW UP HERE -->
-      <div class="md:p-5 px-4">
-        <div class="py-4 sticky top-0 z-10 bg-white">
-          <div class="flex items-center space-x-3">
+      <div
+        class="md:p-5 px-4 overflow-y-auto overflow-x-hidden h-[88dvh] bg-white rounded-xl"
+      >
+        <div class="py-4 sticky top-[-1.2rem] z-10 bg-white">
+          <div class="flex items-center space-x-3 pt-4 sm:pt-2">
             <div class="flex-shrink-0">
               <img
                 class="w-10 h-10 rounded-lg sm:w-16 sm:h-16"
@@ -109,7 +107,7 @@
               <i
                 v-if="isMobile"
                 @click="goBack"
-                class="bx bx-chevron-left bg-red-600 p-1 rounded-lg text-white"
+                class="bx bx-x bg-red-600 p-1 rounded-lg text-white"
               ></i>
             </div>
           </div>
@@ -196,7 +194,7 @@
         </div>
 
         <!-- apply button -->
-        <div class="mt-4">
+        <div class="my-4">
           <button
             @click="showClosableModal('coverLetterModal')"
             class="border-0 px-3 py-3 text-white bg-[#1A56DB] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -206,7 +204,6 @@
         </div>
         <!-- NEW UP HERE -->
       </div>
-    </div>
   </div>
 </template>
 
@@ -226,14 +223,12 @@ const { selectedListing } = defineProps({
   },
 });
 
-const touchStartX = ref(0);
-const cover_letter = ref("");
-
 const imageSrc = selectedListing.company_logo || companyPlaceholder;
 const modalStore = useModalStore();
 const handleResize = () => {
   isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
 };
+const cover_letter =ref('');
 const applyJob = () => {
   hideModal("coverLetterModal");
   console.log(selectedListing);
@@ -261,6 +256,7 @@ const applyJob = () => {
       if (response.ok) {
         // If successful, display the message
         modalStore.showMessage(data.message);
+        cover_letter.value=""
       } else {
         // If not successful, display the message
         modalStore.showMessage(data.message);
@@ -283,25 +279,11 @@ const goBack = () => {
   emit("loadJobsMobile");
 };
 
-const handleTouchStart = (event) => {
-  touchStartX.value = event.touches[0].clientX;
-};
-
-const handleTouchEnd = (event) => {
-  const touchEndX = event.changedTouches[0].clientX;
-  const swipeDistance = touchEndX - touchStartX.value;
-  const swipeThreshold = 50;
-
-  if (swipeDistance > swipeThreshold) {
-    goBack();
-  }
-};
-
 onMounted(() => {
   isMobile.value = window.innerWidth < 768;
   window.addEventListener("resize", handleResize);
 });
-</script>
+</script>;
 
 
 <style scoped>

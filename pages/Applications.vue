@@ -84,31 +84,30 @@
               </div>
               <div class="flex mt-2">
                 <button
-                  disabled
-                  class="mr-4 px-2.5 py-1 text-[#044013] bg-white border-2 border-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                >
-                  {{ formatDate(job.appl_timestamp) }}
-                </button>
-
-                <button
-                  disabled
-                  class="border-0 px-2.5 py-1 rounded-lg text-left text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  :class="{
-                    'bg-white text-gray-500': job.appl_status === 'pending',
-                    'bg-yellow-300 text-white': job.appl_status === 'offered',
-                    'bg-purple-500 text-white':
-                      job.appl_status === 'shortlisted',
-                    'bg-green-500 text-white': job.appl_status === 'hired',
-                    'bg-red-500 text-white': job.appl_status === 'rejected',
-                    'bg-[#044013] text-white':
-                      job.appl_status !== 'pending' &&
-                      job.appl_status !== 'offered' &&
-                      job.appl_status !== 'shortlisted' &&
-                      job.appl_status !== 'hired',
-                  }"
-                >
-                  Status: {{ job.appl_status }}
-                </button>
+                      class="w-full mr-4 inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
+                    >
+                      <i class="bx bx-calendar"></i> &nbsp; {{ formatDate(job.appl_timestamp) }}
+                    </button>                    
+                    
+                    <button
+                      class="w-full inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
+                      :class="{
+                        'bg-white text-gray-500 border border-gray-500': job.appl_status === 'pending',
+                        'bg-yellow-300 border':
+                          job.appl_status === 'offer-extended',
+                        'bg-purple-500 text-white':
+                          job.appl_status === 'in-review',
+                        'bg-green-500 text-white': job.appl_status === 'accepted',
+                        'bg-red-500 ': job.appl_status === 'rejected',
+                        'bg-[#044013] ':
+                          job.appl_status !== 'pending' &&
+                          job.appl_status !== 'offered' &&
+                          job.appl_status !== 'shortlisted' &&
+                          job.appl_status !== 'hired',
+                      }"
+                    >
+                      <i class="bx bx-loader-circle"></i> &nbsp; {{ job.appl_status }}
+                    </button>
               </div>
             </div>
           </li>

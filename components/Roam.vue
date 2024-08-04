@@ -7,68 +7,71 @@
     aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 h-[calc(100%-1rem)] max-h-[95vh]"
   >
-    <div v-if="selectedUser"  class="relative p-4 w-full max-w-md max-h-full">
-      <StudentCard :selectedUser="selectedUser"/>
+    <div v-if="selectedUser" class="relative p-4 w-full max-w-md max-h-full">
+      <StudentCard :selectedUser="selectedUser" />
     </div>
   </div>
 
   <div
     class="grid grid-rows-[9%_1fr_12%] gap-0 max-h-full h-full overflow-y-hidden"
   >
-  <!-- search student here -->
-            <div class="flex items-center w-full mx-auto">
-            <label for="voice-search" class="sr-only">Search</label>
-            <div class="relative w-full">
-              <input
-                type="text"
-                id="voice-search"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Student name"
-                v-model="userSearchQuery"
-                required
-              />
+    <!-- search student here -->
+    <div class="flex items-center w-full mx-auto">
+      <label for="voice-search" class="sr-only">Search</label>
+      <div class="relative w-full">
+        <input
+          type="text"
+          id="voice-search"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Student name"
+          v-model="userSearchQuery"
+          required
+        />
 
-              <button
+        <button
           @click="searchUser()"
-                type="button"
-                class="absolute inset-y-0 end-0 flex items-center pe-2"
-              >
-                <i
-                  class="bx bx-search inline-flex items-center py-2.5 px-3 text-sm font-medium text-white bg-blue-700 rounded-3xl border border-blue-700"
-                  aria-hidden="true"
-                ></i>
-              </button>
-            </div>
-          </div>
-<div
-  class="relative max-w-full h-full overflow-auto rounded-2xl"
-  :style="{
-    backgroundImage: `url(${backgroundImageUrl})`,
-    backgroundSize: 'cover',
-  }"
->
-  <div class="absolute inset-0">
-    <div
-      v-for="(person, index) in people"
-      :key="index"
-      class="pin absolute"
-      :style="{
-        top: person.top + 'px',
-        left: person.left + 'px',
-      }"
-      @click="viewProfile(person)"
-    >
-      <img 
-        :src="person.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}` : profilePlaceholder"
-        :alt="`${person.fname} ${person.lname}'s profile image`"
-        class="profile-image"
-      />
+          type="button"
+          class="absolute inset-y-0 end-0 flex items-center pe-2"
+        >
+          <i
+            class="bx bx-search inline-flex items-center py-2.5 px-3 text-sm font-medium text-white bg-blue-700 rounded-3xl border border-blue-700"
+            aria-hidden="true"
+          ></i>
+        </button>
+      </div>
     </div>
-  </div>
-</div>
+    <div
+      class="relative max-w-full h-full overflow-auto rounded-2xl"
+      :style="{
+        backgroundImage: `url(${backgroundImageUrl})`,
+        backgroundSize: 'cover',
+      }"
+    >
+      <div class="absolute inset-0">
+        <div
+          v-for="(person, index) in people"
+          :key="index"
+          class="pin absolute"
+          :style="{
+            top: person.top + 'px',
+            left: person.left + 'px',
+          }"
+          @click="viewProfile(person)"
+        >
+          <img
+            :src="
+              person.profile_img
+                ? `https://ciraq.co/api/public/uploads/profile_images/${person.profile_img}`
+                : profilePlaceholder
+            "
+            :alt="`${person.fname} ${person.lname}'s profile image`"
+            class="profile-image"
+          />
+        </div>
+      </div>
+    </div>
     <div class="flex w-full">
       <div class="w-4/5">
-
         <button
           id="filterTrig"
           @click="showDrop()"
@@ -158,8 +161,8 @@
 import { ref } from "vue";
 import backgroundImageUrl from "../assets/Maps.png";
 import StudentProfile from "./student/StudentCard.vue";
-import {useAuthStore} from "../stores/authStore"
-import profilePlaceholder from '~/assets/images/profilePlace.jpg';
+import { useAuthStore } from "../stores/authStore";
+import profilePlaceholder from "~/assets/images/profilePlace.jpg";
 import { useMainStore } from "~/stores/main";
 
 const mainStore = useMainStore();
@@ -180,33 +183,30 @@ const itemWidth = 15; // Adjust this value to match your desired item width
 const itemHeight = 15; // Adjust this value to match your desired item height
 const minSpacing = 10; // Minimum spacing between people in vh and vw
 const randomizePositions = async () => {
-try {
+  try {
     // Fetch people from the API
-    const response = await fetch(
-      mainStore.urlbase + "chats/suggest_fr",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': authStore.token,
-        }
-      }
-    );
+    const response = await fetch(mainStore.urlbase + "chats/suggest_fr", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authStore.token,
+      },
+    });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch suggested friends');
+      throw new Error("Failed to fetch suggested friends");
     }
 
     const data = await response.json();
-    
+
     // Assuming the API returns an array of people
     const fetchedPeople = data.data || [];
 
     // Combine fetched data with random positions
-    people.value = fetchedPeople.map(person => ({
-  ...person,
-  top: Math.random() * (100 - itemHeight / window.innerHeight * 100),
-  left: Math.random() * (100 - itemWidth / window.innerWidth * 100),
+    people.value = fetchedPeople.map((person) => ({
+      ...person,
+      top: Math.random() * (100 - (itemHeight / window.innerHeight) * 100),
+      left: Math.random() * (100 - (itemWidth / window.innerWidth) * 100),
     }));
 
     // Check for collisions and adjust positions if needed
@@ -219,10 +219,10 @@ try {
       }
     }
   } catch (error) {
-    console.error('Error fetching suggested friends:', error);
+    console.error("Error fetching suggested friends:", error);
     // Handle the error appropriately (e.g., show a notification to the user)
   }
-  };
+};
 
 const checkCollision = (person1, person2) => {
   return (
@@ -255,7 +255,7 @@ const spacePeople = (person1, person2) => {
 const viewProfile = (person) => {
   // Initialize useModal composable
   const modalId = "viewProfile";
-  selectedUser.value=person
+  selectedUser.value = person;
   showClosableModal(modalId);
 };
 
@@ -295,7 +295,7 @@ const searchUser = async () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: authStore.token,
-        }
+        },
       }
     );
 
@@ -305,31 +305,31 @@ const searchUser = async () => {
       throw new Error(responseData.message || "Failed to search for users.");
     } else {
       console.log("Search completed successfully:", responseData);
-      
+
       // Assuming the API returns an array of users in responseData.data
       const searchResults = responseData.data || [];
-      
-    people.value = searchResults.map(person => ({
-  ...person,
-  top: Math.random() * (100 - itemHeight / window.innerHeight * 100),
-  left: Math.random() * (100 - itemWidth / window.innerWidth * 100),
-    }));
 
-    // Check for collisions and adjust positions if needed
-    for (let i = 0; i < people.value.length; i++) {
-      for (let j = i + 1; j < people.value.length; j++) {
-        if (checkCollision(people.value[i], people.value[j])) {
-          spacePeople(people.value[i], people.value[j]);
-          j = i; // Reset the inner loop to check against the adjusted item
+      people.value = searchResults.map((person) => ({
+        ...person,
+        top: Math.random() * (100 - (itemHeight / window.innerHeight) * 100),
+        left: Math.random() * (100 - (itemWidth / window.innerWidth) * 100),
+      }));
+
+      // Check for collisions and adjust positions if needed
+      for (let i = 0; i < people.value.length; i++) {
+        for (let j = i + 1; j < people.value.length; j++) {
+          if (checkCollision(people.value[i], people.value[j])) {
+            spacePeople(people.value[i], people.value[j]);
+            j = i; // Reset the inner loop to check against the adjusted item
+          }
         }
       }
-    }
     }
   } catch (error) {
     console.error("Failed to search for users:", error);
     // Handle the error as needed (e.g., display an error message to the user)
   }
-}
+};
 const searchQuery = ref("");
 const selectedUniversity = ref(null);
 
@@ -358,7 +358,7 @@ onMounted(() => {
 .pin {
   width: 60px;
   height: 60px;
-  background: #1A56DB;
+  background: #1a56db;
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
   cursor: pointer;
@@ -367,11 +367,11 @@ onMounted(() => {
 }
 
 .pin::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 54px;
   height: 54px;
-  background: #1A56DB;
+  background: #1a56db;
   border-radius: 50%;
   top: 50%;
   left: 50%;
@@ -392,7 +392,6 @@ onMounted(() => {
 .pin:hover {
   transform: rotate(-45deg) scale(1.1);
 }
-
 
 option {
   padding: 16px;

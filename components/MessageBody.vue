@@ -1,28 +1,51 @@
 <template>
   <div class="chat-container">
     <div class="chat" v-if="selectedPerson">
-      <div class="chat-title bg-gray-50 border border-gray-100 text-[#1A56DB]">
-        <h1>{{ selectedPerson.friend_name }}</h1>
-        <h2>{{selectedPerson.institution_name}}. </h2>
-        <figure class="avatar">
-          <img :src="selectedPerson.profile_img ? `https://ciraq.co/api/public/uploads/profile_images/${selectedPerson.profile_img}` : profilePlaceholder"
-      :alt="`${selectedPerson.fname} ${selectedPerson.lname}'s profile image`" />
+      <div
+        class="chat-title bg-white shadow-sm pb-4 border border-gray-100 text-[#132E35] flex items-center"
+      >
+        <button v-if="isMobile" @click="goBack" class="back-button">
+          <i class="bx bx-chevron-left"></i>
+        </button>
+        <figure class="avatar mx-2">
+          <img
+            :src="
+              selectedPerson.profile_img
+                ? `https://ciraq.co/api/public/uploads/profile_images/${selectedPerson.profile_img}`
+                : profilePlaceholder
+            "
+            :alt="`${selectedPerson.fname} ${selectedPerson.lname}'s profile image`"
+          />
         </figure>
+        <div>
+          <h1 class="text-lg">{{ selectedPerson.friend_name }}</h1>
+          <h2>{{ selectedPerson.institution_name }}.</h2>
+        </div>
       </div>
       <div class="messages" ref="chatBodyRef">
         <div class="messages-content">
           <div
-  v-for="message in messages"
-  :key="message.id + message.timestamp.getTime()"
-  class="text-base"
-  :class="[
-    'message',
-    { 'message-personal': message.sender === 'user' },
-  ]"
->
-  {{ message.text }}
-  <div class="timestamp">{{ getMessageTime(message.timestamp) }}</div>
-</div>
+            v-for="message in messages"
+            :key="message.id + message.timestamp.getTime()"
+            class="text-base"
+            :class="[
+              'message',
+              { 'message-personal': message.sender === 'user' },
+            ]"
+          >
+            <figure v-if="message.sender !== 'user'" class="avatar">
+              <img
+                :src="
+                  selectedPerson.profile_img
+                    ? `https://ciraq.co/api/public/uploads/profile_images/${selectedPerson.profile_img}`
+                    : profilePlaceholder
+                "
+                :alt="selectedPerson.friend_name"
+              />
+            </figure>
+            {{ message.text }}
+            <div class="timestamp">{{ getMessageTime(message.timestamp) }}</div>
+          </div>
         </div>
       </div>
       <div class="message-box">
@@ -36,29 +59,30 @@
         ></textarea>
         <button
           @click="sendMessage"
-          class="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-[#1A56DB] rounded-full border border-[#1A56DB] hover:bg-[#1A56DB] hover:text-white "
+          class="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium bg-[#132e35] text-white rounded-full border border-[#132e35] hover:bg-white hover:text-[#132e35]"
         >
           <i class="bx bx-send"></i>
         </button>
       </div>
     </div>
     <div v-else class="chat empty-chat">
-      <div class="messages-content">
-        <img
-          src="/assets/logo.png"
-          class="logo animate-zoom"
-          alt="Select a person"
-        />
-      </div>
+       <div
+          class="bg-white flex justify-center items-center overflow-hidden animate-zoom"
+        >
+          <img
+            src="/assets/logo.png"
+            class="h-64 animate-zoom overflow-hidden"
+            alt="Select a person"
+          />
+        </div>
     </div>
   </div>
 </template>
-
 <script setup>
-import { ref, onMounted, watch, nextTick, defineProps } from "vue";
+import { ref, onMounted, onUnmounted, watch, nextTick, defineProps } from "vue";
 import { useAuthStore } from "../stores/authStore";
 import { io } from "socket.io-client";
-import profilePlaceholder from '~/assets/images/profilePlace.jpg';
+import profilePlaceholder from "~/assets/images/profilePlace.jpg";
 import { useMainStore } from "~/stores/main";
 
 const mainStore = useMainStore();
@@ -70,7 +94,16 @@ const messages = ref([]);
 const newMessage = ref("");
 const chatBodyRef = ref(null);
 const authStore = useAuthStore();
-let socket = null;
+const socket = ref(null);
+
+// Use the plugin
+const { $indexedDB } = useNuxtApp();
+
+const emit = defineEmits(["loadMessagesMobile", 'messageSentOrReceived']);
+
+const goBack = () => {
+  emit("loadMessagesMobile");
+};
 
 // Function to fetch chat history
 const fetchChatHistory = async () => {
@@ -80,8 +113,17 @@ const fetchChatHistory = async () => {
   }
 
   try {
+    // First, try to get messages from IndexedDB
+    const cachedMessages = await $indexedDB.getMessages(props.selectedPerson.friendship_id);
+    if (cachedMessages.length > 0) {
+      messages.value = cachedMessages;
+    }
+
+    // Then, fetch from the server
     const response = await fetch(
-      mainStore.urlbase + "chats/chat_history/"+props.selectedPerson.friendship_id,
+      mainStore.urlbase +
+        "chats/chat_history/" +
+        props.selectedPerson.friendship_id,
       {
         method: "GET",
         headers: {
@@ -94,18 +136,28 @@ const fetchChatHistory = async () => {
       throw new Error("Failed to fetch chat history");
     }
     const data = await response.json();
-    // console.log("chat history", data);
     if (data.successful && data.data && data.data.messages) {
-      messages.value = data.data.messages.map((msg) => ({
-        id: msg.message_id,
-        text: msg.content,
-        sender: msg.sender_id === authStore.user.user_id ? "user" : "other",
-        timestamp: new Date(msg.sent_at),
-      })).reverse(); // Reverse the array here
+      const serverMessages = data.data.messages
+        .map((msg) => ({
+          id: msg.message_id,
+          text: msg.content,
+          sender: msg.sender_id === authStore.user.user_id ? "user" : "other",
+          timestamp: new Date(msg.sent_at),
+          friendshipId: props.selectedPerson.friendship_id,
+        }))
+        .reverse();
+      
+      messages.value = serverMessages;
+
+      // Update IndexedDB with the latest messages
+      for (const msg of serverMessages) {
+        await $indexedDB.addMessage(msg);
+      }
     }
   } catch (error) {
     console.error("Error fetching chat history:", error);
-    // You might want to show an error message to the user here
+  } finally {
+    scrollToBottom();
   }
 };
 
@@ -120,70 +172,95 @@ watch(
   { immediate: true }
 );
 
-onMounted(() => {
+const isMobile = ref(false);
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768;
+};
+
+onMounted(async () => {
+  await $indexedDB.initDB();
+  isMobile.value = window.innerWidth < 768;
+  window.addEventListener("resize", handleResize);
+
   if (authStore.token) {
-    socket = io(
-      mainStore.urlbase + "chat", {
+    socket.value = io("https://ciraq.co/chat", {
+      path: "/api/socket.io",
       auth: {
         token: authStore.token,
       },
     });
 
-    socket.on("connection", () => {
-      console.log("Connected to namespace");
+    socket.value.on("connect", () => {
+      console.log("Connected to server");
+      socket.value.emit("joinChatRoom", { roomId: "chat" });
     });
 
-socket.on("chatMessage", (message) => {
-  if (authStore.user.user_id !== message.user.user_id) {
-    const newMessage = {
-      id: Date.now().toString(),
-      text: message.msg,
-      sender: "other",
-      timestamp: new Date(),
-    };
+    socket.value.on("chatMessage", async (message) => {
+      emit('messageSentOrReceived');
+      if (authStore.user.user_id !== message.user.user_id) {
+        const newMessage = {
+          id: Date.now().toString(),
+          text: message.user.content,
+          sender: "other",
+          timestamp: new Date(),
+          friendshipId: props.selectedPerson.friendship_id,
+        };
 
-    console.log("message received by a user:", message)
-    
-    // Create a new array to trigger reactivity
-    messages.value = [...messages.value, newMessage];
-        
-    nextTick(() => {
-      scrollToBottom();
+        messages.value = [...messages.value, newMessage];
+        await $indexedDB.addMessage(newMessage);
+        emit('messageSentOrReceived');
+        nextTick(() => {
+          scrollToBottom();
+        });
+      }
+    });
+
+    socket.value.on("connect_error", (error) => {
+      console.error("Connection error:", error);
     });
   }
-});
-    // Add other socket event listeners here
-  }
 
-  // If selectedPerson is already set when component mounts, fetch chat history
   if (props.selectedPerson) {
     fetchChatHistory();
   }
-
 });
 
-const sendMessage = () => {
+onUnmounted(() => {
+  if (socket.value) {
+    socket.value.disconnect();
+  }
+  window.removeEventListener("resize", handleResize);
+});
+
+const sendMessage = async () => {
   if (newMessage.value.trim() !== "") {
+    const messageId = Date.now().toString();
     const message = {
       msg: newMessage.value,
       room: props.selectedPerson.friendship_id,
       sender: authStore.token,
       name: props.selectedPerson.friend_name,
       recipient_id: props.selectedPerson.user_id,
+      id: messageId
     };
-    socket.emit("chatMessage", message);
-    
-    // Add the sent message to the end of the local messages array
-    messages.value.push({
-      id: Date.now().toString(), // temporary id
+
+    const newMessageObj = {
+      id: messageId,
       text: newMessage.value,
       sender: "user",
       timestamp: new Date(),
-    });
+      friendshipId: props.selectedPerson.friendship_id,
+    };
+
+    // Add message to local state and IndexedDB
+    messages.value.push(newMessageObj);
+    await $indexedDB.addMessage(newMessageObj);
+
+    socket.value.emit("chatMessage", message);
 
     newMessage.value = "";
   }
-
+  emit('messageSentOrReceived');
   nextTick(() => {
     scrollToBottom();
   });
@@ -200,7 +277,6 @@ const getMessageTime = (timestamp) => {
   return `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`;
 };
 </script>
-
 
 <style lang="scss" scoped>
 // Mixins
@@ -231,7 +307,6 @@ const getMessageTime = (timestamp) => {
   max-height: 100%;
   display: flex;
   flex-direction: column;
-  font-family: "Open Sans", sans-serif;
   font-size: 12px;
   line-height: 1.3;
 }
@@ -241,7 +316,7 @@ const getMessageTime = (timestamp) => {
   width: 100%;
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.916);
+  background: #f2f1f2;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
@@ -250,39 +325,30 @@ const getMessageTime = (timestamp) => {
 .empty-chat {
   justify-content: center;
   align-items: center;
+  background-color: #fff;
 }
 
 .chat-title {
   flex: 0 0 auto;
   position: relative;
   z-index: 2;
-  text-transform: uppercase;
   text-align: left;
-  padding: 10px 10px 10px 50px;
-
-  h1{
-    font-weight: bold;
-    font-size: 12px;
-    margin-left: 8px;
-    padding: 0;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  div {
+    margin-left: 0.75rem; // Adds space to the left of the text
   }
-
-  h2 {
-    font-size: 10px;
-    letter-spacing: 1px;
-        margin-top: 2px;
-        margin-left: 8px;
-    padding: 0;
+  .back-button {
+    color: #132e35;
+    font-size: 24px;
+    cursor: pointer;
   }
 
   .avatar {
-    position: absolute;
-    z-index: 1;
-    top: 4px;
-    left: 4px;
-    border-radius: 30px;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     overflow: hidden;
     margin: 0;
     padding: 0;
@@ -290,7 +356,8 @@ const getMessageTime = (timestamp) => {
 
     img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
     }
   }
 }
@@ -310,8 +377,10 @@ const getMessageTime = (timestamp) => {
     float: left;
     padding: 6px 10px 7px;
     border-radius: 10px 10px 10px 0;
-    background: #d9e3de;
-    color: #000;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+      rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    color: #132e35;
     margin: 8px 0;
     font-size: 12px;
     line-height: 1.4;
@@ -322,14 +391,14 @@ const getMessageTime = (timestamp) => {
       position: absolute;
       bottom: -15px;
       font-size: 9px;
-      color: #000;
+      color: #132e35;
     }
 
     &::before {
       content: "";
       position: absolute;
       bottom: -5px;
-      border-top: 6px solid #d9e3de;;
+      border-top: 6px solid #fff;
       left: 0;
       border-right: 7px solid transparent;
     }
@@ -356,7 +425,10 @@ const getMessageTime = (timestamp) => {
     &.message-personal {
       float: right;
       text-align: right;
-      background: #3990dc;
+      background: #132e35;
+      color: #fff !important;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+        rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
       border-radius: 10px 10px 0 10px;
 
       &::before {
@@ -364,7 +436,7 @@ const getMessageTime = (timestamp) => {
         right: 0;
         border-right: none;
         border-left: 5px solid transparent;
-        border-top: 4px solid #3990dc;
+        border-top: 4px solid #132e35;
         bottom: -4px;
       }
     }

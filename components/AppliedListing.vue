@@ -18,11 +18,11 @@
     id="updateOfferStatusModal"
     data-modal-target="updateOfferStatusModal"
     aria-hidden="true"
-    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
-  >
-    <div
-      class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+      class="fixed top-0 left-0 right-0 bottom-0 z-50 hidden w-full overflow-hidden flex items-center justify-center"
     >
+      <div
+        class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto scrollbar-hidden rounded-lg shadow-xl m-4"
+      >
       <div class="relative">
         <i
           @click="hideModal('updateOfferStatusModal')"
@@ -85,15 +85,12 @@
     </div>
   </div>
 
-  <div v-if="selectedListing" class="grid grid-rows-[1fr] max-h-full h-full">
-    <div
-      @touchstart="handleTouchStart"
-      @touchend="handleTouchEnd"
-      class="overflow-y-auto"
-    >
-      <!-- NEW UP HERE -->
-      <div class="md:p-5 px-4">
-        <div class="py-4 sticky top-0 z-10 bg-white">
+  <div v-if="selectedListing" class="grid grid-rows-[1fr] h-[90dvh]">
+      <div
+        class="md:p-5 px-4 overflow-y-auto overflow-x-hidden h-[88dvh] bg-white rounded-xl"
+      >
+        <div class="py-4 sticky top-[-1.2rem] z-10 bg-white">
+        <div class="py-4 sticky top-0 z-10 bg-white pt-4 sm:pt-2">
           <div class="flex items-center space-x-3">
             <div class="flex-shrink-0" @click="viewCompany()">
               <img
@@ -111,14 +108,14 @@
                 {{ selectedListing.job_title }}
               </p>
               <p class="text-xs sm:text-base font-normal text-gray-500">
-                {{ selectedListing.job_title }}
+                {{ selectedListing.company_name }}
               </p>
             </div>
             <div>
               <i
                 v-if="isMobile"
                 @click="goBack"
-                class="bx bx-chevron-left bg-red-600 p-1 rounded-lg text-white"
+                class="bx bx-x bg-red-600 p-1 rounded-lg text-white"
               ></i>
             </div>
           </div>
@@ -147,36 +144,32 @@
           <div class="mt-4 flex">
             <button
               disabled
-              class="mr-4 px-3 py-3 text-[#044013] bg-white border-2 border-[#044013] rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+               class="w-full mr-4 inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-2 rounded-lg"
             >
-              &nbsp; {{ formatDate(selectedListing.appl_timestamp) }}
-            </button>
-            <!-- //TODO: change disabke function to offer recieved -->
+               <i class="bx bx-calendar"></i> &nbsp; {{ formatDate(selectedListing.appl_timestamp) }}
+            </button>  
             <button
               :disabled="selectedListing.appl_status !== 'offer-extended'"
               @click="showModal('updateOfferStatusModal')"
-              :class="{
-                'bg-white text-gray-500':
-                  selectedListing.appl_status === 'pending',
-                'bg-yellow-300 text-white':
-                  selectedListing.appl_status === 'offered',
-                'bg-purple-500 text-white':
-                  selectedListing.appl_status === 'shortlisted',
-                'bg-green-500 text-white':
-                  selectedListing.appl_status === 'hired',
-                'bg-red-500 text-white':
-                  selectedListing.appl_status === 'rejected',
-                'bg-[#044013] text-white':
-                  selectedListing.appl_status !== 'pending' &&
-                  selectedListing.appl_status !== 'offered' &&
-                  selectedListing.appl_status !== 'shortlisted' &&
-                  selectedListing.appl_status !== 'hired',
-              }"
-              class="border-0 px-3 py-3 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-            >
+             class="w-full inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
+                      :class="{
+                        'bg-white text-gray-500 border border-gray-500': selectedListing.appl_status === 'pending',
+                        'bg-yellow-300 border':
+                          selectedListing.appl_status === 'offer-extended',
+                        'bg-purple-500 text-white':
+                          selectedListing.appl_status === 'in-review',
+                        'bg-green-500 text-white': selectedListing.appl_status === 'accepted',
+                        'bg-red-500 ': selectedListing.appl_status === 'rejected',
+                        'bg-[#044013] ':
+                          selectedListing.appl_status !== 'pending' &&
+                          selectedListing.appl_status !== 'offered' &&
+                          selectedListing.appl_status !== 'shortlisted' &&
+                          selectedListing.appl_status !== 'hired',
+                      }"><i class="bx bx-loader-circle"></i> &nbsp; 
               {{ selectedListing.appl_status }}
             </button>
-          </div>
+
+        </div>
         </div>
         <!-- job description -->
         <div>
@@ -295,7 +288,7 @@ const updateOffer = (newStatus) => {
   hideModal("updateOfferStatusModal");
 
   console.log(newStatus);
-  let info = newStatus + " username's application?";
+  let info = newStatus + " application?";
   modalStore.changeDialog(info);
   let func = {};
   console.log(selectedListing);
@@ -340,10 +333,43 @@ const updateOffer = (newStatus) => {
   modalStore.OpenYesOrNOClick(func);
 };
 
-const viewCompany = () => {
-  // Initialize useModal composable
-  const modalId = "viewCompanyInfo";
-  showClosableModal(modalId);
+const selectedCompany=ref({})
+const viewCompany = async () => {
+
+  //fetch company
+    isLoading.value = true;
+  try {
+    selectedCompany.value = {};
+
+    const response = await fetch(
+      `${mainStore.urlbase}company/companyinfo/${n.user_id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: employerAuth.ctoken,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const responseData = await response.json();
+      console.log(" response", responseData);
+      selectedCompany.value = responseData.data;
+      console.log(" selected user fetched", selectedCompany.value);
+        isLoading.value = false;
+  showClosableModal('viewCompanyInfo');
+    } else {
+      console.error(
+        "Error fetching listing:",
+        response.status,
+        response.statusText
+      );
+    }
+  } catch (error) {
+    console.error("Unable to load listing:", error);
+  }
+  isLoading.value = false;
 };
 
 const goBack = () => {
@@ -351,19 +377,6 @@ const goBack = () => {
   emit("loadJobsMobile");
 };
 
-const handleTouchStart = (event) => {
-  touchStartX.value = event.touches[0].clientX;
-};
-
-const handleTouchEnd = (event) => {
-  const touchEndX = event.changedTouches[0].clientX;
-  const swipeDistance = touchEndX - touchStartX.value;
-  const swipeThreshold = 50;
-
-  if (swipeDistance > swipeThreshold) {
-    goBack();
-  }
-};
 
 const isMobile = ref(false);
 
