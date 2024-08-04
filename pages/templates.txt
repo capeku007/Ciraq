@@ -1,0 +1,39 @@
+        <div
+          class="grid grid-cols-1 md:grid-cols-12 gap-4 h-[75dvh] max-h-[75dvh] min-h-[75dvh] overflow-hidden"
+        >
+          <div
+            v-if="!isMobile || (isMobile && showLeft)"
+            class="bg-red-500 md:col-span-4 grid grid-rows-[7dvh_68dvh] h-full"
+          >left</div>
+
+          <!-- other half -->
+          <div
+            v-if="!isMobile || (isMobile && !showLeft)"
+            class="bg-green-500 md:col-span-8 grid grid-rows-[1fr] h-full overflow-y-auto"
+          >
+            fd
+          </div>
+        </div>
+
+
+const isMobile = ref(false);
+const showLeft = ref(true);
+
+        const handleResize = () => {
+  isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
+  if (!isMobile.value) {
+    showLeft.value = true; // Reset to show message list on larger screens
+  }
+};
+
+onMounted(() => {
+  isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
+  window.addEventListener("resize", handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+});
+
+if applicant is shortlist show make offer/reject if
+its offer-extended make it show only withdraw/reject

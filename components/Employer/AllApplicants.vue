@@ -1,124 +1,5 @@
 <template>
   <div>
-    <!-- MODALS HERE -->
-    <div
-      id="viewApplicantModal"
-      data-modal-target="viewApplicantModal"
-      aria-hidden="true"
-      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
-    >
-      <div
-        class="relative p-2 bg-white rounded-2xl w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
-      >
-        <i
-          @click="hideModal('viewApplicantModal')"
-          class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
-        ></i>
-
-        <!-- TODO: UPDATE TO  -->
-        <ProfileView :selectedUser="selectedUser" />
-      </div>
-    </div>
-
-    <!-- APPLICATION STATUS UPDATE -->
-    <div
-      id="updateApplicantStatusModal"
-      data-modal-target="updateApplicantStatusModal"
-      aria-hidden="true"
-      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
-    >
-      <div
-        class="relative w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
-      >
-        <div class="relative">
-          <i
-            @click="closeModal('updateApplicantStatusModal')"
-            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 text-2xl text-gray-400 hover:text-red-600"
-          ></i>
-
-          <div class="" v-if="applicantDetails">
-            <div class="mx-auto rounded-lg overflow-hidden">
-              <div class="bg-white rounded-2xl p-4 shadow-md mb-12">
-                <div class="content">
-                  <div class="flex items-center mb-4">
-                    <div class="mr-4">
-                      <div
-                        v-if="applicantDetails.profile_img"
-                        :style="{
-                          backgroundImage: `url(https://ciraq.co/api/public/uploads/profile_images/${applicantDetails.profile_img})`,
-                        }"
-                        class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
-                      ></div>
-                      <div
-                        v-else
-                        class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
-                      >
-                        {{
-                          initialsFromName(
-                            applicantDetails.fname,
-                            applicantDetails.lname
-                          )
-                        }}
-                      </div>
-                    </div>
-                    <div>
-                      <p class="text-lg font-bold">
-                        {{ applicantDetails.fname }}
-                        {{ applicantDetails.lname }}
-                      </p>
-                      <p class="text-sm text-gray-600">
-                        <span class="mr-3">{{
-                          applicantDetails.program_offered
-                        }}</span>
-                        <span
-                          class="mr-3 border-r border-gray-200 max-h-0"
-                        ></span>
-                        <span>{{ applicantDetails.institution_name }}</span>
-                      </p>
-                      <p class="text-sm text-gray-600">
-                        {{ formatDate(applicantDetails.start_date) }} |
-                        {{ currentYear(applicantDetails.start_date) }}
-                      </p>
-                      <p class="text-sm text-gray-600"></p>
-                    </div>
-                  </div>
-                  <div class="text-left mb-6">
-                    <p class="text-lg font-bold mb-2">
-                      Job Title: {{ applicantDetails.job_title }}
-                    </p>
-                    <p class="text-sm text-gray-600">
-                      {{ applicantDetails.cover_letter }}
-                    </p>
-                  </div>
-                  <div class="flex justify-around">
-                    <button
-                      @click="updateApplicant('rejected')"
-                      class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
-                    >
-                      Reject
-                    </button>
-                    <button
-                      @click="updateApplicant('in-review')"
-                      class="w-2/6 mx-4 bg-blue-600 border text-white px-6 py-2 rounded-lg font-bold"
-                    >
-                      Shortlist
-                    </button>
-                    <button
-                      @click="updateApplicant('offer-extended')"
-                      class="w-2/6 bg-green-600 border text-white px-6 py-2 rounded-lg font-bold"
-                    >
-                      Make Offer
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- MODALS END HERE -->
-
     <div>
       <div class="relative overflow-x-auto shadow-md srounded-lg p-2">
         <div
@@ -198,76 +79,126 @@
             </div>
           </div>
         </div>
-        <div class="overflow-y-auto h-[73dvh]">
-          <div v-if="getIsLoading || isLoading">
-            <LoadScreen />
-          </div>
-          <div v-else>
-            <table class="w-full text-sm text-left text-gray-500">
-              <thead class="sticky top-0 bg-gray-50">
-                <tr>
-                  <th scope="col" class="px-6 py-3">Name</th>
-                  <th scope="col" class="px-6 py-3">School</th>
-                  <th scope="col" class="px-6 py-3">Listing</th>
-                  <th scope="col" class="px-6 py-3">Status</th>
-                  <th scope="col" class="px-6 py-3"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="applicant in filteredApplicants"
-                  :key="applicant.application_id"
-                  class="bg-white border-b hover:bg-gray-50"
+
+        <div
+          class="mt-1 grid grid-cols-1 md:grid-cols-12 gap-4 h-[75dvh] max-h-[75dvh] overflow-hidden"
+        >
+          <div
+            v-if="!isMobile || (isMobile && showLeft)"
+            class="md:col-span-4 grid grid-rows-[75dvh] bg-white rounded-2xl h-[75dvh]"
+          >
+            <ul
+              key="new-listings"
+              class="h-[75dvh] p-2 max-h-[75dvh] overflow-y-auto my-auto"
+            >
+              <li
+                v-for="applicant in filteredApplicants"
+                :key="applicant.application_id"
+                @click="viewApplicant(applicant)"
+              >
+                <div
+                  class="flex my-1 rounded-lg bg-white border border-gray-400 px-[10px] flex-col w-full sm:w-full text-[10px] sm:text-xs z-50"
                 >
-                  <th
-                    scope="row"
-                    class="flex items-center px-6 py-1 text-gray-900 whitespace-nowrap"
-                    @click="viewApplicant(applicant)"
+                  <div
+                    class="cursor-default flex items-center justify-between w-full h-12 sm:h-14"
                   >
-                    <div class="mr-4">
+                    <div class="flex gap-2">
                       <div
-                        v-if="applicant.profile_img"
-                        :style="{
-                          backgroundImage: `url(https://ciraq.co/api/public/uploads/profile_images/${applicant.profile_img})`,
-                        }"
-                        class="mx-auto flex justify-center w-8 h-8 bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
-                      ></div>
-                      <div
-                        v-else
-                        class="mx-auto flex justify-center items-center w-8 h-8 bg-blue-300/20 rounded-full text-lg font-bold"
+                        class="text-[#d65563] bg-white/5 backdrop-blur-xl p-1 rounded-lg"
                       >
-                        {{ initialsFromName(applicant.fname, applicant.lname) }}
+                        <div
+                          v-if="applicant.profile_img"
+                          :style="{
+                            backgroundImage: `url(https://ciraq.co/api/public/uploads/profile_images/${applicant.profile_img})`,
+                          }"
+                          class="mx-auto flex justify-center w-8 h-8 bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+                        ></div>
+                        <div
+                          v-else
+                          class="mx-auto flex justify-center items-center w-8 h-8 bg-blue-300/20 rounded-full text-lg font-bold"
+                        >
+                          {{
+                            initialsFromName(applicant.fname, applicant.lname)
+                          }}
+                        </div>
+                      </div>
+                      <div>
+                        <p class="text-[#132E35] font-bold">
+                          {{ applicant.fname }} {{ applicant.lname }}
+                        </p>
+                        <p class="text-gray-500 pt-1">
+                          {{ applicant.program_offered }}
+                        </p>
                       </div>
                     </div>
-                    <div class="ps-3">
-                      <div class="text-base font-semibold">
-                        {{ applicant.fname }} {{ applicant.lname }}
-                      </div>
-                      <div class="font-normal text-gray-500">
-                        {{ applicant.program_offered }}
-                      </div>
-                    </div>
-                  </th>
-                  <td class="px-6 py-1">{{ applicant.institution_name }}</td>
-                  <td class="px-6 py-1">{{ applicant.job_title }}</td>
-                  <td class="px-6 py-1">{{ applicant.appl_status }}</td>
-                  <td class="px-6 py-1">
                     <button
-                      type="button"
-                      @click="openApplication(applicant)"
-                      class="text-center inline-flex items-center px-3 py-1 text-blue-500 hover:text-white border border-blue-500 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm"
+                      class="text-gray-600 hover:bg-white/10 p-1 rounded-md transition-colors ease-linear"
                     >
-                      Update
-                      <i class="ml-2 bx bx-edit-alt"></i>
+                      <!-- <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M6 18 18 6M6 6l12 12"
+                        ></path>
+                      </svg> -->
                     </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </div>
+
+                  <div class="pb-2 flex">
+                    <button
+                      disabled
+                      class="w-full mr-4 inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-2 rounded-lg"
+                    >
+                      <i class="bx bx-briefcase"></i> &nbsp;
+                      {{ applicant.job_title }}
+                    </button>
+                    <button
+                      disabled
+                      class="w-full inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-2 rounded-lg"
+                    >
+                      <i class="bx bx-calendar"></i> &nbsp;
+                      {{ timePast(applicant.appl_timestamp) }}
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- other half -->
+          <div
+            v-if="!isMobile || (isMobile && !showLeft)"
+            class="bg-white md:col-span-8 grid grid-rows-[1fr] h-[75dvh] overflow-y-auto rounded-2xl "
+          >
+            <transition name="fade" mode="out-in">
+          <div>
+            <div
+              v-if="selectedUser && !isLoading"
+            >
+            <ProfileView :selectedUser="selectedUser" />
+            </div>
+            <div
+              v-else
+              key="empty-state"
+              class="grid grid-rows-[1fr] max-h-[76dvh]  h-[76dvh] "
+            >
+              <div
+                class="bg-white flex justify-center items-center overflow-hidden animate-zoom"
+              >
+                <LoadScreen/>
+              </div>
+            </div>
+          </div>
+        </transition>
           </div>
         </div>
-
-        <!-- View Applicant -->
       </div>
     </div>
   </div>
@@ -284,12 +215,14 @@ const mainStore = useMainStore();
 const employerAuth = useEmployerAuth();
 
 import { useFormatDate } from "@/composables/useFormatDate";
-const { formatDate, currentYear, initialsFromName } = useFormatDate();
+const { formatDate, currentYear, initialsFromName, timePast } = useFormatDate();
 const { hideModal, showModal, showClosableModal } = useModal();
 
 const selectedJob = ref({});
 const selectedJobId = ref(null);
 const isLoading = ref(false);
+const isMobile = ref(false);
+const showLeft = ref(true);
 
 const filteredApplicants = computed(() => {
   if (selectedJobId.value === null) {
@@ -306,7 +239,7 @@ const filterListing = (jobId) => {
   console.log(selectedJobId.value);
 };
 
-const selectedUser = ref({});
+const selectedUser = ref(null);
 const viewApplicant = async (n) => {
   //fetch user
   isLoading.value = true;
@@ -326,12 +259,18 @@ const viewApplicant = async (n) => {
 
     if (response.ok) {
       const responseData = await response.json();
-      console.log(" response", responseData);
-      selectedUser.value = responseData.data;
-      console.log(" selected user fetched", selectedUser.value);
+      selectedUser.value = {
+        ...responseData.data,
+        application_id: n.application_id,
+        job_title: n.job_title,
+        status: n.appl_status,
+        coverLetter: n.cover_letter
+      };
       isLoading.value = false;
-      const modalId = "viewApplicantModal";
-      showModal(modalId);
+      console.log(selectedUser.value)
+      if (isMobile.value) {
+        showLeft.value = false;
+      }
     } else {
       console.error(
         "Error fetching listing:",
@@ -347,105 +286,14 @@ const viewApplicant = async (n) => {
 
 const applicantDetails = ref(null);
 
-const openApplication = (n) => {
-  // Initialize useModal composable
-  // isLoading.value = true;
-  console.log(n);
-  applicantDetails.value = n;
-  const modalId = "updateApplicantStatusModal";
-  showModal(modalId);
-  isLoading.value = false;
-};
-
 const modalStore = useModalStore();
 const closeModal = (n) => {
   const modalId = n;
   hideModal(modalId);
 };
 
-const updateApplicant = (newStatus) => {
-  // close modal
-  const modalId = "updateApplicantStatusModal";
-  hideModal(modalId);
-
-  console.log(newStatus);
-  let info = newStatus + " username's application?";
-  modalStore.changeDialog(info);
-  let func = {};
-
-  // IF USER SELECTS YES CONTINUE FUNCTION
-  func.yesfunc = async function () {
-    try {
-      isLoading.value = true;
-      let updateData = {
-        application_id: applicantDetails.value.application_id,
-        appl_status: newStatus,
-      };
-      console.log("url", mainStore.urlbase + "listing/update-app-status");
-      const response = await fetch(
-        mainStore.urlbase + "listing/update-appl-status",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: employerAuth.ctoken,
-          },
-          body: JSON.stringify(updateData),
-        }
-      );
-
-      if (response.ok) {
-        const responseData = await response.json();
-        applicants.value = responseData.data;
-        isLoading.value = false;
-      } else {
-        console.error(
-          "Error fetching listing:",
-          response.status,
-          response.statusText
-        );
-        isLoading.value = false;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  modalStore.OpenYesOrNOClick(func);
-};
 
 const applicants = ref([]);
-// const loadNewApplicants = async () => {
-//   try {
-//     isLoading.value = true;
-//     const response = await fetch(
-//       mainStore.urlbase + "listing/allcompany-appl",
-//       {
-//         method: "GET",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: employerAuth.ctoken,
-//         },
-//       }
-//     );
-
-//     if (response.ok) {
-//       const responseData = await response.json();
-//       applicants.value = responseData.data;
-//       isLoading.value = false;
-//     } else {
-//       console.error(
-//         "Error fetching listing:",
-//         response.status,
-//         response.statusText
-//       );
-//       isLoading.value = false;
-//     }
-//   } catch (error) {
-//     console.error("Unable to load listing:", error);
-//     isLoading.value = false;
-//   }
-// };
 
 const { showDropDown, hideDropDown } = useDropDown();
 const showDrop = (n, a) => {
@@ -475,11 +323,29 @@ const refreshApplicants = () => {
   newApplicantStore.loadNewApplicants();
 };
 
+
 onMounted(() => {
+  handleResize();
   refreshApplicants();
 
   watchEffect(() => {
     filteredListings.value;
   });
+});
+
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
+  if (!isMobile.value) {
+    showLeft.value = true; // Reset to show message list on larger screens
+  }
+};
+onMounted(() => {
+  handleResize();
+  isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
+  window.addEventListener("resize", handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
 });
 </script>

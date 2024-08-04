@@ -1,24 +1,104 @@
 <template>
   <!-- view job modal -->
-      <div
-      id="jobInfo"
-      data-modal-target="jobInfo"
-      aria-hidden="true"
-      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
-    >
+  <div
+    id="jobInfo"
+    data-modal-target="jobInfo"
+    aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
+  >
     <div
-        class="relative p-2 bg-white rounded-2xl w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
-      >  <i
-            @click="hideModal('jobInfo')"
-            class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
-          ></i>
+      class="relative p-2 bg-white rounded-2xl w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+    >
+      <i
+        @click="hideModal('jobInfo')"
+        class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
+      ></i>
 
-        <!-- TODO: UPDATE TO  -->
-        <JobViewStd :selectedJob="selectedJob" />
+      <!-- TODO: UPDATE TO  -->
+      <JobViewStd :selectedJob="selectedJob" />
+    </div>
+  </div>
+  <div
+    id="jobAppInfo"
+    data-modal-target="jobAppInfo"
+    aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0 flex items-center justify-center min-h-screen"
+  >
+    <div
+      class="relative p-2 bg-white rounded-2xl w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+    >
+      <i
+        @click="hideModal('jobAppInfo')"
+        class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
+      ></i>
+
+      <div class="content p-4">
+        <div class="flex items-center mb-4">
+          <div class="mr-4">
+            <div
+              v-if="selectedUser.profile_img"
+              :style="{
+                backgroundImage: `url(https://ciraq.co/api/public/uploads/profile_images/${selectedUser.profile_img})`,
+              }"
+              class="mx-auto flex justify-center w-[80px] h-[80px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+            ></div>
+            <div
+              v-else
+              class="mx-auto flex justify-center items-center w-[80px] h-[80px] bg-blue-300/20 rounded-full text-4xl font-bold"
+            >
+              {{ initialsFromName(selectedUser.fname, selectedUser.lname) }}
+            </div>
+          </div>
+          <div>
+            <p class="text-lg font-bold">
+              {{ selectedUser.fname }}
+              {{ selectedUser.lname }}
+            </p>
+            <p class="text-sm text-gray-600">
+              <span class="mr-3">{{ selectedUser.program_offered }}</span>
+              <span class="mr-3 border-r border-gray-200 max-h-0"></span>
+              <span>{{ selectedUser.institution_name }}</span>
+            </p>
+            <p class="text-sm text-gray-600">
+              {{ formatDate(selectedUser.start_date) }} |
+              {{ currentYear(selectedUser.start_date) }}
+            </p>
+            <p class="text-sm text-gray-600"></p>
+          </div>
+        </div>
+        <div class="text-left mb-6">
+          <p class="text-lg font-bold mb-2">
+            Job Title: {{ selectedUser.job_title }}
+          </p>
+          <p class="text-sm text-gray-600">
+            {{ selectedUser.coverLetter }}
+          </p>
+        </div>
+        <div class="flex justify-around">
+          <button
+            @click="updateApplicant('rejected')"
+            class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
+          >
+            Reject
+          </button>
+          <button
+            @click="updateApplicant('in-review')"
+            class="w-2/6 mx-4 bg-blue-600 border text-white px-6 py-2 rounded-lg font-bold"
+          >
+            Shortlist
+          </button>
+          <button
+            @click="updateApplicant('offer-extended')"
+            class="w-2/6 bg-green-600 border text-white px-6 py-2 rounded-lg font-bold"
+          >
+            Make Offer
+          </button>
+        </div>
       </div>
     </div>
+  </div>
 
-  <div class="h-[81dvh] m-2 p-2">
+  <div class="h-[73dvh] m-2 p-2">
     <div class="parent">
       <div class="div1">
         <!-- component -->
@@ -48,31 +128,36 @@
                 <span>{{ selectedUser.institution_name }}</span>
               </p>
               <p class="text-sm text-gray-600">
-                               {{ selectedUser.program_offered }} |
+                {{ selectedUser.program_offered }} |
                 {{ currentYear(selectedUser.start_date) }}
               </p>
               <p class="text-sm text-gray-600">
-                               {{ currentAge(selectedUser.dob) }} |
+                {{ currentAge(selectedUser.dob) }} |
                 {{ selectedUser.gender }}
               </p>
               <p class="text-sm text-gray-600"></p>
             </div>
-            <div class="ml-auto">
+            <div class="ml-auto flex">
               <button
-                class="flex items-center py-1 px-2 rounded-lg text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300"
+                class="flex items-center py-1 px-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors duration-300"
               >
                 <i class="bx bx-chat"></i>
-                <!-- Assuming this is your icon -->
-                <span class="hidden sm:inline ml-1">Message</span>
+              </button>
+              <button
+                @click="showModal('jobAppInfo')"
+                class="flex ml-4 items-center py-1 px-2 rounded-lg border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition-colors duration-300"
+              >
+                <i class="bx bx-receipt"></i>
+                <span class="hidden sm:inline ml-1">Application</span>
               </button>
             </div>
           </div>
-       </div>
+        </div>
         <div class="flex justify-center">
           <div class="border-b border-gray-300 w-8/12"></div>
         </div>
         <!-- scrollable -->
-        <div class="h-[63vh] overflow-y-auto w-full ">
+        <div class="h-[56dvh] overflow-y-auto w-full">
           <!-- Professional summary -->
           <div class="pb-1 mt-1 bg-white rounded-lg">
             <button
@@ -177,7 +262,11 @@
                             <div class="flex-shrink-0">
                               <img
                                 class="w-10 h-10 rounded-lg sm:w-16 sm:h-16"
-                                :src="work.company_logo ? `https://ciraq.co/api/public/uploads/profile_images/${work.company_logo}` : companyPlaceholder"
+                                :src="
+                                  work.company_logo
+                                    ? `https://ciraq.co/api/public/uploads/profile_images/${work.company_logo}`
+                                    : companyPlaceholder
+                                "
                                 alt="company image"
                               />
                             </div>
@@ -219,15 +308,19 @@ import { useAuthStore } from "../stores/authStore";
 import { useFormatDate } from "@/composables/useFormatDate";
 import { useMainStore } from "~/stores/main";
 import { useEmployerAuth } from "~/stores/employerAuth";
-import companyPlaceholder from '~/assets/images/companyPlace.jpg';
+import companyPlaceholder from "~/assets/images/companyPlace.jpg";
+import { useModalStore } from "@/stores/modalStore.js";
+import { toast } from "vue3-toastify";
 const mainStore = useMainStore();
 const employerAuth = useEmployerAuth();
-const { formatDate,currentAge, currentYear, initialsFromName } = useFormatDate();
+const { formatDate, currentAge, currentYear, initialsFromName } =
+  useFormatDate();
 
+const modalStore = useModalStore();
 const activeTab = ref(0);
 const tabs = ref(["Work History", "Projects"]);
 const authStore = useAuthStore();
-const { showModal,hideModal } = useModal();
+const { showModal, hideModal } = useModal();
 const active = ref(false);
 
 const { selectedUser } = defineProps({
@@ -242,6 +335,59 @@ const toggleAccordion = () => {
 
 const selectedJob = ref({});
 // user details
+
+const updateApplicant = (newStatus) => {
+  // close modal
+  const modalId = "jobAppInfo";
+  hideModal(modalId);
+
+  console.log(newStatus);
+  let info = "Confirm action?";
+  modalStore.changeDialog(info);
+  let func = {};
+
+  // IF USER SELECTS YES CONTINUE FUNCTION
+  func.yesfunc = async function () {
+    try {
+      let updateData = {
+        application_id: selectedUser.application_id,
+        appl_status: newStatus,
+      };
+      const response = await fetch(
+        mainStore.urlbase + "listing/update-appl-status",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: employerAuth.ctoken,
+          },
+          body: JSON.stringify(updateData),
+        }
+      );
+      const responseData = await response.json();
+if (response.ok) {
+      toast(responseData.message, { 
+        position: "top-right", 
+        duration: 200, 
+        type: "success", 
+        responsive: true,
+      });
+    } else {
+      toast(responseData.error, { 
+        position: "top-right", 
+        duration: 200, 
+        type: "error", 
+        responsive: true,
+      });
+    }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  modalStore.OpenYesOrNOClick(func);
+};
+
 const openWorkHistoryInfo = async (listingId) => {
   try {
     selectedJob.value = {};
