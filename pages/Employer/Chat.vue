@@ -65,50 +65,151 @@
 
         <ul
           v-if="activeList === 'notifications'"
-          class="people h-[82dvh] max-h-[82dvh] min-h-[82dvh] overflow-y-auto my-auto pb-[10dvh]"
+          class="people h-[82dvh] px-2 max-h-[82dvh] min-h-[82dvh] overflow-y-auto my-auto pb-[10dvh]"
         >
           <li
-            class="person"
-            v-for="notification in notifications"
-            :key="notification.id"
+            v-for="noti in notifications"
+            :key="noti.id"
           >
-            <img :src="notification.avatar" alt="" />
-            <span class="name text-lime-950 text-text-lg font-medium">{{
-              notification.name
-            }}</span>
-            <span class="time text-gray-600">{{ notification.time }}</span>
-            <span class="preview">
-              {{
-                notification.messages.length > 0
-                  ? notification.messages[notification.messages.length - 1].text
-                  : ""
-              }}
-            </span>
+                <div
+                  class="flex my-2 transform hover:-translate-y-[0.125rem] transition duration-100 ease-linear rounded-lg bg-white border border-gray-400 px-[10px] flex-col w-full sm:w-full text-[10px] sm:text-xs z-50"
+                >
+                  <div
+                    class="cursor-default flex items-center justify-between w-full h-12 sm:h-14"
+                  >
+                    <div class="flex gap-2">
+                      <div
+                        class="text-[#d65563] bg-white/5 backdrop-blur-xl p-1 rounded-lg"
+                      >
+                        <div
+                          v-if="noti.sender_profile_img"
+                          :style="{
+                            backgroundImage: `url(https://ciraq.co/api/public/uploads/profile_images/${noti.sender_profile_img})`,
+                          }"
+                          class="mx-auto flex justify-center w-8 h-8 bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+                        ></div>
+                        <div
+                          v-else
+                          class="mx-auto flex justify-center w-8 h-8 bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+                          :style="{
+                            backgroundImage: `../assets/images/profilePlace.jpg`,
+                          }"
+                        >
+                          
+                        </div>
+                      </div>
+                      <div>
+                        <p class="text-[#132E35] font-bold">
+                          {{ noti.sender_name }}
+                        </p>
+                        <p class="text-gray-500 pt-1">
+                          {{ noti.message }}, {{timePast(noti.created_at)}}
+                        </p>
+                      </div>
+                    </div>
+                    <!-- <button
+                      class="text-gray-600 hover:bg-white/10 p-1 rounded-md transition-colors ease-linear"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M6 18 18 6M6 6l12 12"
+                        ></path>
+                      </svg>
+                    </button> -->
+                  </div>
+                </div>
           </li>
         </ul>
 
         <ul
           v-if="activeList === 'requests'"
-          class="people h-[82dvh] max-h-[82dvh] min-h-[82dvh] overflow-y-auto my-auto pb-[10vh]"
+          class="people h-[82dvh] px-2 max-h-[82dvh] min-h-[82dvh] overflow-y-auto my-auto pb-[10dvh]"
         >
           <li
-            class="person"
             v-for="request in requests"
             :key="request.id"
-            @click="loadMessages(request)"
           >
-            <img :src="request.avatar" alt="" />
-            <span class="name text-lime-950 text-text-lg font-medium">{{
-              request.name
-            }}</span>
-            <span class="time text-gray-600">{{ request.time }}</span>
-            <span class="preview">
-              {{
-                request.messages.length > 0
-                  ? request.messages[request.messages.length - 1].text
-                  : ""
-              }}
-            </span>
+                            <div
+                  class="flex my-2 transform hover:-translate-y-[0.125rem] transition duration-100 ease-linear rounded-lg bg-white border border-gray-400 px-[10px] flex-col w-full sm:w-full text-[10px] sm:text-xs z-50"
+                >
+                  <div
+                    class="cursor-default flex items-center justify-between w-full h-12 sm:h-14"
+                  >
+                    <div class="flex gap-2">
+                      <div
+                        class="text-[#d65563] bg-white/5 backdrop-blur-xl p-1 rounded-lg"
+                      >
+                        <div
+                          v-if="request.sender_profile_img"
+                          :style="{
+                            backgroundImage: `url(https://ciraq.co/api/public/uploads/profile_images/${request.sender_profile_img})`,
+                          }"
+                          class="mx-auto flex justify-center w-8 h-8 bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+                        ></div>
+                        <div
+                          v-else
+                          class="mx-auto flex justify-center w-8 h-8 bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+                          :style="{
+                            backgroundImage: `../assets/images/profilePlace.jpg`,
+                          }"
+                        >
+                          
+                        </div>
+                      </div>
+                      <div>
+                        <p class="text-[#132E35] font-bold">
+                          {{ request.friend_name }}
+                        </p>
+                        <p class="text-gray-500 pt-1">
+                          {{ request.message }}, {{timePast(request.created_at)}}
+                        </p>
+                      </div>
+                    </div>
+                    <!-- <button
+                      class="text-gray-600 hover:bg-white/10 p-1 rounded-md transition-colors ease-linear"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="w-6 h-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M6 18 18 6M6 6l12 12"
+                        ></path>
+                      </svg>
+                    </button> -->
+                  </div>
+
+                  <div class="pb-2 flex">
+                    <button
+                      @click="statusUpdate(request, 'decline')"
+                      class="w-full mr-4 text-center bg-gray-200 text-xs font-normal px-2 py-2 rounded-lg"
+                    >
+                      
+                      Reject
+                    </button>
+                    <button
+                      @click="statusUpdate(request, 'accept')"
+                      class="w-full  text-center bg-green-200 text-xs font-normal px-2 py-2 rounded-lg"
+                    >
+                      Accept
+                    </button>
+                  </div>
+                </div>
           </li>
         </ul>
       </div>
@@ -133,17 +234,20 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { io } from "socket.io-client";
-import { useEmployerAuth } from "~/stores/employerAuth";
+import { useAuthStore } from "../stores/authStore";
 import profilePlaceholder from "~/assets/images/profilePlace.jpg";
 import { useMainStore } from "~/stores/main";
+import { useFormatDate } from "@/composables/useFormatDate";
+const { formatDate, currentYear, initialsFromName, timePast } = useFormatDate();
+import { toast } from "vue3-toastify";
 
 const mainStore = useMainStore();
-const employerAuth = useEmployerAuth();
+const authStore = useAuthStore();
 const { $indexedDB } = useNuxtApp();
 
 definePageMeta({
-  layout: "company",
-  middleware: ["unauthemp"],
+  layout: "mobile",
+  middleware: ["unauthstd"],
 });
 
 useHead({
@@ -165,6 +269,10 @@ const setActiveList = (list) => {
   activeList.value = list;
 };
 
+const logit = () => {
+  console.log("🚀 ~ logit ~ people", socket.value, authStore.token);
+};
+
 const loadMessages = (person) => {
   console.log("person", person);
   selectedPerson.value = person;
@@ -174,9 +282,50 @@ const loadMessages = (person) => {
   socket.value.emit("joinChat", {
     friendship_id: person.friendship_id,
     name: person.friend_name,
-    sender: employerAuth.ctoken,
+    sender: authStore.token,
   });
 };
+
+const statusUpdate = async (a, b) =>{
+  console.log('a', a)
+  console.log('b', b)
+      try {
+      let updateData = {action: b, friendship_id:a.friendship_id, friend_id:a.user_id
+};
+      console.log("updateData",updateData );
+      const response = await fetch(
+        mainStore.urlbase + "chats/update_fr",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: authStore.token,
+          },
+          body: JSON.stringify(updateData),
+        }
+      );
+
+        const responseData = await response.json();
+      if (response.ok) {
+              toast(responseData.message, { 
+        position: "top-right", 
+        duration: 200, 
+        type: "success", 
+        responsive: true,
+      });
+      fetchRequests()
+      } else {
+              toast(responseData.error, { 
+        position: "top-right", 
+        duration: 200, 
+        type: "error", 
+        responsive: true,
+      });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+}
 
 const fetchUsers = async () => {
   try {
@@ -191,7 +340,7 @@ const fetchUsers = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-          Authorization: employerAuth.ctoken,
+        Authorization: authStore.token,
       },
     });
 
@@ -215,7 +364,7 @@ const fetchRequests = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-          Authorization: employerAuth.ctoken,
+        Authorization: authStore.token,
       },
     });
 
@@ -229,18 +378,17 @@ const fetchRequests = async () => {
 
 const fetchNotifications = async () => {
   try {
-    const res = await fetch(mainStore.urlbase + "notification/unread", {
+    const res = await fetch(mainStore.urlbase + "notifications/unread", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-          Authorization: employerAuth.ctoken,
+        Authorization: authStore.token,
       },
     });
 
     let data = await res.json();
-    notifications.value = data.data;
-    console.log("🚀 ~ url:", mainStore.urlbase + "notification/unread");
-    console.log("🚀 ~ notifications:", data);
+    notifications.value = data.notifications;
+    console.log(data)
   } catch (error) {
     console.log(error);
   }
@@ -273,11 +421,11 @@ onMounted(async () => {
   fetchRequests();
   fetchNotifications();
 
-  if (employerAuth.ctoken) {
+  if (authStore.token) {
     socket.value = io("https://ciraq.co/chat", {
       path: "/api/socket.io",
       auth: {
-        token: employerAuth.ctoken,
+        token: authStore.token,
       },
     });
   } else {

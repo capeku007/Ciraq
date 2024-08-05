@@ -148,12 +148,26 @@ export const useAuthStore = defineStore("authStore", {
       }
     },
 
-    logout(){
-      this.setToken(null)
-      this.setUser(null)
-      // Remove user details from localStorage
-      localStorage.removeItem('userDetails');
-      navigateTo("/")
+    async logout() {
+      try {
+        this.setToken(null);
+        this.setUser(null);
+        
+        // Clear IndexedDB
+        const { $indexedDB } = useNuxtApp();
+        await $indexedDB.clearDatabase();
+        
+        // Remove user details from localStorage
+        localStorage.removeItem('userDetails');
+        
+        // Wait for 300ms before redirecting
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        // Navigate to home page
+        navigateTo("/");
+      } catch (error) {
+        console.error("Error during logout:", error);
+      }
     }
   },
 });  

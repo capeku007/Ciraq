@@ -73,6 +73,26 @@ const getPeople = () => {
     request.onsuccess = (event) => resolve(event.target.result);
   });
 };
+const clearDatabase = () => {
+  return new Promise((resolve, reject) => {
+    if (!db) {
+      reject("Database not initialized");
+      return;
+    }
+
+    const transaction = db.transaction([MESSAGES_STORE_NAME, PEOPLE_STORE_NAME], 'readwrite');
+    const messagesStore = transaction.objectStore(MESSAGES_STORE_NAME);
+    const peopleStore = transaction.objectStore(PEOPLE_STORE_NAME);
+
+    const clearMessages = messagesStore.clear();
+    const clearPeople = peopleStore.clear();
+
+    clearMessages.onerror = (event) => reject("Error clearing messages: " + event.target.error);
+    clearPeople.onerror = (event) => reject("Error clearing people: " + event.target.error);
+
+    transaction.oncomplete = () => resolve("Database cleared successfully");
+  });
+};
 
 export default defineNuxtPlugin(() => {
   return {
@@ -82,7 +102,8 @@ export default defineNuxtPlugin(() => {
         addMessage,
         getMessages,
         addPerson,
-        getPeople
+        getPeople,
+        clearDatabase 
       }
     }
   }

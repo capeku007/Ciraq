@@ -93,8 +93,20 @@
             </div>
           </li> -->
 
-          <li><a class="nav-link" href="#">About</a></li>
-          <li><a class="nav-link" href="#">Terms</a></li>
+          <li>
+            <nuxt-link
+    class="nav-link"
+    to="/about"
+  >
+About
+  </nuxt-link>
+  </li>
+          <li> <nuxt-link
+    class="nav-link"
+    to="/terms"
+  >
+About
+  </nuxt-link></li>
         </ul>
       </nav>
     </div>
