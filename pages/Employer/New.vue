@@ -51,13 +51,19 @@
             >Location</label
           >
           <div class="mt-1">
-            <input
-            v-model="listData.location_name"
-              type="text"
-              name="location"
-              id="location"
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
+            <select
+      v-model="listData.location_name"
+      required
+      name="jobLoc"
+      id="jobLoc"
+      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    >
+    <option value="" disabled>Select location </option>
+      <option value="On-site">On-site</option>
+      <option value="Remote">Remote</option>
+      <option value="Hybrid">Hybrid</option>
+    </select>
+
           </div>
         </div>
 
@@ -86,14 +92,31 @@
             >Job Type</label
           >
           <div class="mt-1">
-            <input
-            v-model="listData.employment_type"
-            required
-              type="text"
-              name="jobType"
-              id="jobType"
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
+                <select
+      v-model="listData.employment_type"
+      required
+      name="jobType"
+      id="jobType"
+      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    >
+      <option value="" disabled>Select job type</option>
+      <option value="Full-time">Full-time</option>
+      <option value="Part-time">Part-time</option>
+      <option value="Contract">Contract</option>
+      <option value="Internship">Internship</option>
+      <option value="Temporary">Temporary</option>
+      <option value="Remote">Remote</option>
+      <option value="Freelance">Freelance</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <input
+      v-if="listData.employment_type === 'Other'"
+      v-model="listData.other_employment_type"
+      type="text"
+      placeholder="Please specify job type"
+      class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    />
           </div>
         </div>
       </div>
@@ -233,12 +256,16 @@
     <!-- preview job -->
     <div class="shadow rounded-2xl bg-white max-h-[95dvh] overflow-y-auto p-4">
       <div class="md:p-5 px-4">
-        <div class="py-4 sticky top-0 z-10 bg-white">
+        <div class="py-2 sticky top-0 z-10 bg-white">
           <div class="flex items-center space-x-3">
             <div class="flex-shrink-0">
               <img
                 class="w-10 h-10 rounded-lg sm:w-16 sm:h-16"
-                src="../assets/knustlogo.png"
+                :src="
+                      company.company_logo
+                        ? `https://ciraq.co/api/public/uploads/profile_images/${company.company_logo}`
+                        : companyPlaceholder
+                    "
                 alt="company image"
               />
             </div>
@@ -254,22 +281,26 @@
           </div>
           <div class="flex justify-between mt-4 space-x-3 rtl:space-x-reverse">
             <span
-              class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
+              class="inline-flex items-center w-1/3 bg-gray-200 text-xs font-normal px-2.5 py-0.5 rounded-lg"
             >
-              {{listData.location_name}}
+              <i class="bx bx-briefcase-alt-2"></i>&nbsp;
+              {{ listData.employment_type }}
             </span>
 
             <span
-              class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2 py-1 rounded-lg"
+              class="inline-flex items-center w-1/3 bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
             >
-              {{listData.salary_compensation}}
+              <i class="bx bx-map"></i> &nbsp;
+              {{ listData.location_name }}
             </span>
             <span
-              class="inline-flex items-center bg-gray-200 text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg"
+              class="inline-flex items-center w-1/3 bg-gray-200 text-xs font-normal px-2.5 py-0.5 rounded-lg"
             >
-              {{listData.employment_type}}
+              <i class="bx bx-money"></i>&nbsp;
+              {{ listData.salary_compensation }}
             </span>
           </div>
+
         </div>
         <!-- job description -->
         <div>
@@ -280,14 +311,6 @@
             </p>
           </div>
           
-          <div class="mt-4">
-            <h2 class="text-sm sm:text-base font-semibold">Location</h2>
-            <ul
-              class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1"
-            >
-              <li>{{ listData.location_name }}</li>
-            </ul>
-          </div>
           <div class="mt-4">
             <h2 class="text-sm sm:text-base font-semibold">
               Required skills
@@ -339,123 +362,84 @@
 
 <script setup>
 import { useModalStore } from "@/stores/modalStore.js";
+import companyPlaceholder from "~/assets/images/companyPlace.jpg";
+import { toast } from "vue3-toastify";
+import { useEmployerAuth } from "@/stores/employerAuth";
+import { useMainStore } from "~/stores/main";
+
 useHead({
   title: "Create new listing",
   meta: [{ name: "description", content: "Create new listing" }],
 });
 
-
-// Define loginData using reactive
 definePageMeta({
   middleware: ["unauthemp"],
   layout: "company",
 });
 
-// company details
-import { useEmployerAuth } from "@/stores/employerAuth";
-import { useCreateStore } from "@/stores/createListing";
 const employerAuth = useEmployerAuth();
-const createStore = useCreateStore();
+const mainStore = useMainStore();
 const company = employerAuth.company;
 
-import { useMainStore } from "~/stores/main";
-const mainStore = useMainStore();
-
-const modalStore = useModalStore();
-const { showClosableModal, hideModal } = useModal();
-const closeModal = () => {
-  // Initialize useModal composable
-  const modalId = "viewCompanyInfo";
-  hideModal(modalId);
-};
 const listData = ref({
   job_title: "",
   location_name: "",
   application_deadline: "",
-  date_posted: "",
   employment_type: "",
   salary_compensation: 0,
   job_description: "",
   listing_status: "Pending",
 });
 
-const benefits =ref([])
-const desired_qualifications =ref([])
-const required_qualifications =ref([])
-
-
-const createListing = () => {
-  let info = "Confirm new listing?";
-  modalStore.changeDialog(info);
-  let func = {};
-  const reqObj = {
-    job_title: listData.value.job_title,
-    job_description: listData.value.job_description,
-    required_qualifications: JSON.stringify(listData.value.required_qualifications),
-    desired_qualifications: JSON.stringify(listData.value.desired_qualifications),
-    application_deadline: listData.value.application_deadline,
-    salary_compensation: listData.value.salary_compensation,
-    employment_type: listData.value.employment_type,
-    listing_status: "Pending",
-    benefits: JSON.stringify(listData.value.benefits),
-    location_name: listData.value.location_name,
-  };
-
-  // IF USER SELECTS YES CONTINUE FUNCTION
-  func.yesfunc = async function () {
-    try {
-      console.log('about to send this', reqObj);
-      const response = await fetch(mainStore.urlbase + "listing/create", {
-        headers: {
-          Authorization: employerAuth.ctoken,
-        },
-        method: "POST",
-        body: reqObj,
-        
-      });
-      const responseData = await response.json();
-      console.log(responseData);
-      if (!response.ok) {
-        const error = new Error(responseData.message || "Failed to create.");
-        throw error;
-      } else {
-        // alert("Account registered. Please check email to verify:", responseData.message);
-        return responseData; // Return the responseData after successful registration
-      }
-    } catch (error) {
-      console.error("Failed to register:", error);
-      // alert("Failed to register:", error);
-      throw error; // Rethrow the error to handle it elsewhere if needed
-    }
-  };
-  modalStore.OpenYesOrNOClick(func);
-};
+const benefits = ref([])
+const desired_qualifications = ref([])
+const required_qualifications = ref([])
 
 const submitForm = async () => {
-  console.log(listData.value)
-  listData.value.benefits = benefits.value;
-  listData.value.required_qualifications = required_qualifications.value;
-  listData.value.desired_qualifications = desired_qualifications.value;
+  const finalData = {
+    ...listData.value,
+    benefits: benefits.value,
+    required_qualifications: required_qualifications.value,
+    desired_qualifications: desired_qualifications.value,
+  };
 
-console.log("new data", listData.value)
-        try {
-        const responseData = await createStore.createListing(listData.value);
-        if (responseData.successful) {
-          
-        } else {
-          console.log("failed");
-        }
-      } catch (error) {
-        // Handle errors here if needed
-        console.error("Failed to register:", error);
-      }
+  try {
+    const response = await fetch(mainStore.urlbase + "listing/create", { 
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: employerAuth.ctoken,
+      },
+      method: "POST",
+      body: JSON.stringify(finalData)
+    });
+
+    const responseData = await response.json();
+    if (!response.ok) {
+      toast(responseData.message, { 
+        position: "top-right", 
+        duration: 2000, 
+        type: "error", 
+        responsive: true,
+      });
+      throw new Error(responseData.message || "Failed to create.");
+    } else {
+      toast(responseData.message, { 
+        position: "top-right", 
+        duration: 2000, 
+        type: "success", 
+        responsive: true,
+      });
+      resetForm();
+      return responseData;
+    }
+  } catch (error) {
+    console.error("Failed to create listing:", error);
+  }
 };
 
 const candidateName = ref("");
 const skillName = ref("");
 const benefitName = ref("");
-
-
 
 const addCandidate = () => {
   if (candidateName.value.trim() !== "") {
@@ -489,27 +473,46 @@ const removeSkill = (index) => {
 const removeBenefit = (index) => {
   benefits.value.splice(index, 1);
 };
-const formDataKey = 'listData'; // Key to store formData in the cache
+
+const formDataKey = 'listData';
+
+const resetForm = () => {
+  Object.keys(listData.value).forEach(key => {
+    listData.value[key] = "";
+  });
+  listData.value.salary_compensation = 0;
+  listData.value.listing_status = "Pending";
+  benefits.value = [];
+  desired_qualifications.value = [];
+  required_qualifications.value = [];
+  localStorage.removeItem(formDataKey);
+};
 
 watch(
-  () => listData.value, // Watch for changes in the formData object
-  (newValue) => {
-    // Save the current formData to the cache
-    localStorage.setItem(formDataKey, JSON.stringify(newValue)); // Use localStorage or sessionStorage
+  [listData, benefits, desired_qualifications, required_qualifications],
+  ([newListData, newBenefits, newDesired, newRequired]) => {
+    const dataToSave = {
+      ...newListData,
+      benefits: newBenefits,
+      desired_qualifications: newDesired,
+      required_qualifications: newRequired,
+    };
+    localStorage.setItem(formDataKey, JSON.stringify(dataToSave));
   },
-  { deep: true } // Watch for deep changes in the formData object
+  { deep: true }
 );
 
-// Retrieve formData from cache on component creation
 onMounted(() => {
   const cachedFormData = localStorage.getItem(formDataKey);
   if (cachedFormData) {
-    listData.value = JSON.parse(cachedFormData);
+    const parsedData = JSON.parse(cachedFormData);
+    Object.assign(listData.value, parsedData);
+    benefits.value = parsedData.benefits || [];
+    desired_qualifications.value = parsedData.desired_qualifications || [];
+    required_qualifications.value = parsedData.required_qualifications || [];
   }
 });
-
 </script>
-
 
 <style >
 /* Custom scrollbar styles */

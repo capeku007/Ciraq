@@ -6,11 +6,19 @@
 
     <div>
       <div class="relative overflow-x-auto shadow-md srounded-lg p-2">
+
         <div
-          class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 bg-white"
+          class="mt-1 grid grid-cols-1 md:grid-cols-12 gap-4 h-[83dvh] max-h-[83dvh] overflow-hidden"
+        >
+          <div
+            v-if="!isMobile || (isMobile && showLeft)"
+            class="md:col-span-4 grid grid-rows-[7dvh_76dvh] bg-white rounded-2xl h-[80dvh]"
+          >
+                  <div
+          class="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 "
         >
           <div class="flex items-center text-base font-semibold ml-4">
-            <p> Applicants</p>
+            <p>Offers</p>
             <button @click="refreshApplicants" class="flex items-baseline">
               <i class="ml-4 text-lg bx bx-revision"></i>
             </button>
@@ -83,16 +91,9 @@
             </div>
           </div>
         </div>
-        <div
-          class="mt-1 grid grid-cols-1 md:grid-cols-12 gap-4 h-[75dvh] max-h-[75dvh] overflow-hidden"
-        >
-          <div
-            v-if="!isMobile || (isMobile && showLeft)"
-            class="md:col-span-4 grid grid-rows-[75dvh] bg-white rounded-2xl h-[75dvh]"
-          >
             <ul
               key="new-listings"
-              class="h-[75dvh] p-2 max-h-[75dvh] overflow-y-auto my-auto"
+              class="h-[76dvh] p-2 max-h-[76dvh] overflow-y-auto my-auto"
             >
               <li
                 v-for="applicant in filteredApplicants"
@@ -178,28 +179,26 @@
           <!-- other half -->
           <div
             v-if="!isMobile || (isMobile && !showLeft)"
-            class="bg-white md:col-span-8 grid grid-rows-[1fr] h-[75dvh] overflow-y-auto rounded-2xl "
+            class="bg-white md:col-span-8 grid grid-rows-[1fr] h-[80dvh] overflow-y-auto rounded-2xl"
           >
             <transition name="fade" mode="out-in">
-          <div>
-            <div
-              v-if="selectedUser && !isLoading"
-            >
-            <ProfileView :selectedUser="selectedUser" />
-            </div>
-            <div
-              v-else
-              key="empty-state"
-              class="grid grid-rows-[1fr] max-h-[76dvh]  h-[76dvh] "
-            >
-              <div
-                class="bg-white flex justify-center items-center overflow-hidden animate-zoom"
-              >
-                <LoadScreen/>
+              <div>
+                <div v-if="selectedUser && !isLoading">
+                  <ProfileView :selectedUser="selectedUser" />
+                </div>
+                <div
+                  v-else
+                  key="empty-state"
+                  class="grid grid-rows-[1fr] max-h-[80dvh] h-[80dvh]"
+                >
+                  <div
+                    class="bg-white flex justify-center items-center overflow-hidden animate-zoom"
+                  >
+                    <LoadScreen />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </transition>
+            </transition>
           </div>
         </div>
 

@@ -120,7 +120,15 @@ export const useEmployerAuth = defineStore("employerAuth", {
         
         // Clear IndexedDB
         const { $indexedDB } = useNuxtApp();
-        await $indexedDB.clearDatabase();
+        
+        // Check if the database is initialized before clearing
+        try {
+          await $indexedDB.initDB();  // Initialize the database if it's not already
+          await $indexedDB.clearDatabase();
+        } catch (dbError) {
+          console.warn("Could not clear IndexedDB:", dbError);
+          // Continue with logout process even if database clearing fails
+        }
         
         // Remove user details from localStorage
         localStorage.removeItem('companyDetails');
@@ -130,6 +138,8 @@ export const useEmployerAuth = defineStore("employerAuth", {
         
         // Navigate to home page
         navigateTo("/");
+        // Reload the app
+    window.location.reload();
       } catch (error) {
         console.error("Error during logout:", error);
       }

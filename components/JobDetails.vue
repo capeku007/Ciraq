@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="relative w-full max-w-4xl overflow-y-auto max-h-[95dvh] rounded-2xl scrollbar-none">
+    <div class="relative w-full max-w-4xl overflow-y-auto max-h-[80dvh] rounded-2xl scrollbar-none">
       <div class="relative bg-white rounded-lg shadow">
         <div class="md:p-5 px-4 bg-white">
           <div class="py-4 sticky top-0 z-10 bg-white">
@@ -39,11 +39,18 @@
                 <span v-if="!isEditMode" class="inline-flex items-center text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg">
                   {{ selectedJob.location_name }}
                 </span>
-                <input
-                  v-else
-                  v-model="selectedJob.location_name"
-                  class="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                           <select
+      v-model="selectedJob.location_name"
+      required
+      name="jobLoc"
+      id="jobLoc"
+      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    >
+    <option value="" disabled>Select location </option>
+      <option value="On-site">On-site</option>
+      <option value="Remote">Remote</option>
+      <option value="Hybrid">Hybrid</option>
+    </select>
               </div>
 
               <div>
@@ -63,18 +70,54 @@
                 <span v-if="!isEditMode" class="inline-flex items-center text-xs sm:text-base font-normal px-2.5 py-0.5 rounded-lg">
                   {{ selectedJob.employment_type }}
                 </span>
-                <input
-                  v-else
-                  v-model="selectedJob.employment_type"
-                  class="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                    <select
+                    v-else
+      v-model="selectedJob.employment_type"
+      required
+      name="jobType"
+      id="jobType"
+      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    >
+      <option value="" disabled>Select job type</option>
+      <option value="Full-time">Full-time</option>
+      <option value="Part-time">Part-time</option>
+      <option value="Contract">Contract</option>
+      <option value="Internship">Internship</option>
+      <option value="Temporary">Temporary</option>
+      <option value="Remote">Remote</option>
+      <option value="Freelance">Freelance</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <input
+      v-if="selectedJob.employment_type === 'Other'"
+      v-model="selectedJob.other_employment_type"
+      type="text"
+      placeholder="Please specify job type"
+      class="mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    />
+                
               </div>
             </div>
+          </div>
+          <!-- deadline -->
+          <div class="mb-4">
+            <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Deadline</label>
+                <span v-if="!isEditMode" class="inline-flex items-center bg-gray-200 text-xs font-normal pl-2 pr-4 py-2 rounded-lg">
+                  <i class="bx bx-calendar"></i> &nbsp;{{ formatDate(selectedJob.application_deadline) }}
+                </span>
+                <input
+                  v-else
+                  type="date"
+                  v-model="selectedJob.application_deadline"
+                  class="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
           </div>
           <!-- job description -->
           <div>
             <div>
-              <p class="text-base sm:text-lg font-semibold">Job Description</p>
+              
+              <p class="block text-sm font-medium leading-6 text-gray-900">Job Description</p>
               <p v-if="!isEditMode" class="text-xs sm:text-base font-normal text-gray-500">
                 {{ selectedJob.job_description }}
               </p>
@@ -86,14 +129,9 @@
               ></textarea>
             </div>
 
+            
             <div class="mt-4">
-              <h2 class="text-sm sm:text-base font-semibold">Location</h2>
-              <ul class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1">
-                <li>{{ selectedJob.location_name }}</li>
-              </ul>
-            </div>
-            <div class="mt-4">
-              <h2 class="text-sm sm:text-base font-semibold">Required skills</h2>
+              <h2 class="block text-sm font-medium leading-6 text-gray-900">Required skills</h2>
               <ul v-if="!isEditMode" class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1">
                 <li v-for="(candidate, index) in selectedJob.required_qualifications" :key="index">
                   {{ candidate }}
@@ -133,7 +171,7 @@
 
             <!-- desired skills -->
             <div class="mt-4">
-              <h2 class="text-sm sm:text-base font-semibold">Desired skills</h2>
+              <h2 class="block text-sm font-medium leading-6 text-gray-900">Desired skills</h2>
               <ul v-if="!isEditMode" class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1">
                 <li v-for="(candidate, index) in selectedJob.desired_qualifications" :key="index">
                   {{ candidate }}
@@ -172,7 +210,7 @@
               </div>
             </div>
             <div class="mt-4">
-              <h2 class="text-sm sm:text-base font-semibold">Benefits</h2>
+              <h2 class="block text-sm font-medium leading-6 text-gray-900">Benefits</h2>
               <ul v-if="!isEditMode" class="text-xs sm:text-base font-normal text-gray-500 list-disc list-inside space-y-1">
                 <li v-for="(benefit, index) in selectedJob.benefits" :key="index">
                   {{ benefit }}
@@ -221,9 +259,11 @@
 import { ref } from "vue";
 // company details
 import { useEmployerAuth } from "@/stores/employerAuth";
+import { useFormatDate } from "@/composables/useFormatDate";
 import { useModalStore } from "@/stores/modalStore.js";
 import { useMainStore } from "~/stores/main";
 
+const { formatDate } = useFormatDate();
 const mainStore = useMainStore();
 const modalStore = useModalStore();
 const { hideModal, showClosableModal } = useModal();

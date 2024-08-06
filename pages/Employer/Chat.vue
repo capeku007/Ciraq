@@ -246,8 +246,8 @@ const authStore = useAuthStore();
 const { $indexedDB } = useNuxtApp();
 
 definePageMeta({
-  layout: "mobile",
-  middleware: ["unauthstd"],
+  layout: "company",
+  middleware: ["unauthemp"],
 });
 
 useHead({

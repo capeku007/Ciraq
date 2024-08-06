@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[87dvh] max-h-[87dvh] grid grid-rows-[12dvh_1fr]">
+  <div class="min-h-[95dvh] max-h-[95dvh] overflow-hidden grid grid-rows-[12dvh_1fr]">
     <div class="flex bg-white flex-wrap rounded-lg">
       <div class="w-1/5 p-2">
         <label
@@ -155,10 +155,8 @@
       </div>
     </div>
 
-    <div class="bg-white mt-2 rounded-2xl" v-if="showPage === '1'">
-      <div>
+    <div class="mt-2 rounded-2xl" v-if="showPage === '1'">
         <AllListings />
-      </div>
     </div>
     <div class=" mt-2 rounded-2xl" v-if="showPage === '2'">
       <AllApplicants />
@@ -214,7 +212,7 @@ definePageMeta({
   layout: "company",
 });
 
-const showPage = ref("2");
+const showPage = ref("1");
 const activeItem = ref(null);
 
 // filter listing

@@ -262,24 +262,29 @@
     <div class="rounded-t-lg h-32 overflow-hidden">
       <img
         class="object-cover object-top w-full"
+        
         src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
         alt="Mountain"
       />
+      
     </div>
     <div
       class="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden"
     >
-      <!-- <img
+      <img
         class="object-cover object-center h-32"
-        :src="company.company_logo"
-        alt="Woman looking front"
-      /> -->
-                      <div
+        :src="
+                      company.company_logo
+                        ? `https://ciraq.co/api/public/uploads/profile_images/${company.company_logo}`
+                        : companyPlaceholder
+                    "
+      />
+                      <!-- <div
                   :style="{ backgroundImage: `url(${company.company_logo})` }"
                   class="object-cover object-center  h-32 rounded-full "
                 >
                   
-                </div>
+                </div> -->
     </div>
     <div class="text-center mt-2">
       <h2 class="font-semibold text-lg">{{ company.company_name }}</h2>
@@ -290,7 +295,7 @@
     <div class="m-4">
       <h2 class="font-semibold text-lg">Our Story</h2>
       <p class="text-gray-500 text-sm">
-        {{ company }}
+        {{ company.company_description }}
       </p>
     </div>    
     <div class="m-4">
@@ -343,6 +348,7 @@
 <script setup>
 import { useModalStore } from "@/stores/modalStore.js";
 import { useMainStore } from "@/stores/main.js";
+import companyPlaceholder from "~/assets/images/companyPlace.jpg";
 const modalStore = useModalStore();
 useHead({
   title: "Company Info",

@@ -75,25 +75,46 @@
           </p>
         </div>
         <div class="flex justify-around">
-          <button
-            @click="updateApplicant('rejected')"
-            class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
-          >
-            Reject
-          </button>
-          <button
-            @click="updateApplicant('in-review')"
-            class="w-2/6 mx-4 bg-blue-600 border text-white px-6 py-2 rounded-lg font-bold"
-          >
-            Shortlist
-          </button>
-          <button
-            @click="updateApplicant('offer-extended')"
-            class="w-2/6 bg-green-600 border text-white px-6 py-2 rounded-lg font-bold"
-          >
-            Make Offer
-          </button>
-        </div>
+  <template v-if="selectedUser.appl_status === 'pending'">
+    <button
+      @click="updateApplicant('rejected')"
+      class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
+    >
+      Reject
+    </button>
+    <button
+      @click="updateApplicant('in-review')"
+      class="w-2/6 mx-4 bg-blue-600 border text-white px-6 py-2 rounded-lg font-bold"
+    >
+      Shortlist
+    </button>
+    <button
+      @click="updateApplicant('offer-extended')"
+      class="w-2/6 bg-green-600 border text-white px-6 py-2 rounded-lg font-bold"
+    >
+      Make Offer
+    </button>
+  </template>
+  
+  <template v-else-if="selectedUser.appl_status === 'in-review'">
+    <button
+      @click="updateApplicant('rejected')"
+      class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
+    >
+      Reject
+    </button>
+    <button
+      @click="updateApplicant('offer-extended')"
+      class="w-2/6 bg-green-600 border text-white px-6 py-2 rounded-lg font-bold"
+    >
+      Make Offer
+    </button>
+  </template>
+  
+  <template v-else-if="selectedUser.appl_status === 'offer-extended'">
+    <!-- No buttons shown when offer is accepted -->
+  </template>
+</div>
       </div>
     </div>
   </div>
@@ -157,7 +178,7 @@
           <div class="border-b border-gray-300 w-8/12"></div>
         </div>
         <!-- scrollable -->
-        <div class="h-[56dvh] overflow-y-auto w-full">
+        <div class="h-[60dvh] overflow-y-auto w-full">
           <!-- Professional summary -->
           <div class="pb-1 mt-1 bg-white rounded-lg">
             <button

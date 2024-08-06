@@ -41,10 +41,18 @@
 
         <li class="profile">
           <div class="profile-details">
-            <img src="../assets/images/profile-img.jpg" alt="profileImg" />
+            <img
+                    class="w-10 h-10 rounded-lg"
+                    :src="
+                      company.company_logo
+                        ? `https://ciraq.co/api/public/uploads/profile_images/${company.company_logo}`
+                        : companyPlaceholder
+                    "
+                    alt="company image"
+                  />
             <div class="name_job">
               <div class="name">{{company.company_name}}</div>
-              <div class="job">{{company.headquarters}}</div>
+              <div class="job">{{company.username}}</div>
             </div>
           </div>
           <i @click="signOut" class="bx bx-log-out" id="log_out"></i>
@@ -62,6 +70,7 @@
 import "boxicons/css/boxicons.min.css";
 import Modals from "@/components/UI/Modals.vue";
 import { useModalStore } from "@/stores/modalStore.js";
+import companyPlaceholder from "~/assets/images/companyPlace.jpg";
 const modalStore = useModalStore();
 const isOpen = ref(false);
 
