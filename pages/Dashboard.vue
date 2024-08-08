@@ -18,32 +18,15 @@
             >
               <label for="voice-search" class="sr-only">Search</label>
               <div class="relative w-full">
-                <div
-                  class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
-                >
-                  <i
-                    class="bx bx-search w-4 h-4 text-gray-500"
-                    aria-hidden="true"
-                  ></i>
-                </div>
-                <input
-                  type="text"
-                  id="voice-search"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Temp tasks, keywords, or company"
-                  v-model="jobQuery"
-                />
+<div class="relative mt-1">
+            <input v-model="jobQuery" 
+  type="text" 
+  id="text" 
+  class="w-full pl-3 pr-10 py-2 border-2 border-gray-200 rounded-xl hover:border-gray-300 focus:outline-none focus:border-blue-500 transition-colors" 
+  placeholder="Search listing...">
+            <button @click="searchListings()" class="block w-7 h-7 text-center text-xl leading-0 absolute top-2 right-2 text-gray-600 focus:outline-none hover:text-gray-900 transition-colors"><i class='bx bx-search' ></i></button>
+        </div>
 
-                <button
-                  @click="searchUser()"
-                  type="button"
-                  class="absolute inset-y-0 end-0 flex items-center pe-2"
-                >
-                  <i
-                    class="bx bx-search inline-flex items-center py-2.5 px-3 text-sm font-medium text-white bg-blue-700 rounded-3xl border border-blue-700"
-                    aria-hidden="true"
-                  ></i>
-                </button>
               </div>
             </div>
             <div v-else key="apps-search" class="flex">
@@ -183,22 +166,24 @@
                     </span>
                   </div>
                   <div class="flex mt-2">
-
                     <button
                       class="w-full mr-4 inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
                     >
-                      <i class="bx bx-calendar"></i> &nbsp; {{ formatDate(job.appl_timestamp) }}
-                    </button>                    
-                    
+                      <i class="bx bx-calendar"></i> &nbsp;
+                      {{ formatDate(job.appl_timestamp) }}
+                    </button>
+
                     <button
                       class="w-full inline-flex items-center bg-gray-200 text-xs font-normal px-2 py-1 rounded-lg"
                       :class="{
-                        'bg-white text-gray-500 border border-gray-500': job.appl_status === 'pending',
+                        'bg-white text-gray-500 border border-gray-500':
+                          job.appl_status === 'pending',
                         'bg-yellow-300 border':
                           job.appl_status === 'offer-extended',
                         'bg-purple-500 text-white':
                           job.appl_status === 'in-review',
-                        'bg-green-500 text-white': job.appl_status === 'accepted',
+                        'bg-green-500 text-white':
+                          job.appl_status === 'accepted',
                         'bg-red-500 ': job.appl_status === 'rejected',
                         'bg-[#044013] ':
                           job.appl_status !== 'pending' &&
@@ -207,9 +192,10 @@
                           job.appl_status !== 'hired',
                       }"
                     >
-                      <i class="bx bx-loader-circle"></i> &nbsp; {{ job.appl_status }}
+                      <i class="bx bx-loader-circle"></i> &nbsp;
+                      {{ job.appl_status }}
                     </button>
-</div>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -331,6 +317,8 @@
   </div>
 </template>
 <script setup>
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { useDebounce } from '@vueuse/core';
 import { useListingStore } from "../stores/listingStore";
 import { useAuthStore } from "../stores/authStore";
 import { useMainStore } from "../stores/main";
@@ -341,6 +329,7 @@ definePageMeta({
   layout: "mobile",
   middleware: ["unauthstd"],
 });
+
 useHead({
   title: "Dashboard",
   meta: [{ name: "jobs you've applied for", content: "Student job list" }],
@@ -350,18 +339,19 @@ const listingStore = useListingStore();
 const { formatDate } = useFormatDate();
 const authStore = useAuthStore();
 const mainStore = useMainStore();
+
 const listings = ref([]);
 const searchResults = ref([]);
 const selectedListing = ref(null);
 const isMobile = ref(false);
 const showJobList = ref(true);
-
 const selectedStatus = ref("");
 const selectedTab = ref("new");
+const jobQuery = ref('');
+const isLoading = ref(false);
 
 const toggleTab = (tab) => {
   selectedTab.value = tab;
-  // You can add any additional logic here when the tab changes
   console.log("Selected tab:", tab);
 };
 
@@ -392,13 +382,15 @@ const loadJobsMobile = () => {
   }
 };
 
-const jobQuery = ref("");
+const searchListings = async () => {
+  if (jobQuery.value.length < 3) {
+    loadAllListings();
+    return;
+  }
 
-const searchUser = async () => {
   try {
-    console.log(mainStore.urlbase + "listing/search/" + jobQuery.value)
     const response = await fetch(
-      mainStore.urlbase + "listing/search/" + jobQuery.value,
+      mainStore.urlbase + "appl/search-listing/" + jobQuery.value,
       {
         method: "GET",
         headers: {
@@ -414,26 +406,15 @@ const searchUser = async () => {
       throw new Error(responseData.message || "Failed to search for listings.");
     } else {
       console.log("Search completed successfully:", responseData);
-
-      // Assuming the API returns an array of users in responseData.data
       listings.value = responseData.data;
     }
   } catch (error) {
-    console.error("Failed to search for users:", error);
+    console.error("Failed to search for listings:", error);
   }
 };
-
-const handleResize = () => {
-  isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
-  if (!isMobile.value) {
-    showJobList.value = true; // Reset to show message list on larger screens
-  }
-};
-
-const isLoading = ref(false);
 
 const loadAllListings = async () => {
-  isLoading.value = true; // Set loading state to true before fetching data
+  isLoading.value = true;
 
   try {
     const response = await fetch(mainStore.urlbase + "alllistings", {
@@ -454,10 +435,23 @@ const loadAllListings = async () => {
       );
     }
   } catch (error) {
-    console.error("Unable to load listing:", error);
+    console.error("Unable to load listings:", error);
   }
 
-  isLoading.value = false; // Set loading state to false after fetching data
+  isLoading.value = false;
+};
+
+const debouncedSearch = useDebounce(searchListings, 300);
+
+watch(jobQuery, () => {
+  debouncedSearch();
+});
+
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768;
+  if (!isMobile.value) {
+    showJobList.value = true;
+  }
 };
 
 const fetchApplications = async () => {
@@ -473,7 +467,7 @@ const fetchApplications = async () => {
     if (response.ok) {
       const responseData = await response.json();
       listings.value = responseData.data;
-      searchResults.value = responseData.data; // Initialize searchResults here
+      searchResults.value = responseData.data;
       console.log(listings.value);
     } else {
       console.error(
@@ -501,7 +495,6 @@ const filterListings = () => {
 
 watch(selectedStatus, filterListings);
 
-// Add this watch effect
 watch(listings, (newListings) => {
   if (selectedStatus.value === "") {
     searchResults.value = newListings;
@@ -513,7 +506,7 @@ watch(listings, (newListings) => {
 onMounted(() => {
   fetchApplications();
   loadAllListings();
-  isMobile.value = window.innerWidth < 768; // Adjust the threshold as needed
+  isMobile.value = window.innerWidth < 768;
   window.addEventListener("resize", handleResize);
 });
 
@@ -523,6 +516,39 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.search {
+  display: inline-block;
+  position: relative;
+}
+
+.search input[type="text"] {
+  width: 200px;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search button[type="submit"] {
+  background-color: #4e99e9;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: .9s ease;
+}
+
+.search button[type="submit"]:hover {
+  transform: scale(1.1);
+  color: rgb(255, 255, 255);
+  background-color: blue;
+}
+
 #radio-new:checked ~ .glider {
   transform: translateX(0);
 }

@@ -16,7 +16,7 @@
           <span class="tooltip">Dashboard</span>
 
         </li>
-        <li>
+        <li :class="{'active': $route.path === '/employer/new'}">
           <nuxt-link to="/employer/new" >
             <i class="bx bx-message-square-add"></i>
             <span class="links_name">New Listing</span>
@@ -24,14 +24,14 @@
           <span class="tooltip">New Listing</span>
         </li>
         
-        <li>
+        <li :class="{'active': $route.path === '/employer/chat'}">
           <nuxt-link to="/employer/chat" >
             <i class="bx bx-conversation"></i>
             <span class="links_name">Chats</span>
           </nuxt-link>
           <span class="tooltip">Chats</span>
         </li>
-        <li>
+        <li :class="{'active': $route.path === '/employer/CompanyProfile'}">
           <nuxt-link to="/employer/CompanyProfile" >
             <i class="bx bx-detail"></i>
             <span class="links_name">Company Profile</span>
@@ -103,7 +103,6 @@ const company = employerAuth.company;
 </script>
 
 <style >
-
 .sidebar {
   position: fixed;
   left: 0;
@@ -230,10 +229,7 @@ const company = employerAuth.company;
   border:1px solid #132E35;
 }
 
-.active{
-  background: #fff;
-  border:1px solid #132E35;
-}
+
 .sidebar li a .links_name {
   color: #fff;
   font-size: 14px;
@@ -342,37 +338,31 @@ const company = employerAuth.company;
   }
 }
 
-.nav-list .active {
-  background-color: #fff;
+.sidebar li.active a {
+  background: #fff;
+  border: 1px solid #000;
 }
 
-/* Custom scrollbar styles */
-/* For WebKit-based browsers (Chrome, Safari, Opera) */
+.sidebar li.active a .links_name,
+.sidebar li.active a i {
+  color: #000;
+}
+
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 8px;
+  width: 2.5px;
+  height: 2.5px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: red;
+  -webkit-box-shadow: inset 0 0 6px rgba(80, 80, 80, 0.11);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: yellow;
   border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(94, 94, 94, 0.178);
+  background: #bfbfbf;
 }
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
-/* For Mozilla Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #f7f7f7 #f1f1f1;
-}
-
 /* For Internet Explorer and Edge */
 body {
   scrollbar-face-color: #ebebeb;

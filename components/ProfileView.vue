@@ -18,6 +18,34 @@
       <JobViewStd :selectedJob="selectedJob" />
     </div>
   </div>
+    <div
+    id="msgStd"
+    data-modal-target="msgStd"
+    aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-hidden md:inset-0"
+  >
+    <div
+      class="relative p-2 bg-white rounded-2xl w-full max-w-4xl max-h-full overflow-y-auto scrollbar-hidden"
+    >
+      <i
+        @click="hideModal('msgStd')"
+        class="absolute bx bx-x-circle top-2 right-0 px-4 py-2 z-20 text-2xl text-gray-400 hover:text-red-600"
+      ></i>
+
+      <!-- <div class="text-left mb-6">
+          <p class="text-sm font-bold mb-2">
+            Response message
+          </p>
+          <textarea
+            
+            id="aboutJob"
+            name="aboutJob"
+            rows="3"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          ></textarea>
+        </div> -->
+    </div>
+  </div>
   <div
     id="jobAppInfo"
     data-modal-target="jobAppInfo"
@@ -73,9 +101,22 @@
           <p class="text-sm text-gray-600">
             {{ selectedUser.coverLetter }}
           </p>
-        </div>
+        </div>        
+        
+        <!-- <div class="text-left mb-6">
+          <p class="text-sm font-bold mb-2">
+            Response message
+          </p>
+          <textarea
+            
+            id="aboutJob"
+            name="aboutJob"
+            rows="3"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          ></textarea>
+        </div> -->
         <div class="flex justify-around">
-  <template v-if="selectedUser.appl_status === 'pending'">
+  <template v-if="selectedUser.status === 'pending'">
     <button
       @click="updateApplicant('rejected')"
       class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
@@ -96,7 +137,7 @@
     </button>
   </template>
   
-  <template v-else-if="selectedUser.appl_status === 'in-review'">
+  <template v-else-if="selectedUser.status === 'in-review'">
     <button
       @click="updateApplicant('rejected')"
       class="w-2/6 bg-red-600 border text-white px-6 py-2 rounded-lg font-bold"
@@ -111,8 +152,9 @@
     </button>
   </template>
   
-  <template v-else-if="selectedUser.appl_status === 'offer-extended'">
+  <template v-else-if="selectedUser.status === 'offer-extended'">
     <!-- No buttons shown when offer is accepted -->
+    Hired
   </template>
 </div>
       </div>
